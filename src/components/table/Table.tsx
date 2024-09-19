@@ -3,7 +3,7 @@ import type { JSXOutput, PropFunction, QRL, Signal } from "@builder.io/qwik";
 import { Slot, component$, useStore } from "@builder.io/qwik";
 import { useLocation, useNavigate } from "@builder.io/qwik-city";
 import { LuChevronLeft, LuChevronRight, LuPlus } from "@qwikest/icons/lucide";
-import { Button } from "~/components/router-head/button/Button";
+import { Button } from "~/components/button/Button";
 
 export interface IColumn {
   label: string;

@@ -8,7 +8,7 @@ import {
   useSignal,
   useVisibleTask$,
 } from "@builder.io/qwik";
-import { Button } from "../router-head/button/Button";
+import { Button } from "../button/Button";
 import "./modal.css";
 
 export const Modal = component$<{
