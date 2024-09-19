@@ -1,31 +1,23 @@
 import type { JSX } from "@builder.io/qwik";
 import { component$, type QRL } from "@builder.io/qwik";
 
-type TextInputProps = {
+type TextareaProps = {
   name: string;
-  type:
-    | "text"
-    | "email"
-    | "tel"
-    | "password"
-    | "url"
-    | "date"
-    | "datetime-local";
   label?: string;
   placeholder?: string;
   value: string | undefined;
   error?: string;
   required?: boolean;
-  ref: QRL<(element: HTMLInputElement) => void>;
-  onInput$: (event: Event, element: HTMLInputElement) => void;
-  onChange$: (event: Event, element: HTMLInputElement) => void;
-  onBlur$: (event: Event, element: HTMLInputElement) => void;
+  ref: QRL<(element: HTMLTextAreaElement) => void>;
+  onInput$: (event: Event, element: HTMLTextAreaElement) => void;
+  onChange$: (event: Event, element: HTMLTextAreaElement) => void;
+  onBlur$: (event: Event, element: HTMLTextAreaElement) => void;
   size?: "small" | "default" | "large";
   status?: "error" | "success";
   icon?: JSX.Element;
 };
 
-export const TextInput = component$(
+export const Textarea = component$(
   ({
     label,
     error,
@@ -33,7 +25,7 @@ export const TextInput = component$(
     size = "default",
     icon,
     ...props
-  }: TextInputProps) => {
+  }: TextareaProps) => {
     const { name, required, placeholder } = props;
 
     const inputClasses = {
@@ -97,7 +89,8 @@ export const TextInput = component$(
               {icon}
             </div>
           )}
-          <input
+          <textarea
+            rows={3}
             {...props}
             id={name}
             class={`block w-full rounded-lg ${icon ? "pl-12" : "pl-4"} ${inputClasses} ${borderColor}`}
@@ -106,7 +99,7 @@ export const TextInput = component$(
             aria-errormessage={error ? `${name}-error` : undefined}
           />
           {errorIcon && (
-            <div class="pointer-events-none absolute inset-y-0 end-0 flex items-center pe-3">
+            <div class="pointer-events-none absolute end-0 top-0 flex items-center p-3">
               {errorIcon}
             </div>
           )}
