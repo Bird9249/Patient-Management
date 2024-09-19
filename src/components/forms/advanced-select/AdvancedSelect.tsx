@@ -90,7 +90,7 @@ export const AdvancedSelect = component$(
                     <div class="whitespace-nowrap text-gray-800" data-title="">
                       {option?.label}
                     </div>
-                    <div
+                    {/* <div
                       class="prevent-close ms-2 inline-flex size-5 shrink-0 cursor-pointer items-center justify-center rounded-full bg-gray-200 text-sm text-gray-800 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400"
                       onClick$={(event) => {
                         event.stopPropagation();
@@ -114,7 +114,7 @@ export const AdvancedSelect = component$(
                         <path d="M18 6L6 18"></path>
                         <path d="M6 6l12 12"></path>
                       </svg>
-                    </div>
+                    </div> */}
                   </div>
                 );
               })}

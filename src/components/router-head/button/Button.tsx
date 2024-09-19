@@ -8,6 +8,7 @@ type ButtonProps = {
   isLoading?: boolean;
   disabled?: boolean;
   onClick$?: PropFunction<() => void>;
+  block?: boolean;
 };
 
 export const Button = component$((props: ButtonProps) => {
@@ -18,10 +19,10 @@ export const Button = component$((props: ButtonProps) => {
     isLoading = false,
     disabled = false,
     onClick$,
+    block,
   } = props;
 
-  const baseClasses =
-    "inline-flex items-center gap-x-2 text-sm font-medium rounded-lg focus:outline-none disabled:opacity-50 disabled:pointer-events-none";
+  const baseClasses = `inline-flex items-center gap-x-2 text-sm font-medium rounded-lg focus:outline-none disabled:opacity-50 disabled:pointer-events-none ${block ? "w-full justify-center" : ""}`;
 
   const variants = {
     solid:
