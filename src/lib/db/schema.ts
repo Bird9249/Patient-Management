@@ -114,3 +114,12 @@ export const appointmentRelations = relations(appointment, ({ one }) => ({
     references: [doctor.id]
   }),
 }));
+
+export const schema = {
+  account,
+  userInfo,
+  identify,
+  medicalInfo,
+  appointment, 
+  doctor
+};
