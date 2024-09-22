@@ -1,8 +1,19 @@
 import { relations } from 'drizzle-orm';
 import { date, integer, pgEnum, pgTable, serial, text, timestamp, varchar } from "drizzle-orm/pg-core";
 
-export const statusEnum = pgEnum('status', ['scheduled', 'pending', 'cancelled']);
-export const genderEnum = pgEnum ('gender', ['male', 'female', 'other'])
+export const statusEnum = pgEnum('status', [
+  'SCHEDULED', 
+  'PENDING', 
+  'CANCELLED']);
+export const genderEnum = pgEnum ('gender', [
+  'MALE', 
+  'FEMALE', 
+  'OTHER'])
+export const identifyEnum = pgEnum ( 'type', [
+  "FAMILY_BOOK",
+  "ID_CARD",
+  "DRIVER_LICENSE",
+  "PASSPORT"])
 // Table Definitions
 export const account = pgTable('account', {
   id: serial('id').primaryKey(),
@@ -48,6 +59,7 @@ export const userInfoRelations = relations(userInfo, ({ one, many }) => ({
 export const identify = pgTable('identify', {
   id: serial ('id').primaryKey(),
   userinfoId: integer ('userinfo_id').references(()=> userInfo.id, {onDelete:'cascade'}).notNull(),
+  type: identifyEnum('type').default('ID_CARD'),
   name: varchar('name', {length:255}).notNull(),
   number: varchar('number', { length: 255 }).notNull(),
   image: text('image').notNull(),
@@ -101,7 +113,7 @@ export const appointment = pgTable('appointment', {
   reasonOfAppointment: text('reason_of_appointment').notNull(),
   dateTime: timestamp('date_time').notNull(),
   doctorId: integer('doctor_id').references(() => doctor.id, {onDelete:'set null'}).notNull(),
-  status: statusEnum('status').notNull().default('pending'),
+  status: statusEnum('status').notNull().default('PENDING'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
 });
 export const appointmentRelations = relations(appointment, ({ one }) => ({
@@ -115,11 +127,4 @@ export const appointmentRelations = relations(appointment, ({ one }) => ({
   }),
 }));
 
-export const schema = {
-  account,
-  userInfo,
-  identify,
-  medicalInfo,
-  appointment, 
-  doctor
-};
+export type NewUser = typeof userInfo.$inferInsert;
