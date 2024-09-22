@@ -1,11 +1,12 @@
 import * as v from "valibot";
 
-enum GenderEnum {
+export enum GenderEnumSchema {
   "MALE",
   "FEMALE",
   "OTHER",
 }
-enum IdentifyEnum {
+
+export enum IdentifyEnumSchema {
   "FAMILY_BOOK",
   "ID_CARD",
   "DRIVER_LICENSE",
@@ -16,7 +17,7 @@ export const UserInfoSchema = v.object({
   id: v.number(),
   accountId: v.number(),
   dayOfBirth: v.pipe(v.string(), v.isoDate()),
-  gender: v.enum(GenderEnum, "Invalid Gender"),
+  gender: v.enum(GenderEnumSchema, "Invalid Gender"),
   address: v.pipe(v.string(), v.maxLength(255)),
   occupation: v.pipe(v.string(), v.maxLength(255)),
   emergencyName: v.string(),
@@ -33,7 +34,7 @@ export const UserInfoSchema = v.object({
 export const IdentifySchema = v.object({
   id: v.number(),
   userInfoId: v.number(),
-  type: v.enum(IdentifyEnum, "Invalid Identify_Type"),
+  type: v.enum(IdentifyEnumSchema, "Invalid Identify_Type"),
   name: v.string(),
   number: v.string(),
   image: v.string(),
