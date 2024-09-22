@@ -1,11 +1,17 @@
 DO $$ BEGIN
- CREATE TYPE "public"."gender" AS ENUM('male', 'female', 'other');
+ CREATE TYPE "public"."gender" AS ENUM('MALE', 'FEMALE', 'OTHER');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- CREATE TYPE "public"."status" AS ENUM('scheduled', 'pending', 'cancelled');
+ CREATE TYPE "public"."type" AS ENUM('FAMILY_BOOK', 'ID_CARD', 'DRIVER_LICENSE', 'PASSPORT');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ CREATE TYPE "public"."status" AS ENUM('SCHEDULED', 'PENDING', 'CANCELLED');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -25,7 +31,7 @@ CREATE TABLE IF NOT EXISTS "appointment" (
 	"reason_of_appointment" text NOT NULL,
 	"date_time" timestamp NOT NULL,
 	"doctor_id" integer NOT NULL,
-	"status" "status" DEFAULT 'pending' NOT NULL,
+	"status" "status" DEFAULT 'PENDING' NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
@@ -40,6 +46,7 @@ CREATE TABLE IF NOT EXISTS "doctor" (
 CREATE TABLE IF NOT EXISTS "identify" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"userinfo_id" integer NOT NULL,
+	"type" "type",
 	"name" varchar(255) NOT NULL,
 	"number" varchar(255) NOT NULL,
 	"image" text NOT NULL,
