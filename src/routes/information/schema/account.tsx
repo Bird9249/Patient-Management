@@ -18,8 +18,4 @@ export const AccountSchema = v.object({
     v.minLength(11, "your number must start with 020 and your number"),
     v.nonEmpty("please enter your number"),
   ),
-  createdAt: v.pipe(
-    v.string(),
-    v.isoTimestamp("The timestamp is badly formatted."),
-  ),
 });

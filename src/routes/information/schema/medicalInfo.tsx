@@ -15,8 +15,4 @@ export const MedicalInfoSchema = v.object({
   currentMedication: v.string(),
   familyMedicalHistory: v.nullable(v.string()),
   medicalHistory: v.string(),
-  createdAt: v.pipe(
-    v.string(),
-    v.isoTimestamp('"The timestamp is badly formatted.'),
-  ),
 });

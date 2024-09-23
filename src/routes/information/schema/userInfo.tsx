@@ -26,10 +26,6 @@ export const UserInfoSchema = v.object({
     v.string(),
     v.minLength(11, "your number must start with 020 and your number"),
   ),
-  createdAt: v.pipe(
-    v.string(),
-    v.isoTimestamp("The timestamp is badly formatted."),
-  ),
 });
 
 export const IdentifySchema = v.object({
@@ -44,8 +40,4 @@ export const IdentifySchema = v.object({
   name: v.string(),
   number: v.string(),
   image: v.string(),
-  createdAt: v.pipe(
-    v.string(),
-    v.isoTimestamp("The timestamp is badly formatted."),
-  ),
 });
