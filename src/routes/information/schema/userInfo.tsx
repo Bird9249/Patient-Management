@@ -1,16 +1,16 @@
 import * as v from "valibot";
 
 export const UserInfoSchema = v.object({
-  id: v.number(),
   accountId: v.number(),
-  dayOfBirth: v.pipe(v.string(), v.isoDate()),
+  dayOfBirth: v.pipe(v.string(), v.isoDate(), v.nonEmpty()),
   // gender: v.enum(GenderEnumSchema, "Invalid Gender"),
   gender: v.union([v.literal("MALE"), v.literal("FEMALE"), v.literal("OTHER")]),
-  address: v.pipe(v.string(), v.maxLength(255)),
-  occupation: v.pipe(v.string(), v.maxLength(255)),
-  emergencyName: v.string(),
+  address: v.pipe(v.string(), v.maxLength(255), v.nonEmpty()),
+  occupation: v.pipe(v.string(), v.maxLength(255), v.nonEmpty()),
+  emergencyName: v.pipe(v.string(), v.nonEmpty()),
   emergencyPhone: v.pipe(
     v.string(),
-    v.minLength(11, "your number must start with 020 and your number"),
+    v.minLength(14, "your number must start with +85620"),
+    v.nonEmpty(),
   ),
 });
