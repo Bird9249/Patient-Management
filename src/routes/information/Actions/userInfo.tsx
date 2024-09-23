@@ -1,28 +1,22 @@
-import { routeAction$, valibot$ } from "@builder.io/qwik-city";
 import { db } from "../../../lib/db/db";
 import { userInfo } from "../../../lib/db/schema";
-import { UserInfoSchema } from "../schema/userInfo";
+import { IRegisterSchema } from "../schema/register";
 
-export const useAddUser = routeAction$(async (user, { fail }) => {
+export async function addUserInfo(data: IRegisterSchema) {
   const [{ id }] = await db
     .insert(userInfo)
     .values({
-      accountId: user.accountId,
-      dateOfBirth: user.dayOfBirth,
-      gender: user.gender,
-      address: user.address,
-      occupation: user.occupation,
-      emergencyName: user.emergencyName,
-      emergencyPhone: user.emergencyPhone,
+      accountId: data.userInfo.accountId,
+      dateOfBirth: data.userInfo.dayOfBirth,
+      gender: data.userInfo.gender,
+      address: data.userInfo.address,
+      occupation: data.userInfo.occupation,
+      emergencyName: data.userInfo.emergencyName,
+      emergencyPhone: data.userInfo.emergencyPhone,
     })
     .returning({
       id: userInfo.id,
     });
 
-  if (!id) {
-    return fail(409, {
-      message: "User could not be added",
-    });
-  }
-  return { id };
-}, valibot$(UserInfoSchema));
+  return id;
+}

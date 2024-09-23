@@ -1,26 +1,13 @@
-import { routeAction$, valibot$ } from "@builder.io/qwik-city";
 import { db } from "../../../lib/db/db";
 import { identify } from "../../../lib/db/schema";
-import { IdentifySchema } from "../schema/userInfo";
+import { IRegisterSchema } from "../schema/register";
 
-export const useAddIdentify = routeAction$(async (data, { fail }) => {
-  const [{ id }] = await db
-    .insert(identify)
-    .values({
-      userinfoId: data.userInfoId,
-      type: data.type,
-      name: data.name,
-      number: data.number,
-      image: data.image,
-    })
-    .returning({
-      id: identify.id,
-    });
-
-  if (!id) {
-    return fail(409, {
-      message: "identification could not be added",
-    });
-  }
-  return { id };
-}, valibot$(IdentifySchema));
+export async function addIdentify(data: IRegisterSchema) {
+  await db.insert(identify).values({
+    userinfoId: data.identify.userInfoId,
+    type: data.identify.type,
+    name: data.identify.name,
+    number: data.identify.number,
+    image: data.identify.image,
+  });
+}

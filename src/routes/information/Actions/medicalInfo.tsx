@@ -1,29 +1,16 @@
-import { routeAction$, valibot$ } from "@builder.io/qwik-city";
 import { db } from "../../../lib/db/db";
 import { medicalInfo } from "../../../lib/db/schema";
-import { MedicalInfoSchema } from "../schema/medicalInfo";
+import { IRegisterSchema } from "../schema/register";
 
-export const useAddUser = routeAction$(async (data, { fail }) => {
-  const [{ id }] = await db
-    .insert(medicalInfo)
-    .values({
-      userinfoId: data.userInfoId,
-      doctorId: data.doctorId,
-      insuranceName: data.insuranceName,
-      insurancePhone: data.insurancePhone,
-      allergies: data.allergies,
-      currentMedication: data.currentMedication,
-      familyMedicalHistory: data.familyMedicalHistory,
-      medicalHistory: data.medicalHistory,
-    })
-    .returning({
-      id: medicalInfo.id,
-    });
-
-  if (!id) {
-    return fail(409, {
-      message: "MedicalInfo could not be added",
-    });
-  }
-  return { id };
-}, valibot$(MedicalInfoSchema));
+export async function addMedicalInfo(data: IRegisterSchema) {
+  await db.insert(medicalInfo).values({
+    userinfoId: data.medicalInfo.userInfoId,
+    doctorId: data.medicalInfo.doctorId,
+    insuranceName: data.medicalInfo.insuranceName,
+    insurancePhone: data.medicalInfo.insurancePhone,
+    allergies: data.medicalInfo.allergies,
+    currentMedication: data.medicalInfo.currentMedication,
+    familyMedicalHistory: data.medicalInfo.familyMedicalHistory,
+    medicalHistory: data.medicalInfo.medicalHistory,
+  });
+}
