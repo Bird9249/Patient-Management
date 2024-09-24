@@ -15,8 +15,8 @@ export default component$(() => {
            <div class="z-10">
                 <div class="ml-20">
                     <div class="mb-12">
-                        <img class="w-20 h-14" src={logo_page} />
-                        <p>SnatBas Clinic</p>
+                        <img class="w-20" src={logo_page} />
+                        <span class="text-xl">SnatBas Clinic</span>
                     </div>
                         <h1 class="text-3xl mb-4">Hey There 👋</h1>
                         <p class="mb-6">Request a new appointment in 10 seconds</p>
