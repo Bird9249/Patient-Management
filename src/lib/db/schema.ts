@@ -19,6 +19,7 @@ export const account = pgTable('account', {
   id: serial('id').primaryKey(),
   name: varchar('name', { length: 255 }).notNull(),
   email: varchar('email', { length: 255 }),
+  password: varchar('password', {length: 255}),
   phone: varchar('phone', { length: 20 }).unique().notNull(),
  createdAt: timestamp('created_at', { precision: 6, withTimezone: true }).defaultNow().notNull(),
 });
