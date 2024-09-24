@@ -77,7 +77,7 @@ export const medicalInfo = pgTable('medicalinfo', {
   userinfoId: integer('userinfo_id').references(()=> userInfo.id, {onDelete:'cascade'}).notNull(),
   doctorId: integer('doctor_id').references(() => doctor.id, {onDelete: 'set null'}),
   insuranceName: varchar('insurance_name', { length: 255 }),
-  insurancePhone: varchar('insurance_phone', { length: 20 }),
+  insuranceNumber: varchar('insurance_number', { length: 255 }),
   allergies: text('allergies'),
   currentMedication: text('current_medication').notNull(),
   familyMedicalHistory: text('family_medical_history'),
