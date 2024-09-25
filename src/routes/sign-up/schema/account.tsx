@@ -1,3 +1,4 @@
+import { value } from "@modular-forms/qwik";
 import { type } from "os";
 import * as v from "valibot";
 import { InferInput } from "valibot";
@@ -16,6 +17,19 @@ export const AccountSchema = v.object({
     v.minLength(8, "Phone number must have 8 numbers"),
     v.maxLength(8, "Phone number must have 8 numbers"),
     v.nonEmpty("please enter your number"),
+  ),
+  password: v.pipe(
+    v.string(),
+    v.minLength(8, "Password must have 8 characters."),
+    v.maxLength(32, "Password is too long, must have less than 32 characters."),
+    v.nonEmpty("please enter your password."),
+    v.regex(/[A-Z]/, "Password must contain at least one uppercase letter."),
+    v.regex(/[a-z]/, "Password must contain at least one lowercase letter."),
+    v.regex(/\d/, "Password must contain at least one number."),
+    v.regex(
+      /[@$!%*?&]/,
+      "Password must contain at least one special character.",
+    ),
   ),
 });
 
