@@ -1,8 +1,9 @@
 import * as v from "valibot";
+import { AccountSchema } from "~/routes/sign-up/schema/account";
 
 export const UserInfoSchema = v.object({
   // accountId: v.number(),
-  // ...v.omit().entries,
+  ...AccountSchema.entries,
   dayOfBirth: v.pipe(v.string(), v.isoDate(), v.nonEmpty()),
   // gender: v.enum(GenderEnumSchema, "Invalid Gender"),
   gender: v.union([v.literal("MALE"), v.literal("FEMALE"), v.literal("OTHER")]),
