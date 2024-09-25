@@ -13,11 +13,13 @@ export default component$(()=>{
 
         {/* form */}
         <div class="flex-1">
+
             {/* logo */}
             <div class="w-[120px] h-[80px] ml-[110px] mt-[54px] absolute">
                 <img src={logo_img} alt="logo_icon" width={84} height={54}/>
                 <h1 class="ml-1 font-semibold">SnatBas Clinic</h1>
             </div>
+
             {/* text */}
             <div class="mx-[120px] mt-[172px] ">
                 <div>
@@ -27,6 +29,7 @@ export default component$(()=>{
                 </p>
                 </div>
                 <br />
+
             {/* input */}
             <div class="space-y-8">
             <TextInput
@@ -45,8 +48,8 @@ export default component$(()=>{
             <Button block variant="solid" type="submit">
                   Log in
             </Button>
+
             {/* link page */}
-            
             <div class="flex justify-center ">
                 <a class="text-primary-600 underline underline-offset-8 decoration-primary-600 hover:opacity-80 focus:outline-none focus:opacity-80 pr-2 border-r border-ga-200" href="#">Sign up</a>
                 <a class="text-primary-600 underline underline-offset-8 decoration-primary-600 hover:opacity-80 pl-2 focus:outline-none focus:opacity-80 " href="#">Staff</a>
@@ -57,12 +60,10 @@ export default component$(()=>{
         </div>
 
         {/* image */}
-        <div class="flex-1">
+        <div class="flex-1 ">
             <img src={background_img} alt="background" width={1000} height={100}
             class="object-cover w-full h-screen"/>
         </div>
-        
-
     </div>
     </>
    ) 
