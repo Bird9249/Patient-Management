@@ -50,7 +50,7 @@ export default component$(()=>{
             <div class="flex justify-center ">
                 <a class="text-primary-600 underline underline-offset-8 decoration-primary-600 hover:opacity-80 focus:outline-none focus:opacity-80 pr-2 border-r border-ga-200" href="#">Sign up</a>
                 <a class="text-primary-600 underline underline-offset-8 decoration-primary-600 hover:opacity-80 pl-2 focus:outline-none focus:opacity-80 " href="#">Staff</a>
-                </div>
+            </div>
             
             </div>
             </div>
@@ -60,7 +60,6 @@ export default component$(()=>{
         <div class="flex-1">
             <img src={background_img} alt="background" width={1000} height={100}
             class="object-cover w-full h-screen"/>
-
         </div>
         
 
