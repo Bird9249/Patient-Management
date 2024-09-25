@@ -19,6 +19,7 @@ export const account = pgTable('account', {
   id: serial('id').primaryKey(),
   name: varchar('name', { length: 255 }).notNull(),
   email: varchar('email', { length: 255 }),
+  password: varchar('password', {length: 255}),
   phone: varchar('phone', { length: 20 }).unique().notNull(),
  createdAt: timestamp('created_at', { precision: 6, withTimezone: true }).defaultNow().notNull(),
 });
@@ -76,7 +77,7 @@ export const medicalInfo = pgTable('medicalinfo', {
   userinfoId: integer('userinfo_id').references(()=> userInfo.id, {onDelete:'cascade'}).notNull(),
   doctorId: integer('doctor_id').references(() => doctor.id, {onDelete: 'set null'}),
   insuranceName: varchar('insurance_name', { length: 255 }),
-  insurancePhone: varchar('insurance_phone', { length: 20 }),
+  insuranceNumber: varchar('insurance_number', { length: 255 }),
   allergies: text('allergies'),
   currentMedication: text('current_medication').notNull(),
   familyMedicalHistory: text('family_medical_history'),

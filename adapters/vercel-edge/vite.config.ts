@@ -13,7 +13,8 @@ export default extendConfig(baseConfig, () => {
     },
     plugins: [vercelEdgeAdapter()],
     define: {
-      "process.env.POSTGRES_URL":JSON.stringify(process.env.POSTGRES_URL)
+      "process.env.POSTGRES_URL":JSON.stringify(process.env.POSTGRES_URL), 
+      "process.env.BLOB_READ_WRITE_TOKEN":JSON.stringify(process.env.BLOB_READ_WRITE_TOKEN)
     }
   };
 });
