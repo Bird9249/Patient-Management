@@ -2,12 +2,12 @@ import { db } from "../../../lib/db/db";
 import { identify, medicalInfo, userInfo } from "../../../lib/db/schema";
 import { IRegisterSchema } from "../schema/register";
 
-export async function addUserInfo(data: IRegisterSchema) {
+export async function addUserInfo(data: IRegisterSchema, accountId: number) {
   return await db.transaction(async (tx) => {
     const [{ id }] = await tx
       .insert(userInfo)
       .values({
-        accountId: data.userInfo.accountId,
+        accountId,
         dateOfBirth: data.userInfo.dayOfBirth,
         gender: data.userInfo.gender,
         address: data.userInfo.address,
