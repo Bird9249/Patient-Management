@@ -8,6 +8,7 @@ import { formAction$, valiForm$ } from "@modular-forms/qwik";
 import { AccountSchema, IAccountSchema } from "./schema/account";
 import { addAccount } from "./action/actions";
 
+//formAction
 export const useRegisterAction = formAction$<
   IAccountSchema,
   { success: boolean; message: string; id?: number }
@@ -44,9 +45,9 @@ export default component$(() => {
 
           <div class="grid-span-1 m-auto w-full max-w-sm ">
             {/* logo tag */}
-            <div class=" mb-10">
+            <div class=" mb-5">
               <img class="w-20" src={logo_image} alt="" />
-              <span class="text-xl">SnatBas Clinic</span>
+              <span class="text-sm font-semibold">SnatBas Clinic</span>
             </div>
 
             {/* sign in section */}
@@ -126,6 +127,25 @@ export default component$(() => {
                   Get started
                 </Button>
               </div>
+            </div>
+            {/* bottom link */}
+            <div class="mt-10 flex justify-center gap-5">
+              <p>
+                <a
+                  class="text-blue-600 underline decoration-blue-600 underline-offset-8 hover:opacity-80 focus:opacity-80 focus:outline-none"
+                  href="#"
+                >
+                  Log in
+                </a>
+              </p>
+              <p>
+                <a
+                  class="text-blue-600 underline decoration-blue-600 underline-offset-8 hover:opacity-80 focus:opacity-80 focus:outline-none"
+                  href="#"
+                >
+                  Contact us
+                </a>
+              </p>
             </div>
           </div>
 
