@@ -13,7 +13,7 @@ export async function addUserInfo(data: IRegisterSchema) {
         address: data.userInfo.address,
         occupation: data.userInfo.occupation,
         emergencyName: data.userInfo.emergencyName,
-        emergencyPhone: data.userInfo.emergencyPhone,
+        emergencyPhone: "+85620" + data.userInfo.emergencyPhone,
       })
       .returning({
         id: userInfo.id,
@@ -23,7 +23,7 @@ export async function addUserInfo(data: IRegisterSchema) {
       userinfoId: id,
       doctorId: data.medicalInfo.doctorId,
       insuranceName: data.medicalInfo.insuranceName,
-      insurancePhone: data.medicalInfo.insurancePhone,
+      insuranceNumber: "+85620" + data.medicalInfo.insuranceNumber,
       allergies: data.medicalInfo.allergies,
       currentMedication: data.medicalInfo.currentMedication,
       familyMedicalHistory: data.medicalInfo.familyMedicalHistory,

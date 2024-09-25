@@ -13,7 +13,7 @@ export default component$(() => {
            <div class="z-10">
                     <div class="ml-28 mb-12">
                         <img class="w-20" src={logo_page} />
-                        <span class="text-sm ml-1">SnatBas Clinic</span>
+                        <span class="text-sm ml-1 font-semibold">SnatBas Clinic</span>
                     </div>
                 <div class="ml-32">
                         <h1 class="text-3xl mb-4">Hey There 👋</h1>
