@@ -2,24 +2,20 @@ import { component$ } from "@builder.io/qwik";
 import { formAction$, setValue, useForm, valiForm$ } from "@modular-forms/qwik";
 import { LuCalendarDays, LuMail, LuPhone } from "@qwikest/icons/lucide";
 import { AdvancedSelect } from "~/components/forms/advanced-select/AdvancedSelect";
-import { Redio } from "~/components/forms/radio/Radio";
 import { TextInput } from "~/components/forms/text-input/TextInput";
 import { Textarea } from "~/components/forms/textarea/Textarea";
+import { addUserInfo } from "../Actions/userInfo";
 import image_background from "../information/img/image.png";
 import image_logo from "../information/img/logo project.png";
-import {
-  IRegisterSchema,
-  RegisterSchema,
-} from "../information/schema/register";
-import { UserInfoSchema } from "../information/schema/userInfo";
-import { addUserInfo } from "./Actions/userInfo";
+import { IRegisterSchema, RegisterSchema } from "../schema/register";
+import { UserInfoSchema } from "../schema/userInfo";
 
 export const useAddUser = formAction$<
   IRegisterSchema,
   { message: string; success: boolean; id?: number }
->(async (user) => {
+>(async (user, { params }) => {
   try {
-    const id = await addUserInfo(user);
+    const id = await addUserInfo(user, Number(params.accountId));
 
     return {
       data: { success: true, message: "Add user successful", id },
@@ -38,7 +34,9 @@ export default component$(() => {
     loader: {
       value: {
         userInfo: {
-          accountId: 0,
+          name: "",
+          email: "",
+          phone: "",
           address: "",
           dayOfBirth: "",
           emergencyName: "",
@@ -68,7 +66,7 @@ export default component$(() => {
   return (
     <Form
       onSubmit$={async (values) => {
-        await 
+        // await
       }}
     >
       {/* main div */}
@@ -78,7 +76,7 @@ export default component$(() => {
           {/* logo */}
           <div class="ml-[110px] mt-[54px] h-[80px] w-[120px] ">
             <img src={image_logo} alt="logo" width={84} height={54} />
-            <p class="text-sm ml-1 text-black">SnatBas Clinic</p>
+            <p class="ml-1 text-sm text-black">SnatBas Clinic</p>
           </div>
           {/* Hi.. */}
           <div class="ml-[134px] mt-[182px] text-black ">
@@ -103,7 +101,7 @@ export default component$(() => {
               Personal Information
             </h1>
             {/* full name */}
-            <Field name="account.name">
+            <Field name="userInfo.name">
               {(field, props) => (
                 <TextInput
                   {...props}
@@ -121,11 +119,11 @@ export default component$(() => {
             <div class="grid grid-cols-2 gap-5 space-y-4">
               <div class="mt-4">
                 {/* email address */}
-                <Field name="account.email">
+                <Field name="userInfo.email">
                   {(field, props) => (
                     <TextInput
                       {...props}
-                      icon={<LuMail />}
+                      // icon={<LuMail />}
                       value={field.value}
                       error={field.error}
                       label="Email Address"
@@ -136,11 +134,11 @@ export default component$(() => {
                 </Field>
               </div>
               {/* phone Number */}
-              <Field name="account.phone">
+              <Field name="userInfo.phone">
                 {(field, props) => (
                   <TextInput
                     {...props}
-                    icon={<LuPhone />}
+                    // icon={<LuPhone />}
                     value={field.value}
                     error={field.error}
                     label="Phone Number"
@@ -156,7 +154,7 @@ export default component$(() => {
                     {...props}
                     value={field.value}
                     error={field.error}
-                    icon={<LuCalendarDays />}
+                    // icon={<LuCalendarDays />}
                     label="Date of Birth"
                     placeholder="YYYY/MM/DD"
                     type="date"
@@ -169,21 +167,19 @@ export default component$(() => {
                   <label>Gender</label>
                 </div>
                 {/* radio */}
-                <div class="flex flex-1 gap-5 pt-7">
-                  {
-                    ["MALE", "FEMALE", "OTHER"].map((e) => 
-                       <Redio 
-                        label={e} 
-                        name={e} 
-                        checked 
-                        ref={}
-                        onBlur$={console.log}
-                        onChange$={console.log}
-                        onInput$={console.log}
-                         />
-                    )
-                  }
-                </div>
+                {/* <div class="flex flex-1 gap-5 pt-7">
+                  {["MALE", "FEMALE", "OTHER"].map((e) => (
+                    <Redio
+                      label={e}
+                      name={e}
+                      checked
+                      ref={}
+                      onBlur$={console.log}
+                      onChange$={console.log}
+                      onInput$={console.log}
+                    />
+                  ))}
+                </div> */}
               </div>
               <Field name="userInfo.address">
                 {(field, props) => (
@@ -360,10 +356,7 @@ export default component$(() => {
       {/* page3 */}
       <div class=" flex h-full w-screen">
         {/* page3 */}
-        <div class="flex-1">
-          {/* identification and verification */}
-             
-        </div>
+        <div class="flex-1">{/* identification and verification */}</div>
         {/* image background */}
         <div class="flex-initial grow-0">
           <img
