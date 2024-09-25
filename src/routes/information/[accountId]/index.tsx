@@ -1,15 +1,19 @@
 import { component$ } from "@builder.io/qwik";
+import { routeLoader$ } from "@builder.io/qwik-city";
 import { formAction$, setValue, useForm, valiForm$ } from "@modular-forms/qwik";
 import { AdvancedSelect } from "~/components/forms/advanced-select/AdvancedSelect";
 import { Redio } from "~/components/forms/radio/Radio";
+import { Select } from "~/components/forms/select/Select";
 import { TextInput } from "~/components/forms/text-input/TextInput";
 import { Textarea } from "~/components/forms/textarea/Textarea";
+import { db } from "~/lib/db/db";
 import image_background from "../../../../public/image.png";
 import image_logo from "../../../../public/logo project.png";
 import { addUserInfo } from "../Actions/userInfo";
 import { IRegisterSchema, RegisterSchema } from "../schema/register";
 import { UserInfoSchema } from "../schema/userInfo";
 
+// server
 export const useAddUser = formAction$<
   IRegisterSchema,
   { message: string; success: boolean; id?: number }
@@ -27,7 +31,15 @@ export const useAddUser = formAction$<
   }
 }, valiForm$(UserInfoSchema));
 
+export const useDoctorLoader = routeLoader$(async function () {
+  return await db.query.doctor.findMany({
+    columns: { id: true, image: true, name: true },
+  });
+});
+
+// browser
 export default component$(() => {
+  const doctorLoader = useDoctorLoader();
   const action = useAddUser();
 
   const [form, { Field, Form }] = useForm<IRegisterSchema>({
@@ -223,9 +235,26 @@ export default component$(() => {
                   </div>
                   {/* radio */}
                   <div class="flex flex-1 gap-5 pt-7">
-                    <Redio label="MALE" name="male" value="1" checked />
-                    <Redio label="FEMALE" name="female" value="2" />
-                    <Redio label="OTHER" name="other" value="3" />
+                    {[
+                      {
+                        label: "Male",
+                        value: "MALE",
+                      },
+                      { label: "Female", value: "FEMALE" },
+                      { label: "Other", value: "OTHER" },
+                    ].map(({ label, value }) => (
+                      <Field key={value} name="userInfo.gender">
+                        {(field, props) => (
+                          <Redio
+                            {...props}
+                            label={label}
+                            value={value}
+                            error={field.error}
+                            checked={field.value === value}
+                          />
+                        )}
+                      </Field>
+                    ))}
                   </div>
                 </div>
                 <Field name="userInfo.address">
@@ -299,18 +328,20 @@ export default component$(() => {
                   {(field, props) => (
                     <AdvancedSelect
                       name={props.name}
-                      options={[
-                        {
-                          label: "Dr.Adam smith",
-                          value: 1,
-                        },
-                      ]}
+                      // import .env brpwser
+                      options={doctorLoader.value.map(
+                        ({ id, name, image }) => ({
+                          label: name,
+                          value: id,
+                          img: import.meta.env.PUBLIC_IMAGE_URL + "/" + image,
+                        }),
+                      )}
                       value={field.value}
                       error={field.error}
                       onSelected$={(val) => {
                         setValue(form, "medicalInfo.doctorId", val as number);
                       }}
-                      placeholder="Dr. Adam smith"
+                      placeholder="select your doctor"
                       label="Primary care physical"
                       class="text-gray-500"
                     />
@@ -407,19 +438,16 @@ export default component$(() => {
                 {/* TODO: drop down */}
                 <Field name="identify.type">
                   {(field, props) => (
-                    <AdvancedSelect
-                      name={props.name}
+                    <Select
+                      {...props}
                       options={[
-                        { label: "Family Book", value: 1 },
-                        { label: "ID Card", value: 2 },
-                        { label: "Driver License", value: 3 },
-                        { label: "Passport", value: 4 },
+                        { label: "Family Book", value: "FAMILY_BOOK" },
+                        { label: "ID Card", value: "ID_CARD" },
+                        { label: "Driver License", value: "DRIVER_LICENSE" },
+                        { label: "Passport", value: "PASSPORT" },
                       ]}
                       value={field.value}
                       error={field.error}
-                      onSelected$={(val) => {
-                        setValue(form, "identify.type", val as number);
-                      }}
                       placeholder="Select Something"
                       label="Doctor"
                     />
