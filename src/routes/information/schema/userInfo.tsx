@@ -1,7 +1,8 @@
 import * as v from "valibot";
 
 export const UserInfoSchema = v.object({
-  accountId: v.number(),
+  // accountId: v.number(),
+  // ...v.omit().entries,
   dayOfBirth: v.pipe(v.string(), v.isoDate(), v.nonEmpty()),
   // gender: v.enum(GenderEnumSchema, "Invalid Gender"),
   gender: v.union([v.literal("MALE"), v.literal("FEMALE"), v.literal("OTHER")]),
