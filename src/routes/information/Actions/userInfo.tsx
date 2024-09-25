@@ -23,7 +23,7 @@ export async function addUserInfo(data: IRegisterSchema) {
       userinfoId: id,
       doctorId: data.medicalInfo.doctorId,
       insuranceName: data.medicalInfo.insuranceName,
-      insurancePhone: "+85620" + data.medicalInfo.insurancePhone,
+      insuranceNumber: "+85620" + data.medicalInfo.insuranceNumber,
       allergies: data.medicalInfo.allergies,
       currentMedication: data.medicalInfo.currentMedication,
       familyMedicalHistory: data.medicalInfo.familyMedicalHistory,
