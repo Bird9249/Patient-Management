@@ -20,12 +20,12 @@ export const Redio = component$(({ label, error, ...props }: RedioProps) => {
     <div class="w-full">
       <label
         for={name}
-        class="focus:border-primary-500 focus:ring-primary-500 flex w-full rounded-lg border border-gray-200 bg-white p-3 text-sm"
+        class="flex w-full rounded-lg border border-gray-200 bg-white p-3 text-sm focus:border-primary-500 focus:ring-primary-500"
       >
         <input
           {...props}
           type="radio"
-          class="text-primary-600 focus:ring-primary-500 mt-0.5 shrink-0 rounded-full border-gray-200 disabled:pointer-events-none disabled:opacity-50"
+          class="mt-0.5 shrink-0 rounded-full border-gray-200 text-primary-600 focus:ring-primary-500 disabled:pointer-events-none disabled:opacity-50"
           id={name}
           aria-invalid={!!error}
           aria-errormessage={`${name}-error`}
