@@ -1,6 +1,7 @@
 import { db } from "~/lib/db/db";
 import { IAccountSchema } from "../schema/account";
 import { account } from "~/lib/db/schema";
+import { hashSync } from "bcrypt-ts";
 
 export async function addAccount(data: IAccountSchema) {
   const result = await db
@@ -9,7 +10,7 @@ export async function addAccount(data: IAccountSchema) {
       name: data.name,
       email: data.email,
       phone: data.phone,
-      password: data.password,
+      password: hashSync(data.password, 10),
     })
     .returning({ id: account.id });
 
