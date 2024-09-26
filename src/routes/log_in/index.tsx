@@ -1,13 +1,34 @@
 import { component$ } from "@builder.io/qwik";
-import logo_img from "./img/logo project.png";
-import background_img from "./img/picture prompt.png";
+import logo_img from "../../../public/logo project.png";
+import background_img from "../../../public/picture prompt.png";
 import { TextInput } from "~/components/forms/text-input/TextInput";
 import { Button } from "~/components/button/Button";
 import { Link } from "@builder.io/qwik-city";
+import {AccountSchema, IAccountSchema} from  "../sign-up/schema/account";
+import { useForm, valiForm$ } from "@modular-forms/qwik";
+
+
 
 export default component$(()=>{
+
+    const[from,{ Field,Form}]= useForm<IAccountSchema>({
+        loader: {
+            value:{
+                name: "",
+                email:"",
+                password:"",
+                phone:"",
+            }
+        },
+        validate: valiForm$(AccountSchema),
+    });
+
    return(
-    <>
+    <Form
+       onSubmit$={async(values) =>{
+        // await
+       } }
+    >
 
     {/* main div */}
     <div class="w-screen h-screen flex flex-row ">
@@ -31,20 +52,37 @@ export default component$(()=>{
                 </div>
                 <br />
 
-            {/* input */}
+            {/* input number */}
             <div class="space-y-8">
-            <TextInput
-                  label="Your phone number"
+            <Field name ="phone">
+                {(field,props) => (
+                    <TextInput
+                    {...props}
+                    value={field.value}
+                    error={field.error}
+                    label="Your phone number"
                   placeholder="+856 20 xx xxx xxx"
                   type="tel"
                   required
-                />
-             <TextInput
-                  label="Enter your password"
+                  />
+                )}
+            </Field>
+
+            {/* password */}
+            <Field name ="password">
+                {(field,props) => (
+                    <TextInput
+                    {...props}
+                    value={field.value}
+                    error={field.error}
+                    label="Enter your password"
                   placeholder="Enter your password"
-                  type="text"
+                  type="password"
                   required
-                /> 
+                  />
+                )}
+            </Field>
+            
 
             <Button block variant="solid" type="submit">
                   Log in
@@ -66,6 +104,6 @@ export default component$(()=>{
             class="object-cover w-full h-screen"/>
         </div>
     </div>
-    </>
+    </Form>
    ) 
 });
