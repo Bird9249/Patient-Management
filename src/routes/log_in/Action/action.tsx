@@ -1,12 +1,12 @@
 import { db } from "~/lib/db/db";
 import { account } from "~/lib/db/schema";
-import { IAccountSchema } from "~/routes/sign-up/schema/account";
+import { ILoginSchema } from "../schemas/login.schema";
+import { eq } from "drizzle-orm";
 
-export async function checkAccount (data:IAccountSchema){
-    const result:await db
-    .query({
+export async function checkAccount(data: ILoginSchema) {
+  const result = await db.query.account.findFirst({
+    where: eq(account.phone, "+85620" + data.phone),
+  });
 
-    }).from(account);
+  return result;
 }
-
-
