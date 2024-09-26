@@ -113,6 +113,7 @@ export const appointment = pgTable('appointment', {
   reasonOfAppointment: text('reason_of_appointment').notNull(),
   dateTime: timestamp('date_time  ').notNull(),
   doctorId: integer('doctor_id').references(() => doctor.id, {onDelete:'set null'}).notNull(),
+  comment: text('comment'),
   status: statusEnum('status').notNull().default('PENDING'),
   createdAt: timestamp('created_at', { precision: 6, withTimezone: true }).defaultNow().notNull(),
 });
