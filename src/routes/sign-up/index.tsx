@@ -1,12 +1,13 @@
 import { component$, useSignal } from "@builder.io/qwik";
-import logo_image from "./image/logo_SnatBas.jpg";
+import logo_image from "/logo project.png";
 import { TextInput } from "~/components/forms/text-input/TextInput";
 import { Button } from "~/components/button/Button";
-import login_image from "./image/login_page.jpg";
+import signup_image from "/sign_up_page.jpg";
 import { LuUserCircle } from "@qwikest/icons/lucide";
 import { formAction$, valiForm$ } from "@modular-forms/qwik";
 import { AccountSchema, IAccountSchema } from "./schema/account";
 import { addAccount } from "./action/actions";
+import { Link } from "@builder.io/qwik-city";
 
 //formAction
 export const useRegisterAction = formAction$<
@@ -130,22 +131,19 @@ export default component$(() => {
             </div>
             {/* bottom link */}
             <div class="mt-10 flex justify-center gap-5">
-              <p>
-                <a
-                  class="text-blue-600 underline decoration-blue-600 underline-offset-8 hover:opacity-80 focus:opacity-80 focus:outline-none"
-                  href="#"
-                >
-                  Log in
-                </a>
-              </p>
-              <p>
-                <a
-                  class="text-blue-600 underline decoration-blue-600 underline-offset-8 hover:opacity-80 focus:opacity-80 focus:outline-none"
-                  href="#"
-                >
-                  Contact us
-                </a>
-              </p>
+              <Link
+                href="#"
+                class="border-ga-100 border-r pr-2 text-primary-600 underline decoration-primary-600 underline-offset-8 hover:opacity-80 focus:opacity-80 focus:outline-none"
+              >
+                Log in
+              </Link>
+
+              <Link
+                href="#"
+                class="border-ga-100 border-r pr-2 text-primary-600 underline decoration-primary-600 underline-offset-8 hover:opacity-80 focus:opacity-80 focus:outline-none"
+              >
+                Contact us
+              </Link>
             </div>
           </div>
 
@@ -153,7 +151,7 @@ export default component$(() => {
 
           <div class="grid-span-1">
             <img
-              src={login_image}
+              src={signup_image}
               alt=""
               class="h-screen w-full object-cover"
             />
