@@ -3,6 +3,7 @@ import logo_img from "./img/logo project.png";
 import background_img from "./img/picture prompt.png";
 import { TextInput } from "~/components/forms/text-input/TextInput";
 import { Button } from "~/components/button/Button";
+import { Link } from "@builder.io/qwik-city";
 
 export default component$(()=>{
    return(
@@ -49,13 +50,13 @@ export default component$(()=>{
                   Log in
             </Button>
 
-            {/* link page */}
-            <div class="flex justify-center ">
-                <a class="text-primary-600 underline underline-offset-8 decoration-primary-600 hover:opacity-80 focus:outline-none focus:opacity-80 pr-2 border-r border-ga-200" href="#">Sign up</a>
-                <a class="text-primary-600 underline underline-offset-8 decoration-primary-600 hover:opacity-80 pl-2 focus:outline-none focus:opacity-80 " href="#">Staff</a>
             </div>
-            
             </div>
+
+              {/* link page */}
+              <div class="flex justify-center mt-40  ">
+                <Link href="/sign-up/" class="text-primary-600 underline underline-offset-8 decoration-primary-600 hover:opacity-80 focus:outline-none focus:opacity-80 pr-2 border-r border-ga-200" >Sign up</Link>
+                <Link href="/stuff" class="text-primary-600 underline underline-offset-8 decoration-primary-600 hover:opacity-80 pl-2 focus:outline-none focus:opacity-80 " >Staff</Link>
             </div>
         </div>
 
