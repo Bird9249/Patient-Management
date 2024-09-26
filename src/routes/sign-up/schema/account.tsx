@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-=======
-import { value } from "@modular-forms/qwik";
-import { type } from "os";
->>>>>>> origin/sign-in
 import * as v from "valibot";
 import { InferInput } from "valibot";
 

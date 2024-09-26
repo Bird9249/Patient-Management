@@ -1,8 +1,11 @@
 import { db } from "../../../lib/db/db";
 import { identify, medicalInfo, userInfo } from "../../../lib/db/schema";
-import { IRegisterSchema } from "../schema/register";
+import { IRegisterServerSchema } from "../schema/register";
 
-export async function addUserInfo(data: IRegisterSchema, accountId: number) {
+export async function addUserInfo(
+  data: IRegisterServerSchema,
+  accountId: number,
+) {
   return await db.transaction(async (tx) => {
     const [{ id }] = await tx
       .insert(userInfo)
@@ -40,3 +43,13 @@ export async function addUserInfo(data: IRegisterSchema, accountId: number) {
     return id;
   });
 }
+
+// export const useGetAccountLoader = routeLoader$(async ({ params }) => {
+//   return await db.query.account.findFirst({
+//     where: eq(account.id, Number(params.accountId)),
+//     columns: {
+//       name: true,
+//       password: true,
+//     },
+//   });
+// });

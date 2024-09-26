@@ -1,21 +1,30 @@
-import { component$ } from "@builder.io/qwik";
+import { component$, noSerialize } from "@builder.io/qwik";
 import { routeLoader$ } from "@builder.io/qwik-city";
 import { formAction$, setValue, useForm, valiForm$ } from "@modular-forms/qwik";
+import { eq } from "drizzle-orm";
 import { AdvancedSelect } from "~/components/forms/advanced-select/AdvancedSelect";
+import PreviewImage from "~/components/forms/preview-image/PreviewImage";
 import { Redio } from "~/components/forms/radio/Radio";
 import { Select } from "~/components/forms/select/Select";
 import { TextInput } from "~/components/forms/text-input/TextInput";
 import { Textarea } from "~/components/forms/textarea/Textarea";
 import { db } from "~/lib/db/db";
+import { account } from "~/lib/db/schema";
+import { uploadFile } from "~/utils/file";
+import generate_file_name from "~/utils/generate_file_name";
 import image_background from "../../../../public/image.png";
 import image_logo from "../../../../public/logo project.png";
 import { addUserInfo } from "../Actions/userInfo";
-import { IRegisterSchema, RegisterSchema } from "../schema/register";
-import { UserInfoSchema } from "../schema/userInfo";
+import {
+  IRegisterSchema,
+  IRegisterServerSchema,
+  RegisterSchema,
+  RegisterServerSchema,
+} from "../schema/register";
 
 // server
 export const useAddUser = formAction$<
-  IRegisterSchema,
+  IRegisterServerSchema,
   { message: string; success: boolean; id?: number }
 >(async (user, { params }) => {
   try {
@@ -29,7 +38,7 @@ export const useAddUser = formAction$<
 
     return { data: { message: (error as Error).message, success: false } };
   }
-}, valiForm$(UserInfoSchema));
+}, valiForm$(RegisterServerSchema));
 
 export const useDoctorLoader = routeLoader$(async function () {
   return await db.query.doctor.findMany({
@@ -37,18 +46,35 @@ export const useDoctorLoader = routeLoader$(async function () {
   });
 });
 
+export const useAccountLoader = routeLoader$(async ({ params, redirect }) => {
+  const res = await db.query.account.findFirst({
+    where: eq(account.id, Number(params.accountId)),
+    columns: {
+      password: false,
+      createdAt: false,
+    },
+  });
+
+  if (res) return res;
+  else throw redirect(301, "/information/1");
+});
+
 // browser
 export default component$(() => {
   const doctorLoader = useDoctorLoader();
+  const accountLoader = useAccountLoader();
   const action = useAddUser();
 
   const [form, { Field, Form }] = useForm<IRegisterSchema>({
     loader: {
       value: {
         userInfo: {
-          name: "",
-          email: "",
-          phone: "",
+          name: accountLoader.value.name,
+          email: accountLoader.value.email || "",
+          phone: accountLoader.value.phone,
+          // name: "",
+          // email: "",
+          // phone: "",
           address: "",
           dayOfBirth: "",
           emergencyName: "",
@@ -59,7 +85,7 @@ export default component$(() => {
         identify: {
           type: "ID_CARD",
           number: "",
-          image: "",
+          image: undefined,
         },
         medicalInfo: {
           doctorId: 0,
@@ -79,6 +105,20 @@ export default component$(() => {
     <Form
       onSubmit$={async (values) => {
         // await
+        const fileName = generate_file_name(
+          values.identify.image!.name,
+          "identify/",
+        );
+        const res = await action.submit({
+          userInfo: values.userInfo,
+          identify: { ...values.identify, image: fileName },
+          medicalInfo: values.medicalInfo,
+        });
+        if (res.value.response.data?.success) {
+          await uploadFile(values.identify.image!, fileName);
+        } else {
+          // handleError
+        }
       }}
     >
       {/* main div */}
@@ -236,10 +276,7 @@ export default component$(() => {
                   {/* radio */}
                   <div class="flex flex-1 gap-5 pt-7">
                     {[
-                      {
-                        label: "Male",
-                        value: "MALE",
-                      },
+                      { label: "Male", value: "MALE" },
                       { label: "Female", value: "FEMALE" },
                       { label: "Other", value: "OTHER" },
                     ].map(({ label, value }) => (
@@ -454,80 +491,35 @@ export default component$(() => {
                   )}
                 </Field>
                 {/* div */}
-                <div class="grid grid-cols-2 gap-5 space-y-4">
-                  {/* insurance name */}
-                  <div class="mt-4">
-                    <Field name="medicalInfo.insuranceName">
-                      {(field, props) => (
-                        <TextInput
-                          {...props}
-                          value={field.value}
-                          error={field.error}
-                          label="Insurance Provider"
-                          placeholder="ex: Jacorp"
-                          type="text"
-                        />
-                      )}
-                    </Field>
-                  </div>
-                  {/* insurance_Number */}
-                  <Field name="medicalInfo.insuranceNumber">
+                <div class="mt-4 space-y-4">
+                  {/* Identify number */}
+                  <Field name="identify.number">
                     {(field, props) => (
                       <TextInput
                         {...props}
                         value={field.value}
                         error={field.error}
-                        label="Insurance Policy Number"
-                        placeholder="ex:ABC1234"
+                        label="identification Number"
+                        placeholder="ex: 48655xxxx"
                         type="text"
                       />
                     )}
                   </Field>
-                  {/* allergies */}
-                  <Field name="medicalInfo.allergies">
+                  {/* image upload */}
+                  <Field name="identify.image" type="File">
                     {(field, props) => (
-                      <Textarea
-                        {...props}
-                        value={field.value}
+                      <PreviewImage
+                        id={props.name}
+                        name={props.name}
                         error={field.error}
-                        label="Allergies (if any)"
-                        placeholder="ex: Peanuts, Penicillin, Pollen"
-                      />
-                    )}
-                  </Field>
-                  {/* current medication */}
-                  <Field name="medicalInfo.currentMedication">
-                    {(field, props) => (
-                      <Textarea
-                        {...props}
-                        value={field.value}
-                        error={field.error}
-                        label="Current Medication"
-                        placeholder="ex: Ibuprofen 200mg, Levothyroxine 50mcg"
-                      />
-                    )}
-                  </Field>
-                  {/* Family medical history (if relevant) */}
-                  <Field name="medicalInfo.familyMedicalHistory">
-                    {(field, props) => (
-                      <Textarea
-                        {...props}
-                        value={field.value}
-                        error={field.error}
-                        label="Family medical history (if relevant)"
-                        placeholder="ex: Mother had breast cancer"
-                      />
-                    )}
-                  </Field>
-                  {/* Past medical histiory */}
-                  <Field name="medicalInfo.medicalHistory">
-                    {(field, props) => (
-                      <Textarea
-                        {...props}
-                        value={field.value}
-                        error={field.error}
-                        label="Past medical histiory"
-                        placeholder="ex: Asthma diagnosis in childhood"
+                        label="identification Image"
+                        onFileSelect$={(file) => {
+                          if (file)
+                            setValue(form, "identify.image", noSerialize(file));
+                          else setValue(form, "identify.image", undefined);
+                        }}
+                        maxSizeText="1000px x 750px"
+                        browseText="browse your image"
                       />
                     )}
                   </Field>
