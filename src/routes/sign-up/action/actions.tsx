@@ -9,7 +9,7 @@ export async function addAccount(data: IAccountSchema) {
     .values({
       name: data.name,
       email: data.email,
-      phone: data.phone,
+      phone: "+856" + data.phone,
       password: hashSync(data.password, 10),
     })
     .returning({ id: account.id });
