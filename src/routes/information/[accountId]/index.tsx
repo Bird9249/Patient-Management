@@ -14,7 +14,6 @@ import { db } from "~/lib/db/db";
 import { account } from "~/lib/db/schema";
 import { uploadFile } from "~/utils/file";
 import generate_file_name from "~/utils/generate_file_name";
-import image_logo from "../../../../public/logo project.png";
 import { addUserInfo } from "../Actions/userInfo";
 import {
   IRegisterSchema,
@@ -23,6 +22,7 @@ import {
   RegisterServerSchema,
 } from "../schema/register";
 import background from "/image.png";
+import image_logo from "/logo project.png";
 
 // server
 export const useAddUser = formAction$<
@@ -231,6 +231,7 @@ export default component$(() => {
                       label="Phone Number"
                       placeholder="+856 20 xx xxx xxx"
                       type="tel"
+                      required
                     />
                   )}
                 </Field>
@@ -268,6 +269,7 @@ export default component$(() => {
                       }
                       label="Date of Birth"
                       type="date"
+                      required
                     />
                   )}
                 </Field>
@@ -306,6 +308,7 @@ export default component$(() => {
                       label="Address"
                       placeholder="village, district, province."
                       type="text"
+                      required
                     />
                   )}
                 </Field>
@@ -318,6 +321,7 @@ export default component$(() => {
                       label="Occupation"
                       placeholder="Actor, Engineer,..."
                       type="text"
+                      required
                     />
                   )}
                 </Field>
@@ -330,6 +334,7 @@ export default component$(() => {
                       label="Emergency Contact Name"
                       placeholder="Boulom..."
                       type="text"
+                      required
                     />
                   )}
                 </Field>
@@ -342,6 +347,7 @@ export default component$(() => {
                       label="Phone number"
                       placeholder="+856 20 xx xxx xxx"
                       type="tel"
+                      required
                     />
                   )}
                 </Field>
@@ -377,7 +383,6 @@ export default component$(() => {
                   />
                 )}
               </Field>
-              {/* div */}
               <div class="grid grid-cols-2 gap-5 space-y-4">
                 {/* insurance name */}
                 <div class="mt-4">
@@ -428,6 +433,7 @@ export default component$(() => {
                       error={field.error}
                       label="Current Medication"
                       placeholder="ex: Ibuprofen 200mg, Levothyroxine 50mcg"
+                      required
                     />
                   )}
                 </Field>
@@ -452,6 +458,7 @@ export default component$(() => {
                       error={field.error}
                       label="Past medical histiory"
                       placeholder="ex: Asthma diagnosis in childhood"
+                      required
                     />
                   )}
                 </Field>
@@ -464,8 +471,6 @@ export default component$(() => {
               <h1 class=" text-2xl font-medium text-black">
                 Identification and Verification
               </h1>
-              {/* doctorId */}
-              {/* TODO: drop down */}
               <Field name="identify.type">
                 {(field, props) => (
                   <Select
@@ -495,6 +500,7 @@ export default component$(() => {
                       label="identification Number"
                       placeholder="ex: 48655xxxx"
                       type="text"
+                      required
                     />
                   )}
                 </Field>
