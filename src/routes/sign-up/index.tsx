@@ -3,7 +3,7 @@ import logo_image from "/logo project.png";
 import { TextInput } from "~/components/forms/text-input/TextInput";
 import { Button } from "~/components/button/Button";
 import signup_image from "/sign_up_page.jpg";
-import { formAction$, useForm, valiForm$ } from "@modular-forms/qwik";
+import { formAction$, useForm, valiForm$, value } from "@modular-forms/qwik";
 import { AccountSchema, IAccountSchema } from "./schema/account";
 import { addAccount } from "./action/actions";
 import { Link } from "@builder.io/qwik-city";
@@ -14,6 +14,13 @@ export const useRegisterAction = formAction$<
   { success: boolean; message: string; id?: number }
 >(async (values) => {
   try {
+    if (values.password !== values.confirmPassword)
+      return {
+        errors: {
+          confirmPassword: "Your password is not matched",
+        },
+      };
+
     const result = await addAccount(values);
 
     return {
@@ -36,24 +43,25 @@ export const useRegisterAction = formAction$<
 }, valiForm$(AccountSchema));
 
 export default component$(() => {
-  const [form, { Field, Form }] = useForm<IAccountSchema>({
+  const [form, { Field, Form }] = useForm<
+    IAccountSchema,
+    { success: boolean; message: string; id?: number }
+  >({
     loader: {
       value: {
         name: "",
         email: "",
         phone: "",
         password: "",
+        confirmPassword: "",
       },
     },
     validate: valiForm$(AccountSchema),
+    action: useRegisterAction(),
   });
 
   return (
-    <Form
-      onSubmit$={async (values) => {
-        //await
-      }}
-    >
+    <Form>
       {/* whole sign in section*/}
       <div class="flex h-screen items-center justify-center overflow-hidden">
         <div class=" grid w-full grid-cols-2 items-center">
@@ -157,10 +165,10 @@ export default component$(() => {
                           <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
                         </svg>
                       }
-                      label="Your phone number"
+                      label="Your phone number (start with 20 or 30)"
                       type="text"
                       size="small"
-                      placeholder="  +856 20 xxx xxx xx"
+                      placeholder="  20 xxx xxx xx"
                       value={field.value}
                       error={field.error}
                       required
@@ -183,7 +191,7 @@ export default component$(() => {
                   )}
                 </Field>
 
-                <Field name="password">
+                <Field name="confirmPassword">
                   {(field, props) => (
                     <TextInput
                       {...props}
@@ -197,7 +205,12 @@ export default component$(() => {
                     />
                   )}
                 </Field>
-                <Button block variant="solid" type="submit">
+                <Button
+                  block
+                  variant="solid"
+                  type="submit"
+                  isLoading={form.submitting}
+                >
                   Get started
                 </Button>
               </div>
