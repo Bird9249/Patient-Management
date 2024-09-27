@@ -12,7 +12,14 @@ export const UserInfoSchema = v.object({
   emergencyName: v.pipe(v.string(), v.nonEmpty()),
   emergencyPhone: v.pipe(
     v.string(),
-    v.minLength(8, "your number must start with +85620"),
+    v.minLength(
+      10,
+      "your number must have 10 characters, start with 20 xx xxx xxx",
+    ),
+    v.maxLength(
+      10,
+      "your number must have 10 characters, start with 20 xx xxx xxx",
+    ),
     v.nonEmpty(),
   ),
 });

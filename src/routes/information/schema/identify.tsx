@@ -9,4 +9,7 @@ export const IdentifySchema = v.object({
   ]),
   number: v.pipe(v.string(), v.nonEmpty()),
   image: v.pipe(v.string(), v.nonEmpty()),
+  receiveTreatmentHealth: v.pipe(v.boolean(), v.value(true)),
+  disclosureHealthInformation: v.pipe(v.boolean(), v.value(true)),
+  acKnowledgeReviewAndAgree: v.pipe(v.boolean(), v.value(true)),
 });

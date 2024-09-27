@@ -2,7 +2,9 @@ import { component$, noSerialize } from "@builder.io/qwik";
 import { routeLoader$ } from "@builder.io/qwik-city";
 import { formAction$, setValue, useForm, valiForm$ } from "@modular-forms/qwik";
 import { eq } from "drizzle-orm";
+import { Button } from "~/components/button/Button";
 import { AdvancedSelect } from "~/components/forms/advanced-select/AdvancedSelect";
+import { Checkbox } from "~/components/forms/checkbox/Checkbox";
 import PreviewImage from "~/components/forms/preview-image/PreviewImage";
 import { Redio } from "~/components/forms/radio/Radio";
 import { Select } from "~/components/forms/select/Select";
@@ -12,7 +14,6 @@ import { db } from "~/lib/db/db";
 import { account } from "~/lib/db/schema";
 import { uploadFile } from "~/utils/file";
 import generate_file_name from "~/utils/generate_file_name";
-import image_background from "../../../../public/image.png";
 import image_logo from "../../../../public/logo project.png";
 import { addUserInfo } from "../Actions/userInfo";
 import {
@@ -21,6 +22,7 @@ import {
   RegisterSchema,
   RegisterServerSchema,
 } from "../schema/register";
+import background from "/image.png";
 
 // server
 export const useAddUser = formAction$<
@@ -56,7 +58,7 @@ export const useAccountLoader = routeLoader$(async ({ params, redirect }) => {
   });
 
   if (res) return res;
-  else throw redirect(301, "/information/1");
+  else throw redirect(301, "/sign-up");
 });
 
 // browser
@@ -86,6 +88,9 @@ export default component$(() => {
           type: "ID_CARD",
           number: "",
           image: undefined,
+          receiveTreatmentHealth: false,
+          disclosureHealthInformation: false,
+          acKnowledgeReviewAndAgree: false,
         },
         medicalInfo: {
           doctorId: 0,
@@ -103,6 +108,7 @@ export default component$(() => {
 
   return (
     <Form
+      class="mb-14"
       onSubmit$={async (values) => {
         // await
         const fileName = generate_file_name(
@@ -121,35 +127,32 @@ export default component$(() => {
         }
       }}
     >
+      <img
+        class="fixed right-0 top-0 -z-10 h-screen w-[50vw] object-cover"
+        src={background}
+        alt="background"
+        width={0}
+        height={0}
+      />
+      <div class="container mx-auto my-8 px-8">
+        {/* logo */}
+        <div class="mb-12">
+          <img src={image_logo} alt="logo" width={84} height={54} />
+          <p class="ml-1 text-sm font-semibold text-black">SnatBas Clinic</p>
+        </div>
+        {/* Hi.. */}
+        <div class="w-full text-black">
+          <p class="text-4xl font-normal">Hi, How Are you ...</p>
+          <p class="text-mg text-gray-500">Let us know more about yourself</p>
+        </div>
+      </div>
       {/* main div */}
-      <div class=" flex h-full w-screen">
-        {/* page1 */}
-        <div class="flex-1">
-          {/* logo */}
-          <div class="ml-[110px] mt-[54px] h-[80px] w-[120px] ">
-            <img src={image_logo} alt="logo" width={84} height={54} />
-            <p class="ml-1 text-sm font-semibold text-black">SnatBas Clinic</p>
-          </div>
-          {/* Hi.. */}
-          <div class="ml-[134px] mt-[48px] w-full text-black">
-            <p class="text-4xl font-normal">Hi, How Are you ...</p>
-            <p class="text-mg text-gray-500">Let us know more about yourself</p>
-          </div>
-        </div>
-        {/* image background */}
-        <div class="flex-initial grow-0">
-          <img
-            class="right-0 top-0 h-screen"
-            src={image_background}
-            alt="background"
-            width={700}
-            height={100}
-          />
-        </div>
-        {/* Personal information */}
-        <div class="absolute flex h-auto w-screen">
-          <div class=" mx-[134px] mt-72 flex-1 justify-center rounded-3xl bg-[#fbfbfb]">
-            <div class="flex-1 space-y-4 p-5">
+      <div class="container mx-auto px-8">
+        {/* form */}
+        <div class="flex h-auto w-full flex-col space-y-8">
+          {/* Personal information */}
+          <div class=" flex-1 justify-center rounded-3xl bg-gray-50">
+            <div class="space-y-4 p-5">
               <h1 class=" text-2xl font-medium text-black">
                 Personal Information
               </h1>
@@ -274,7 +277,7 @@ export default component$(() => {
                     <label>Gender</label>
                   </div>
                   {/* radio */}
-                  <div class="flex flex-1 gap-5 pt-7">
+                  <div class="mx-auto flex flex-auto gap-4 pt-7">
                     {[
                       { label: "Male", value: "MALE" },
                       { label: "Female", value: "FEMALE" },
@@ -345,213 +348,225 @@ export default component$(() => {
               </div>
             </div>
           </div>
-        </div>
-      </div>
-      {/* page2 */}
-      <div class=" flex h-full w-screen">
-        {/* page2 */}
-        <div class="flex-1">
-          {/* main-div-form */}
-          <div class="absolute h-auto w-screen">
-            {/* Medical information */}
-            <div class="mx-[134px] mt-28 rounded-3xl bg-[#fbfbfb] p-5">
-              <div class="space-y-4">
-                <h1 class=" text-2xl font-medium text-black">
-                  Medical Information
-                </h1>
-                {/* doctorId */}
-                {/* TODO: drop down */}
-                <Field name="medicalInfo.doctorId" type="number">
-                  {(field, props) => (
-                    <AdvancedSelect
-                      name={props.name}
-                      // import .env brpwser
-                      options={doctorLoader.value.map(
-                        ({ id, name, image }) => ({
-                          label: name,
-                          value: id,
-                          img: import.meta.env.PUBLIC_IMAGE_URL + "/" + image,
-                        }),
-                      )}
-                      value={field.value}
-                      error={field.error}
-                      onSelected$={(val) => {
-                        setValue(form, "medicalInfo.doctorId", val as number);
-                      }}
-                      placeholder="select your doctor"
-                      label="Primary care physical"
-                      class="text-gray-500"
-                    />
-                  )}
-                </Field>
-                {/* div */}
-                <div class="grid grid-cols-2 gap-5 space-y-4">
-                  {/* insurance name */}
-                  <div class="mt-4">
-                    <Field name="medicalInfo.insuranceName">
-                      {(field, props) => (
-                        <TextInput
-                          {...props}
-                          value={field.value}
-                          error={field.error}
-                          label="Insurance Provider"
-                          placeholder="ex: Jacorp"
-                          type="text"
-                        />
-                      )}
-                    </Field>
-                  </div>
-                  {/* insurance_Number */}
-                  <Field name="medicalInfo.insuranceNumber">
+          {/* Medical information */}
+          <div class=" flex-1 justify-center rounded-3xl bg-gray-50">
+            <div class="space-y-4 p-5">
+              <h1 class=" text-2xl font-medium text-black">
+                Medical Information
+              </h1>
+              {/* doctorId */}
+              {/* TODO: drop down */}
+              <Field name="medicalInfo.doctorId" type="number">
+                {(field, props) => (
+                  <AdvancedSelect
+                    name={props.name}
+                    // import .env brpwser
+                    options={doctorLoader.value.map(({ id, name, image }) => ({
+                      label: name,
+                      value: id,
+                      img: import.meta.env.PUBLIC_IMAGE_URL + "/" + image,
+                    }))}
+                    value={field.value}
+                    error={field.error}
+                    onSelected$={(val) => {
+                      setValue(form, "medicalInfo.doctorId", val as number);
+                    }}
+                    placeholder="select your doctor"
+                    label="Primary care physical"
+                    class="text-gray-500"
+                  />
+                )}
+              </Field>
+              {/* div */}
+              <div class="grid grid-cols-2 gap-5 space-y-4">
+                {/* insurance name */}
+                <div class="mt-4">
+                  <Field name="medicalInfo.insuranceName">
                     {(field, props) => (
                       <TextInput
                         {...props}
                         value={field.value}
                         error={field.error}
-                        label="Insurance Policy Number"
-                        placeholder="ex:ABC1234"
+                        label="Insurance Provider"
+                        placeholder="ex: Jacorp"
                         type="text"
                       />
                     )}
                   </Field>
-                  {/* allergies */}
-                  <Field name="medicalInfo.allergies">
-                    {(field, props) => (
-                      <Textarea
-                        {...props}
-                        value={field.value}
-                        error={field.error}
-                        label="Allergies (if any)"
-                        placeholder="ex: Peanuts, Penicillin, Pollen"
-                      />
-                    )}
-                  </Field>
-                  {/* current medication */}
-                  <Field name="medicalInfo.currentMedication">
-                    {(field, props) => (
-                      <Textarea
-                        {...props}
-                        value={field.value}
-                        error={field.error}
-                        label="Current Medication"
-                        placeholder="ex: Ibuprofen 200mg, Levothyroxine 50mcg"
-                      />
-                    )}
-                  </Field>
-                  {/* Family medical history (if relevant) */}
-                  <Field name="medicalInfo.familyMedicalHistory">
-                    {(field, props) => (
-                      <Textarea
-                        {...props}
-                        value={field.value}
-                        error={field.error}
-                        label="Family medical history (if relevant)"
-                        placeholder="ex: Mother had breast cancer"
-                      />
-                    )}
-                  </Field>
-                  {/* Past medical histiory */}
-                  <Field name="medicalInfo.medicalHistory">
-                    {(field, props) => (
-                      <Textarea
-                        {...props}
-                        value={field.value}
-                        error={field.error}
-                        label="Past medical histiory"
-                        placeholder="ex: Asthma diagnosis in childhood"
-                      />
-                    )}
-                  </Field>
                 </div>
-              </div>
-            </div>
-            {/* identification and Verification */}
-            <div class="mx-[134px] mt-10 rounded-3xl bg-[#fbfbfb] p-5">
-              <div class="space-y-4">
-                <h1 class=" text-2xl font-medium text-black">
-                  Identification and Verification
-                </h1>
-                {/* doctorId */}
-                {/* TODO: drop down */}
-                <Field name="identify.type">
+                {/* insurance_Number */}
+                <Field name="medicalInfo.insuranceNumber">
                   {(field, props) => (
-                    <Select
+                    <TextInput
                       {...props}
-                      options={[
-                        { label: "Family Book", value: "FAMILY_BOOK" },
-                        { label: "ID Card", value: "ID_CARD" },
-                        { label: "Driver License", value: "DRIVER_LICENSE" },
-                        { label: "Passport", value: "PASSPORT" },
-                      ]}
                       value={field.value}
                       error={field.error}
-                      placeholder="Select Something"
-                      label="Doctor"
+                      label="Insurance Policy Number"
+                      placeholder="ex:ABC1234"
+                      type="text"
                     />
                   )}
                 </Field>
-                {/* div */}
-                <div class="mt-4 space-y-4">
-                  {/* Identify number */}
-                  <Field name="identify.number">
-                    {(field, props) => (
-                      <TextInput
-                        {...props}
-                        value={field.value}
-                        error={field.error}
-                        label="identification Number"
-                        placeholder="ex: 48655xxxx"
-                        type="text"
-                      />
-                    )}
-                  </Field>
-                  {/* image upload */}
-                  <Field name="identify.image" type="File">
-                    {(field, props) => (
-                      <PreviewImage
-                        id={props.name}
-                        name={props.name}
-                        error={field.error}
-                        label="identification Image"
-                        onFileSelect$={(file) => {
-                          if (file)
-                            setValue(form, "identify.image", noSerialize(file));
-                          else setValue(form, "identify.image", undefined);
-                        }}
-                        maxSizeText="1000px x 750px"
-                        browseText="browse your image"
-                      />
-                    )}
-                  </Field>
-                </div>
+                {/* allergies */}
+                <Field name="medicalInfo.allergies">
+                  {(field, props) => (
+                    <Textarea
+                      {...props}
+                      value={field.value}
+                      error={field.error}
+                      label="Allergies (if any)"
+                      placeholder="ex: Peanuts, Penicillin, Pollen"
+                    />
+                  )}
+                </Field>
+                {/* current medication */}
+                <Field name="medicalInfo.currentMedication">
+                  {(field, props) => (
+                    <Textarea
+                      {...props}
+                      value={field.value}
+                      error={field.error}
+                      label="Current Medication"
+                      placeholder="ex: Ibuprofen 200mg, Levothyroxine 50mcg"
+                    />
+                  )}
+                </Field>
+                {/* Family medical history (if relevant) */}
+                <Field name="medicalInfo.familyMedicalHistory">
+                  {(field, props) => (
+                    <Textarea
+                      {...props}
+                      value={field.value}
+                      error={field.error}
+                      label="Family medical history (if relevant)"
+                      placeholder="ex: Mother had breast cancer"
+                    />
+                  )}
+                </Field>
+                {/* Past medical histiory */}
+                <Field name="medicalInfo.medicalHistory">
+                  {(field, props) => (
+                    <Textarea
+                      {...props}
+                      value={field.value}
+                      error={field.error}
+                      label="Past medical histiory"
+                      placeholder="ex: Asthma diagnosis in childhood"
+                    />
+                  )}
+                </Field>
               </div>
             </div>
           </div>
-        </div>
-        {/* image background */}
-        <div class="flex-initial grow-0">
-          <img
-            class="right-0 top-0 h-screen"
-            src={image_background}
-            alt="background"
-            width={700}
-            height={100}
-          />
-        </div>
-      </div>
-      {/* page3 */}
-      <div class=" flex h-full w-screen">
-        {/* page3 */}
-        <div class="flex-1"></div>
-        {/* image background */}
-        <div class="flex-initial grow-0">
-          <img
-            class="right-0 top-0 h-screen"
-            src={image_background}
-            alt="background"
-            width={700}
-            height={100}
-          />
+          {/* identification and Verification */}
+          <div class=" flex-1 justify-center rounded-3xl bg-gray-50">
+            <div class="space-y-4 p-5">
+              <h1 class=" text-2xl font-medium text-black">
+                Identification and Verification
+              </h1>
+              {/* doctorId */}
+              {/* TODO: drop down */}
+              <Field name="identify.type">
+                {(field, props) => (
+                  <Select
+                    {...props}
+                    options={[
+                      { label: "Family Book", value: "FAMILY_BOOK" },
+                      { label: "ID Card", value: "ID_CARD" },
+                      { label: "Driver License", value: "DRIVER_LICENSE" },
+                      { label: "Passport", value: "PASSPORT" },
+                    ]}
+                    value={field.value}
+                    error={field.error}
+                    placeholder="Select Something"
+                    label="Doctor"
+                  />
+                )}
+              </Field>
+              {/* div */}
+              <div class="mt-4 space-y-8">
+                {/* Identify number */}
+                <Field name="identify.number">
+                  {(field, props) => (
+                    <TextInput
+                      {...props}
+                      value={field.value}
+                      error={field.error}
+                      label="identification Number"
+                      placeholder="ex: 48655xxxx"
+                      type="text"
+                    />
+                  )}
+                </Field>
+                {/* image upload */}
+                <Field name="identify.image" type="File">
+                  {(field, props) => (
+                    <PreviewImage
+                      size="large"
+                      id={props.name}
+                      name={props.name}
+                      error={field.error}
+                      label="Scan copy of identification Document"
+                      onFileSelect$={(file) => {
+                        if (file)
+                          setValue(form, "identify.image", noSerialize(file));
+                        else setValue(form, "identify.image", undefined);
+                      }}
+                      maxSizeText="1000px x 750px"
+                      browseText="Drop your files here or "
+                    />
+                  )}
+                </Field>
+              </div>
+            </div>
+          </div>
+          {/* check box */}
+          <div class=" flex-1 justify-center rounded-3xl bg-cyan-50">
+            <div class="space-y-4 p-5">
+              <h1 class="text-3xl text-black">Consent and Privacy</h1>
+              <Field name="identify.receiveTreatmentHealth" type="boolean">
+                {(field, props) => (
+                  <Checkbox
+                    {...props}
+                    label="I consent to receive treatment for my health condition."
+                    error={field.error}
+                    checked={field.value}
+                  />
+                )}
+              </Field>
+              <Field name="identify.disclosureHealthInformation" type="boolean">
+                {(field, props) => (
+                  <Checkbox
+                    {...props}
+                    label="I consent to the use and disclosure of my health information for treatment purposes."
+                    error={field.error}
+                    checked={field.value}
+                  />
+                )}
+              </Field>
+              <Field name="identify.acKnowledgeReviewAndAgree" type="boolean">
+                {(field, props) => (
+                  <Checkbox
+                    {...props}
+                    label="I acknowledge that I have reviewed and agree to the privacy policy."
+                    error={field.error}
+                    checked={field.value}
+                  />
+                )}
+              </Field>
+            </div>
+          </div>
+          {/* button submit and continue */}
+          <div>
+            <Button
+              block
+              variant="solid"
+              type="submit"
+              isLoading={form.submitting}
+            >
+              Submit and continue
+            </Button>
+          </div>
         </div>
       </div>
     </Form>
