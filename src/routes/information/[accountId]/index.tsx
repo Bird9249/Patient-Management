@@ -481,7 +481,7 @@ export default component$(() => {
                     value={field.value}
                     error={field.error}
                     placeholder="Select Something"
-                    label="Doctor"
+                    label="Identify Type"
                   />
                 )}
               </Field>
