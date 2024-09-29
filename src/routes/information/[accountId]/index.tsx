@@ -107,7 +107,6 @@ export default component$(() => {
     <Form
       class="mb-14"
       onSubmit$={async (values) => {
-        // await
         const fileName = generate_file_name(
           values.identify.image!.name,
           "identify/",

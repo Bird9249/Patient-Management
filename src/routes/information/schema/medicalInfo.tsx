@@ -5,7 +5,13 @@ export const MedicalInfoSchema = v.object({
   insuranceName: v.string(),
   insuranceNumber: v.pipe(v.string(), v.minLength(11), v.maxLength(255)),
   allergies: v.string(),
-  currentMedication: v.pipe(v.string(), v.nonEmpty()),
+  currentMedication: v.pipe(
+    v.string(),
+    v.nonEmpty("please enter your current medication"),
+  ),
   familyMedicalHistory: v.string(),
-  medicalHistory: v.pipe(v.string(), v.nonEmpty()),
+  medicalHistory: v.pipe(
+    v.string(),
+    v.nonEmpty("please enter your medical History"),
+  ),
 });
