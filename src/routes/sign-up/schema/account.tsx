@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-=======
-import { value } from "@modular-forms/qwik";
-import { type } from "os";
-
->>>>>>> origin/sign-in
 import * as v from "valibot";
 import { InferInput } from "valibot";
 
@@ -18,14 +12,8 @@ export const AccountSchema = v.object({
   email: v.pipe(v.string(), v.email("The email address is badly formatted")),
   phone: v.pipe(
     v.string(),
-    v.minLength(
-      10,
-      "Phone number must have 10 numbers and start with 20 or 30.",
-    ),
-    v.maxLength(
-      10,
-      "Phone number must have 10 numbers and start with 20 or 30.",
-    ),
+    v.minLength(8, "your number must have 8 characters"),
+    v.maxLength(8, "your number must have 8 characters"),
     v.nonEmpty("please enter your number"),
   ),
   password: v.pipe(
