@@ -50,7 +50,7 @@ export default component$(
     const inputClasses = {
       small: "py-2 px-3 text-sm",
       default: "py-3 px-4 text-sm",
-      large: "p-4 sm:p-5 text-sm",
+      large: "p-4 sm:p-5 text-sm h-[270px]",
     }[size];
 
     const borderColor =
@@ -58,7 +58,7 @@ export default component$(
         ? "border-red-500 focus:border-red-500 focus:ring-red-500"
         : status === "success"
           ? "border-teal-500 focus:border-teal-500 focus:ring-teal-500"
-          : "border-gray-200 focus:border-primary-500 focus:ring-primary-500";
+          : "border-gray-200 focus:border-primary-500 focus:ring-primary-500 bg-blue-50";
 
     const errorIcon =
       status === "error" ? (
@@ -121,12 +121,12 @@ export default component$(
                   alt="Preview"
                   class="mx-auto h-auto max-w-full rounded-lg"
                   layout="constrained"
-                  width={0}
-                  height={0}
+                  width={200}
+                  height={200}
                 />
               </div>
             ) : (
-              <>
+              <div class="flex h-full w-full flex-col items-center justify-center">
                 <svg
                   class="mx-auto size-10 text-gray-400"
                   xmlns="http://www.w3.org/2000/svg"
@@ -144,13 +144,13 @@ export default component$(
                 <span class="mt-2 block text-sm text-gray-800">
                   {browseText}{" "}
                   <span class="text-primary-600 group-hover:text-primary-700">
-                    drag 'n drop
+                    browse
                   </span>
                 </span>
                 <span class="mt-1 block text-xs text-gray-500 dark:text-neutral-500">
                   {maxSizeText}
                 </span>
-              </>
+              </div>
             )}
 
             {errorIcon && (

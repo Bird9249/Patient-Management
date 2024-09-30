@@ -10,15 +10,15 @@ import {
 
 export type SelectOption = {
   label: string;
-  value: string;
+  value: number;
   img?: string;
 };
 
 type SelectProps = {
   ref?: QRL<(element: HTMLDivElement) => void>;
   name: string;
-  value: string | string[] | null | undefined;
-  onSelected$: QRL<(value: string | string[]) => void>;
+  value: number | number[] | null | undefined;
+  onSelected$: QRL<(value: number | number[]) => void>;
   options: SelectOption[];
   multiple?: boolean;
   placeholder?: string;
@@ -33,7 +33,7 @@ export const AdvancedSelect = component$(
     const { name, required, multiple, placeholder, onSelected$ } = props;
 
     const dropdownRef = useSignal<HTMLElement>();
-    const values = useSignal<string[]>([]);
+    const values = useSignal<number[]>([]);
     const isOpen = useSignal(false);
 
     useTask$(({ track }) => {
@@ -69,7 +69,7 @@ export const AdvancedSelect = component$(
         )}
         <div class="relative">
           <div
-            class={`focus:ring-primary-500 relative flex w-full cursor-pointer flex-wrap gap-x-2 text-nowrap rounded-lg border bg-white pe-9 ps-0.5 text-start text-sm focus:outline-none focus:ring-2  ${error ? "border-red-500" : "border-gray-200"} ${props.class}`}
+            class={`relative flex w-full cursor-pointer flex-wrap gap-x-2 text-nowrap rounded-lg border bg-white pe-9 ps-0.5 text-start text-sm focus:outline-none focus:ring-2 focus:ring-primary-500  ${error ? "border-red-500" : "border-gray-200"} ${props.class}`}
             onClick$={toggleDropdown}
           >
             {values.value.length > 0 &&
