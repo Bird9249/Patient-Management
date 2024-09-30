@@ -1,14 +1,12 @@
-import { comment } from "postcss";
+import type { InferInput } from "valibot";
 import * as v from "valibot";
-import { InferInput, object } from "valibot";
 
-export const AppointmentSchema = v.object ({
-    reasonOfAppointment: v.string(),
-    dateTime: v.pipe(v.string(), v.isoTimestamp()),
-    doctorId: v.number(),
-    status: v.union([v.literal("SCHEDULED"), v.literal("PENDING"), v.literal("CANCELLED")]),
-    comment: v.string(),
+export const AppointmentSchema = v.object({
+  reasonOfAppointment: v.string(),
+  dateTime: v.pipe(v.string(), v.isoDateTime()),
+  doctorId: v.pipe(v.number(), v.minValue(0, "Select your doctor")),
+
+  comment: v.string(),
 });
 
-export type IAppointmentSchema =  InferInput<typeof AppointmentSchema>;
-
+export type IAppointmentSchema = InferInput<typeof AppointmentSchema>;
