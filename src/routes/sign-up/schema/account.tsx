@@ -1,8 +1,5 @@
-import { value } from "@modular-forms/qwik";
-import { type } from "os";
-
+import type { InferInput } from "valibot";
 import * as v from "valibot";
-import { InferInput } from "valibot";
 
 //validate data
 export const AccountSchema = v.object({

@@ -1,7 +1,7 @@
-import { db } from "~/lib/db/db";
-import { IAccountSchema } from "../schema/account";
-import { account } from "~/lib/db/schema";
 import { hashSync } from "bcrypt-ts";
+import { db } from "~/lib/db/db";
+import { account } from "~/lib/db/schema";
+import { IAccountSchema } from "../schema/account";
 
 export async function addAccount(data: IAccountSchema) {
   const result = await db
