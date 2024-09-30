@@ -102,6 +102,7 @@ export const doctor = pgTable('doctor', {
   image: text('image').notNull(),
  createdAt: timestamp('created_at', { precision: 6, withTimezone: true }).defaultNow().notNull(),
 });
+
 export const doctorRelations = relations(doctor, ({ many }) => ({
   appointments: many(appointment),
   medicalInfos: many(medicalInfo),
@@ -111,7 +112,7 @@ export const appointment = pgTable('appointment', {
   id: serial('id').primaryKey(),
   accountId: integer('account_id').references(() => account.id, {onDelete:'set null'}).notNull(),
   reasonOfAppointment: text('reason_of_appointment').notNull(),
-  dateTime: timestamp('date_time  ').notNull(),
+  dateTime: timestamp('date_time', {mode: 'string'}).notNull(),
   doctorId: integer('doctor_id').references(() => doctor.id, {onDelete:'set null'}).notNull(),
   comment: text('comment'),
   status: statusEnum('status').notNull().default('PENDING'),

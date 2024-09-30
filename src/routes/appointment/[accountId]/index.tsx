@@ -8,7 +8,7 @@ import backgroundpage from '/public/background (1).jpg';
 import { Form, routeLoader$ } from '@builder.io/qwik-city';
 import { db } from '~/lib/db/db';
 import { ImageProps } from '@unpic/qwik';
-import {AppointmentSchema, IAppointmentSchema } from './schema/appointment'
+import {AppointmentSchema, IAppointmentSchema } from '../schema/appointment'
 import { appointment } from '~/lib/db/schema';
 import { setValue, useForm, valiForm$ } from '@modular-forms/qwik';
 
@@ -22,6 +22,8 @@ export const useDoctorLoader = routeLoader$(async () => {
     })
 
 })
+
+
 
 export default component$(() => {
 const loader = useDoctorLoader();
@@ -128,10 +130,12 @@ console.log(loader.value);
                             </Field>
                             <br />
 
+                            
                             <Button 
                                 block
                                 variant="solid" 
                                 type="submit"
+
                                 >
                                 Submit and continue
                             </Button>
