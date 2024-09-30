@@ -15,15 +15,9 @@ export const AccountSchema = v.object({
   email: v.pipe(v.string(), v.email("The email address is badly formatted")),
   phone: v.pipe(
     v.string(),
-    v.minLength(
-      10,
-      "Phone number must have 10 numbers and start with 20 or 30.",
-    ),
-    v.maxLength(
-      10,
-      "Phone number must have 10 numbers and start with 20 or 30.",
-    ),
-    v.nonEmpty("please enter your number"),
+    v.minLength(8, "Phone number must have 8 characters."),
+    v.maxLength(8, "Phone number must have 8 characters."),
+    v.nonEmpty("please enter your phone number"),
   ),
   password: v.pipe(
     v.string(),

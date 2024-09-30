@@ -9,10 +9,10 @@ export async function addAccount(data: IAccountSchema) {
     .values({
       name: data.name,
       email: data.email,
-      phone: "+856" + data.phone,
+      phone: data.phone,
       password: hashSync(data.password, 10),
     })
     .returning({ id: account.id });
-
+  const phonecheck = await db.query.account.findFirst;
   return result[0].id;
 }
