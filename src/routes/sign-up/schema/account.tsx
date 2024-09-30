@@ -1,5 +1,5 @@
+import type { InferInput } from "valibot";
 import * as v from "valibot";
-import { InferInput } from "valibot";
 
 //validate data
 export const AccountSchema = v.object({
@@ -12,9 +12,9 @@ export const AccountSchema = v.object({
   email: v.pipe(v.string(), v.email("The email address is badly formatted")),
   phone: v.pipe(
     v.string(),
-    v.minLength(8, "your number must have 8 characters"),
-    v.maxLength(8, "your number must have 8 characters"),
-    v.nonEmpty("please enter your number"),
+    v.minLength(8, "Phone number must have 8 characters."),
+    v.maxLength(8, "Phone number must have 8 characters."),
+    v.nonEmpty("please enter your phone number"),
   ),
   password: v.pipe(
     v.string(),
