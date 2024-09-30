@@ -16,7 +16,7 @@ export async function addUserInfo(
         address: data.userInfo.address,
         occupation: data.userInfo.occupation,
         emergencyName: data.userInfo.emergencyName,
-        emergencyPhone: "+856" + data.userInfo.emergencyPhone,
+        emergencyPhone: data.userInfo.emergencyPhone,
       })
       .returning({
         id: userInfo.id,
