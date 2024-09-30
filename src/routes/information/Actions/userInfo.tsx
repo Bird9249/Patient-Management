@@ -1,6 +1,6 @@
 import { db } from "../../../lib/db/db";
 import { identify, medicalInfo, userInfo } from "../../../lib/db/schema";
-import { IRegisterServerSchema } from "../schema/register";
+import type { IRegisterServerSchema } from "../schema/register";
 
 export async function addUserInfo(
   data: IRegisterServerSchema,

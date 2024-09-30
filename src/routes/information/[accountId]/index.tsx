@@ -1,5 +1,5 @@
 import { component$, noSerialize } from "@builder.io/qwik";
-import { routeLoader$ } from "@builder.io/qwik-city";
+import { routeLoader$, useNavigate } from "@builder.io/qwik-city";
 import { formAction$, setValue, useForm, valiForm$ } from "@modular-forms/qwik";
 import { eq } from "drizzle-orm";
 import { Button } from "~/components/button/Button";
@@ -65,6 +65,7 @@ export default component$(() => {
   const doctorLoader = useDoctorLoader();
   const accountLoader = useAccountLoader();
   const action = useAddUser();
+  const nav = useNavigate();
 
   const [form, { Field, Form }] = useForm<IRegisterSchema>({
     loader: {
@@ -72,16 +73,16 @@ export default component$(() => {
         userInfo: {
           name: accountLoader.value.name,
           email: accountLoader.value.email || "",
-          phone: accountLoader.value.phone,
+          phone: accountLoader.value.phone.replace("+85620", ""),
           address: "",
           dayOfBirth: "",
           emergencyName: "",
           emergencyPhone: "",
-          gender: "MALE",
+          gender: "male",
           occupation: "",
         },
         identify: {
-          type: "ID_CARD",
+          type: "id_card",
           number: "",
           image: undefined,
           receiveTreatmentHealth: false,
@@ -117,6 +118,8 @@ export default component$(() => {
         });
         if (res.value.response.data?.success) {
           await uploadFile(values.identify.image!, fileName);
+
+          await nav(`/appointment/${res.value.response.data.id}/`);
         } else {
           alert("your image can not upload, please try again");
         }
@@ -370,7 +373,11 @@ export default component$(() => {
                     value={field.value}
                     error={field.error}
                     onSelected$={(val) => {
-                      setValue(form, "medicalInfo.doctorId", val as number);
+                      setValue(
+                        form,
+                        "medicalInfo.doctorId",
+                        typeof val === "number" ? val : val[0],
+                      );
                     }}
                     placeholder="select your doctor"
                     label="Primary care physical"

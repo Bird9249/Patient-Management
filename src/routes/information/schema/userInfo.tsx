@@ -10,7 +10,7 @@ export const UserInfoSchema = v.object({
     v.nonEmpty("please enter your Date of birth"),
   ),
   // gender: v.enum(GenderEnumSchema, "Invalid Gender"),
-  gender: v.union([v.literal("MALE"), v.literal("FEMALE"), v.literal("OTHER")]),
+  gender: v.union([v.literal("male"), v.literal("female"), v.literal("other")]),
   address: v.pipe(
     v.string(),
     v.maxLength(255),

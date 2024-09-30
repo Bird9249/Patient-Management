@@ -1,7 +1,7 @@
 import * as v from "valibot";
 
 export const MedicalInfoSchema = v.object({
-  doctorId: v.number(),
+  doctorId: v.pipe(v.number(), v.minValue(1)),
   insuranceName: v.string(),
   insuranceNumber: v.string(),
   allergies: v.string(),

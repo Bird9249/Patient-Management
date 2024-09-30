@@ -1,5 +1,6 @@
-import { NoSerialize } from "@builder.io/qwik";
-import { custom, InferInput, InferOutput, object, omit } from "valibot";
+import type { NoSerialize } from "@builder.io/qwik";
+import type { InferInput, InferOutput } from "valibot";
+import { custom, object, omit } from "valibot";
 import { IdentifySchema } from "./identify";
 import { MedicalInfoSchema } from "./medicalInfo";
 import { UserInfoSchema } from "./userInfo";
