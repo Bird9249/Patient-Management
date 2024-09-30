@@ -6,7 +6,7 @@ import { Button } from "~/components/button/Button";
 import { AdvancedSelect } from "~/components/forms/advanced-select/AdvancedSelect";
 import { Checkbox } from "~/components/forms/checkbox/Checkbox";
 import PreviewImage from "~/components/forms/preview-image/PreviewImage";
-import { Redio } from "~/components/forms/radio/Radio";
+import { Radio } from "~/components/forms/radio/Radio";
 import { Select } from "~/components/forms/select/Select";
 import { TextInput } from "~/components/forms/text-input/TextInput";
 import { Textarea } from "~/components/forms/textarea/Textarea";
@@ -15,12 +15,11 @@ import { account } from "~/lib/db/schema";
 import { uploadFile } from "~/utils/file";
 import generate_file_name from "~/utils/generate_file_name";
 import { addUserInfo } from "../Actions/userInfo";
-import {
+import type {
   IRegisterSchema,
   IRegisterServerSchema,
-  RegisterSchema,
-  RegisterServerSchema,
 } from "../schema/register";
+import { RegisterSchema, RegisterServerSchema } from "../schema/register";
 import background from "/image.png";
 import image_logo from "/logo project.png";
 
@@ -283,7 +282,7 @@ export default component$(() => {
                     ].map(({ label, value }) => (
                       <Field key={value} name="userInfo.gender">
                         {(field, props) => (
-                          <Redio
+                          <Radio
                             {...props}
                             label={label}
                             value={value}

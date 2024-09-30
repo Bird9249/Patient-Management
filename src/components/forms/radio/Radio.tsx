@@ -13,7 +13,7 @@ type RedioProps = {
   error?: string;
 };
 
-export const Redio = component$(({ label, error, ...props }: RedioProps) => {
+export const Radio = component$(({ label, error, ...props }: RedioProps) => {
   const { name, required } = props;
 
   return (
