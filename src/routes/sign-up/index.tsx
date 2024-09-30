@@ -1,10 +1,13 @@
-import { component$ } from "@builder.io/qwik";
-import { Link } from "@builder.io/qwik-city";
+/* eslint-disable qwik/no-use-visible-task */
+import { component$, useVisibleTask$ } from "@builder.io/qwik";
+import { Link, useNavigate } from "@builder.io/qwik-city";
 import { formAction$, useForm, valiForm$ } from "@modular-forms/qwik";
 import { Button } from "~/components/button/Button";
 import { TextInput } from "~/components/forms/text-input/TextInput";
 import { addAccount } from "./action/actions";
-import { AccountSchema, IAccountSchema } from "./schema/account";
+import checkNumber from "./action/check-number";
+import type { IAccountSchema } from "./schema/account";
+import { AccountSchema } from "./schema/account";
 import logo_image from "/logo project.png";
 import signup_image from "/sign_up_page.jpg";
 
@@ -18,6 +21,15 @@ export const useRegisterAction = formAction$<
       return {
         errors: {
           confirmPassword: "Your password is not matched",
+        },
+      };
+
+    const isPhoneExist = await checkNumber(values.phone);
+
+    if (isPhoneExist)
+      return {
+        errors: {
+          phone: "Phone number is already exist",
         },
       };
 
@@ -43,6 +55,9 @@ export const useRegisterAction = formAction$<
 }, valiForm$(AccountSchema));
 
 export default component$(() => {
+  const action = useRegisterAction();
+  const nav = useNavigate();
+
   const [form, { Field, Form }] = useForm<
     IAccountSchema,
     { success: boolean; message: string; id?: number }
@@ -57,7 +72,20 @@ export default component$(() => {
       },
     },
     validate: valiForm$(AccountSchema),
-    action: useRegisterAction(),
+    action,
+  });
+
+  useVisibleTask$(async ({ track }) => {
+    track(() => action.value?.response.data?.success);
+
+    if (action.value) {
+      if (action.value.response.data?.success) {
+        const res = action.value.response.data.id;
+        await nav(`/information/${res}/`);
+      } else {
+        alert("Something was wrong!");
+      }
+    }
   });
 
   return (
