@@ -1,11 +1,28 @@
-import { InferInput, object } from "valibot";
+import type { NoSerialize } from "@builder.io/qwik";
+import type { InferInput, InferOutput } from "valibot";
+import { custom, object, omit } from "valibot";
 import { IdentifySchema } from "./identify";
 import { MedicalInfoSchema } from "./medicalInfo";
 import { UserInfoSchema } from "./userInfo";
 
-export const RegisterSchema = object({
+export const RegisterServerSchema = object({
   userInfo: UserInfoSchema,
   identify: IdentifySchema,
+  medicalInfo: MedicalInfoSchema,
+});
+
+export type IRegisterServerSchema = InferOutput<typeof RegisterServerSchema>;
+
+export const RegisterSchema = object({
+  userInfo: UserInfoSchema,
+  // image browser get file
+  identify: object({
+    ...omit(IdentifySchema, ["image"]).entries,
+    image: custom<NoSerialize<File>>(
+      (input) => input instanceof File,
+      "file should be .jpeg, .png",
+    ),
+  }),
   medicalInfo: MedicalInfoSchema,
 });
 
