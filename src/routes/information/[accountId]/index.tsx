@@ -119,7 +119,7 @@ export default component$(() => {
         if (res.value.response.data?.success) {
           await uploadFile(values.identify.image!, fileName);
         } else {
-          // handleError
+          alert("your image can not upload, please try again");
         }
       }}
     >

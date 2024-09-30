@@ -7,7 +7,11 @@ export const IdentifySchema = v.object({
     v.literal("DRIVER_LICENSE"),
     v.literal("PASSPORT"),
   ]),
-  number: v.pipe(v.string(), v.nonEmpty("please enter your identify number")),
+  number: v.pipe(
+    v.string(),
+    v.nonEmpty("please enter your identify number"),
+    v.maxLength(255),
+  ),
   image: v.pipe(v.string(), v.nonEmpty("please drop your image")),
   receiveTreatmentHealth: v.pipe(v.boolean(), v.value(true)),
   disclosureHealthInformation: v.pipe(v.boolean(), v.value(true)),

@@ -1,12 +1,12 @@
-import { component$, useSignal } from "@builder.io/qwik";
-import logo_image from "/logo project.png";
-import { TextInput } from "~/components/forms/text-input/TextInput";
-import { Button } from "~/components/button/Button";
-import signup_image from "/sign_up_page.jpg";
-import { formAction$, useForm, valiForm$, value } from "@modular-forms/qwik";
-import { AccountSchema, IAccountSchema } from "./schema/account";
-import { addAccount } from "./action/actions";
+import { component$ } from "@builder.io/qwik";
 import { Link } from "@builder.io/qwik-city";
+import { formAction$, useForm, valiForm$ } from "@modular-forms/qwik";
+import { Button } from "~/components/button/Button";
+import { TextInput } from "~/components/forms/text-input/TextInput";
+import { addAccount } from "./action/actions";
+import { AccountSchema, IAccountSchema } from "./schema/account";
+import logo_image from "/logo project.png";
+import signup_image from "/sign_up_page.jpg";
 
 //formAction
 export const useRegisterAction = formAction$<

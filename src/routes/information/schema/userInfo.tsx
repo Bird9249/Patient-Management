@@ -6,7 +6,7 @@ export const UserInfoSchema = v.object({
   ...v.omit(AccountSchema, ["password", "confirmPassword"]).entries,
   dayOfBirth: v.pipe(
     v.string(),
-    v.isoDate(),
+    v.isoDate("please enter your Date of birth"),
     v.nonEmpty("please enter your Date of birth"),
   ),
   // gender: v.enum(GenderEnumSchema, "Invalid Gender"),

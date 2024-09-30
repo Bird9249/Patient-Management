@@ -121,8 +121,8 @@ export default component$(
                   alt="Preview"
                   class="mx-auto h-auto max-w-full rounded-lg"
                   layout="constrained"
-                  width={0}
-                  height={0}
+                  width={200}
+                  height={200}
                 />
               </div>
             ) : (
