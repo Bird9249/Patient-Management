@@ -61,6 +61,7 @@
     "@vercel/postgres": "^0.10.0",
     "bcrypt-ts": "^5.0.2",
     "drizzle-orm": "^0.33.0",
+    "jose": "^5.9.3",
     "valibot": "^0.42.1"
   }
 }

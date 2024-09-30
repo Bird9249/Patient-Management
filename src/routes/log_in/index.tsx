@@ -1,19 +1,21 @@
-import { component$ } from "@builder.io/qwik";
+/* eslint-disable qwik/no-use-visible-task */
+import { component$, useVisibleTask$ } from "@builder.io/qwik";
+import { Link, useNavigate } from "@builder.io/qwik-city";
+import { formAction$, useForm, valiForm$ } from "@modular-forms/qwik";
+import { compareSync } from "bcrypt-ts";
+import { SignJWT } from "jose";
+import { Button } from "~/components/button/Button";
+import { TextInput } from "~/components/forms/text-input/TextInput";
 import logo_img from "../../../public/logo project.png";
 import background_img from "../../../public/picture prompt.png";
-import { TextInput } from "~/components/forms/text-input/TextInput";
-import { Button } from "~/components/button/Button";
-import { Link, routeAction$ } from "@builder.io/qwik-city";
-import { AccountSchema, IAccountSchema } from "../sign-up/schema/account";
-import { formAction$, useForm, valiForm$ } from "@modular-forms/qwik";
-import { ILoginSchema, LoginSchema } from "./schemas/login.schema";
 import { checkAccount } from "./Action/action";
-import { compareSync } from "bcrypt-ts";
+import type { ILoginSchema } from "./schemas/login.schema";
+import { LoginSchema } from "./schemas/login.schema";
 
 export const useLoginAction = formAction$<
   ILoginSchema,
-  { success: boolean; message: string }
->(async (values, { redirect }) => {
+  { success: boolean; message: string; id?: number }
+>(async (values, { cookie }) => {
   try {
     const res = await checkAccount(values);
 
@@ -33,7 +35,27 @@ export const useLoginAction = formAction$<
         },
       };
 
-    throw redirect(301, "/history/");
+    const secret = new TextEncoder().encode(process.env.AUTH_SECRET);
+
+    const token = await new SignJWT({
+      sub: String(res.id),
+      phone: res.phone,
+    })
+      .setProtectedHeader({
+        alg: "HS256",
+      })
+      .setIssuedAt()
+      .sign(secret);
+
+    cookie.set("auth-token", token, { path: "/", httpOnly: true });
+
+    return {
+      data: {
+        success: true,
+        message: "Login Successfully",
+        id: res.id,
+      },
+    };
   } catch (error) {
     console.error(error);
 
@@ -47,6 +69,9 @@ export const useLoginAction = formAction$<
 }, valiForm$(LoginSchema));
 
 export default component$(() => {
+  const action = useLoginAction();
+  const nav = useNavigate();
+
   const [form, { Field, Form }] = useForm<
     ILoginSchema,
     { success: boolean; message: string }
@@ -58,7 +83,19 @@ export default component$(() => {
       },
     },
     validate: valiForm$(LoginSchema),
-    action: useLoginAction(),
+    action,
+  });
+
+  useVisibleTask$(async ({ track }) => {
+    track(() => action.value?.response.data?.success);
+
+    if (action.value) {
+      if (action.value.response.data?.success) {
+        await nav(`/history/${action.value.response.data.id}/`);
+      } else {
+        alert("Something was wrong!");
+      }
+    }
   });
 
   return (
