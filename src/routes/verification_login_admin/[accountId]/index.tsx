@@ -26,7 +26,7 @@ export const useVerifyLogInAction = formAction$<
     const secret_passkey = new TextEncoder().encode(process.env.ADMIN_PASSKEY);
 
     const token = await new SignJWT({
-      sub: String(process.env.ADMIN_PASSWORD),
+      sub: String(process.env.ADMIN_PASSKEY),
     })
       .setProtectedHeader({
         alg: "HS256",
