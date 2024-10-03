@@ -1,10 +1,11 @@
+import { component$ } from "@builder.io/qwik";
 import { formAction$, valiForm$ } from "@modular-forms/qwik";
 import { compareSync } from "bcrypt-ts";
 import { SignJWT } from "jose";
 import {
   VerifyLoginSchema,
   type IVerifyLoginSchema,
-} from "../schema/verifyLoginSchema";
+} from "./schema/verifyLoginSchema";
 
 export const useVerifyLogInAction = formAction$<
   IVerifyLoginSchema,
@@ -53,3 +54,7 @@ export const useVerifyLogInAction = formAction$<
     };
   }
 }, valiForm$(VerifyLoginSchema));
+
+export default component$(() => {
+  return <></>;
+});
