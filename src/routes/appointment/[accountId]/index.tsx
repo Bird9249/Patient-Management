@@ -182,14 +182,14 @@ export default component$(() => {
         </div>
 
         <Modal isOpen={isOpen}>
-          success
+         <p class=""> success</p>
           <Button
             type="button"
             onClick$={async () => {
               await nav(`/history/${params.accountId}/`);
             }}
           >
-            Ok
+            Confirm^^
           </Button>
         </Modal>
       </div>
