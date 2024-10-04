@@ -1,6 +1,12 @@
 import { $, component$ } from "@builder.io/qwik";
 import logo_image from "/logo project.png";
-import { Link, routeLoader$, useNavigate } from "@builder.io/qwik-city";
+import {
+  Link,
+  RequestHandler,
+  routeLoader$,
+  useLocation,
+  useNavigate,
+} from "@builder.io/qwik-city";
 import { Button } from "~/components/button/Button";
 import {
   LuArrowBigLeft,
@@ -26,6 +32,28 @@ type AppointmentResponse = {
   };
 };
 
+// export const useUserLoader = routeLoader$(({ sharedMap }) => {
+//   return sharedMap.get("auth");
+// });
+
+//prevent access by id in path
+export const onRequest: RequestHandler = async ({
+  params,
+  redirect,
+  sharedMap,
+  next,
+}) => {
+  const accountId = params.accountId;
+  const auth = sharedMap.get("auth");
+
+  if (accountId === auth.sub) {
+    await next();
+  } else {
+    throw redirect(301, `/page_home_user/${auth.sub}/`);
+  }
+};
+
+//load data in database by cookie and shareMap
 export const useAppointmentHistoryLoader = routeLoader$(
   async ({ cookie, sharedMap }) => {
     const auth = sharedMap.get("auth");
@@ -62,8 +90,7 @@ export const useAppointmentHistoryLoader = routeLoader$(
 export default component$(() => {
   const loader = useAppointmentHistoryLoader();
   const nav = useNavigate();
-
-  console.log(loader.value);
+  const { params, prevUrl } = useLocation();
 
   const doctorCol = $(({ doctor }: AppointmentResponse) => (
     <div class="flex gap-x-2 px-4 py-2">
@@ -136,7 +163,7 @@ export default component$(() => {
                 type="button"
                 size="default"
                 onClick$={() => {
-                  nav(`/appointment/`);
+                  nav(`/appointment/${params.accountId}/`);
                 }}
               >
                 New appointment | <LuPlusCircle class="size-5" />

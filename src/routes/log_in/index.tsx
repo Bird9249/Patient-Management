@@ -45,6 +45,7 @@ export const useLoginAction = formAction$<
         alg: "HS256",
       })
       .setIssuedAt()
+      .setExpirationTime("1y")
       .sign(secret);
 
     cookie.set("auth-token", token, { path: "/", httpOnly: true });
