@@ -138,7 +138,7 @@ export default component$(() => {
 
     if (action.value) {
       if (action.value.response.data?.success) {
-        await nav(`/history/${action.value.response.data.id}/`);
+        await nav(`/page_home_user/${action.value.response.data.id}/`);
       } else {
         alert("Something was wrong!");
       }
