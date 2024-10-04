@@ -1,13 +1,20 @@
 import { $, component$ } from "@builder.io/qwik";
 import logo_image from "/logo project.png";
-import { Link, routeLoader$ } from "@builder.io/qwik-city";
+import { Link, routeLoader$, useNavigate } from "@builder.io/qwik-city";
 import { Button } from "~/components/button/Button";
-import { LuArrowBigLeft, LuPlusCircle, LuUser } from "@qwikest/icons/lucide";
+import {
+  LuArrowBigLeft,
+  LuHourglass,
+  LuPlusCircle,
+  LuTimer,
+  LuUser,
+} from "@qwikest/icons/lucide";
 import { db } from "~/lib/db/db";
 import { Table } from "~/components/table/Table";
 import { useAccountLoader } from "~/routes/information/[accountId]";
 import { count, eq } from "drizzle-orm";
 import { appointment } from "~/lib/db/schema";
+import { datetime } from "drizzle-orm/mysql-core";
 
 type AppointmentResponse = {
   status: "scheduled" | "pending" | "cancelled";
@@ -54,6 +61,7 @@ export const useAppointmentHistoryLoader = routeLoader$(
 
 export default component$(() => {
   const loader = useAppointmentHistoryLoader();
+  const nav = useNavigate();
 
   console.log(loader.value);
 
@@ -67,6 +75,22 @@ export default component$(() => {
       <span>{doctor.name}</span>
     </div>
   ));
+
+  const statusCol = $(({ status }: AppointmentResponse) =>
+    status === "pending" ? (
+      <span class="inline-flex items-center gap-x-1.5 rounded-full bg-blue-600 px-3 py-1.5 text-xs font-medium text-white dark:bg-blue-500">
+        pending
+      </span>
+    ) : status === "scheduled" ? (
+      <span class="inline-flex items-center gap-x-1.5 rounded-full bg-teal-500 px-3 py-1.5 text-xs font-medium text-white">
+        scheduled
+      </span>
+    ) : (
+      <span class="inline-flex items-center gap-x-1.5 rounded-full bg-red-500 px-3 py-1.5 text-xs font-medium text-white">
+        cancelled
+      </span>
+    ),
+  );
 
   return (
     <>
@@ -108,15 +132,24 @@ export default component$(() => {
             </div>
             {/* New appointment button */}
             <div class=" flex justify-end">
-              <Button type="button" size="default">
+              <Button
+                type="button"
+                size="default"
+                onClick$={() => {
+                  nav(`/appointment/`);
+                }}
+              >
                 New appointment | <LuPlusCircle class="size-5" />
               </Button>
             </div>
             {/* table */}
-            <div class="mt-4">
+            <div class="mt-6">
               <Table
                 columns={[
                   { label: "Doctor", key: "doctor", content$: doctorCol },
+                  { label: "Date", key: "dateTime" },
+                  { label: "Status", key: "status", content$: statusCol },
+                  { label: "Detail", key: "detail" },
                 ]}
                 data={loader}
                 emptyState={{ title: "no data" }}
