@@ -1,4 +1,4 @@
-import type { RequestHandler } from "@builder.io/qwik-city";
+import { RequestHandler } from "@builder.io/qwik-city";
 import { jwtVerify } from "jose";
 
 export const onRequest: RequestHandler = async ({

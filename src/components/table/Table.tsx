@@ -115,7 +115,7 @@ export const Table = component$<TableProps>(
                             class="px-6 py-3 text-start"
                             key={idx}
                           >
-                            <div class="flex items-center justify-center gap-x-2">
+                            <div class="flex items-center gap-x-2">
                               <span class="text-xs font-semibold uppercase tracking-wide text-gray-800 ">
                                 {col.label}
                               </span>
@@ -125,7 +125,7 @@ export const Table = component$<TableProps>(
                       </tr>
                     </thead>
 
-                    <tbody class="divide-y divide-gray-200 text-center">
+                    <tbody class="divide-y divide-gray-200">
                       {data.value.data.map((_: any, index: number) => (
                         <tr key={index} class="bg-white hover:bg-gray-50">
                           {columns.map((col, idx) => (
