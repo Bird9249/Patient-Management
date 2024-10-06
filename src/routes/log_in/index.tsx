@@ -1,11 +1,12 @@
 /* eslint-disable qwik/no-use-visible-task */
-import { component$, useVisibleTask$ } from "@builder.io/qwik";
-import { Link, useNavigate } from "@builder.io/qwik-city";
+import { component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
+import { Link, routeAction$, useNavigate } from "@builder.io/qwik-city";
 import { formAction$, useForm, valiForm$ } from "@modular-forms/qwik";
 import { compareSync } from "bcrypt-ts";
 import { SignJWT } from "jose";
 import { Button } from "~/components/button/Button";
 import { TextInput } from "~/components/forms/text-input/TextInput";
+import { PinVerification } from "~/components/modal/pin-verification/pin-verification";
 import logo_img from "../../../public/logo project.png";
 import background_img from "../../../public/picture prompt.png";
 import { checkAccount } from "./Action/action";
@@ -68,9 +69,55 @@ export const useLoginAction = formAction$<
   }
 }, valiForm$(LoginSchema));
 
+export const useVerifyLogInAction = routeAction$(async (values, { cookie }) => {
+  try {
+    const isPasskeyMatch = compareSync(
+      values.passkey as string,
+      process.env.ADMIN_PASSKEY!,
+    );
+
+    if (!isPasskeyMatch)
+      return {
+        errors: {
+          passkey: "passkey not match",
+        },
+      };
+
+    const secret_passkey = new TextEncoder().encode(process.env.AUTH_SECRET);
+
+    const token = await new SignJWT({
+      sub: "admin",
+    })
+      .setProtectedHeader({
+        alg: "HS256",
+      })
+      .setIssuedAt()
+      .sign(secret_passkey);
+
+    cookie.set("admin-session", token, { path: "/", httpOnly: true });
+
+    return {
+      data: {
+        success: true,
+        message: "Login Successfully",
+      },
+    };
+  } catch (error) {
+    console.error(error);
+
+    return {
+      data: {
+        success: false,
+        message: (error as Error).message,
+      },
+    };
+  }
+});
+
 export default component$(() => {
   const action = useLoginAction();
   const nav = useNavigate();
+  const isStaffLogin = useSignal<boolean>(false);
 
   const [form, { Field, Form }] = useForm<
     ILoginSchema,
@@ -91,7 +138,7 @@ export default component$(() => {
 
     if (action.value) {
       if (action.value.response.data?.success) {
-        await nav(`/history/${action.value.response.data.id}/`);
+        await nav(`/page_home_user/${action.value.response.data.id}/`);
       } else {
         alert("Something was wrong!");
       }
@@ -168,12 +215,15 @@ export default component$(() => {
             >
               Sign up
             </Link>
-            <Link
-              href="/stuff"
+            <button
+              type="button"
               class="pl-2 text-primary-600 underline decoration-primary-600 underline-offset-8 hover:opacity-80 focus:opacity-80 focus:outline-none "
+              onClick$={() => {
+                isStaffLogin.value = true;
+              }}
             >
               Staff
-            </Link>
+            </button>
           </div>
         </div>
 
@@ -188,6 +238,7 @@ export default component$(() => {
           />
         </div>
       </div>
+      <PinVerification isOpen={isStaffLogin} />
     </Form>
   );
 });

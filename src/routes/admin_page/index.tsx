@@ -1,4 +1,5 @@
-import { $, component$, JSXChildren } from "@builder.io/qwik";
+import type { JSXChildren } from "@builder.io/qwik";
+import { $, component$ } from "@builder.io/qwik";
 import { routeLoader$, useNavigate } from "@builder.io/qwik-city";
 import { desc, sql } from "drizzle-orm";
 import { Table } from "~/components/table/Table";

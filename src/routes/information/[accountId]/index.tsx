@@ -227,7 +227,7 @@ export default component$(() => {
                       value={field.value}
                       error={field.error}
                       label="Phone Number"
-                      placeholder="+856 20 xx xxx xxx"
+                      placeholder="xx xxx xxx"
                       type="tel"
                       required
                     />
@@ -343,7 +343,7 @@ export default component$(() => {
                       value={field.value}
                       error={field.error}
                       label="Phone number"
-                      placeholder="+856 20 xx xxx xxx"
+                      placeholder="xx xxx xxx"
                       type="tel"
                       required
                     />
