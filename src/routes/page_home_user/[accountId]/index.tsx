@@ -1,20 +1,12 @@
 import { $, component$ } from "@builder.io/qwik";
-import logo_image from "/logo project.png";
 import { Link, routeLoader$, useNavigate } from "@builder.io/qwik-city";
-import { Button } from "~/components/button/Button";
-import {
-  LuArrowBigLeft,
-  LuHourglass,
-  LuPlusCircle,
-  LuTimer,
-  LuUser,
-} from "@qwikest/icons/lucide";
-import { db } from "~/lib/db/db";
-import { Table } from "~/components/table/Table";
-import { useAccountLoader } from "~/routes/information/[accountId]";
+import { LuPlusCircle, LuUser } from "@qwikest/icons/lucide";
 import { count, eq } from "drizzle-orm";
+import { Button } from "~/components/button/Button";
+import { Table } from "~/components/table/Table";
+import { db } from "~/lib/db/db";
 import { appointment } from "~/lib/db/schema";
-import { datetime } from "drizzle-orm/mysql-core";
+import logo_image from "/logo project.png";
 
 type AppointmentResponse = {
   status: "scheduled" | "pending" | "cancelled";
@@ -71,6 +63,8 @@ export default component$(() => {
         src={import.meta.env.PUBLIC_IMAGE_URL + "/" + doctor.image}
         alt={doctor.name}
         class="size-8 rounded-full"
+        width={0}
+        height={0}
       />
       <span>{doctor.name}</span>
     </div>
