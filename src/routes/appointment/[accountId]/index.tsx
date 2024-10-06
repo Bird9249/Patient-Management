@@ -186,7 +186,7 @@ export default component$(() => {
           <Button
             type="button"
             onClick$={async () => {
-              await nav(`/history/${params.accountId}/`);
+              await nav(`/page_home_user/${params.accountId}/`);
             }}
           >
             Ok
