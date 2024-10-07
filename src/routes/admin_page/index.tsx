@@ -1,6 +1,6 @@
 import type { JSXChildren } from "@builder.io/qwik";
-import { $, component$ } from "@builder.io/qwik";
-import { routeLoader$, useNavigate } from "@builder.io/qwik-city";
+import { $, component$, useVisibleTask$ } from "@builder.io/qwik";
+import { routeLoader$, useLocation, useNavigate } from "@builder.io/qwik-city";
 import { desc, sql } from "drizzle-orm";
 import { Table } from "~/components/table/Table";
 import { db } from "~/lib/db/db";
@@ -28,8 +28,11 @@ type AppointmentResponse = {
 };
 
 export const useAppointmentLoader = routeLoader$(
-  async ({ cookie, sharedMap }) => {
+  async ({ cookie, sharedMap, query }) => {
     const admin = sharedMap.get("admin");
+
+    const offset = query.get("offset");
+    const limit = query.get("limit");
 
     const res = await db.query.appointment.findMany({
       columns: {
@@ -50,8 +53,9 @@ export const useAppointmentLoader = routeLoader$(
           },
         },
       },
-
       orderBy: desc(appointment.dateTime),
+      offset: offset ? Number(offset) : undefined,
+      limit: limit ? Number(limit) : undefined,
     });
 
     return {
@@ -78,6 +82,9 @@ export default component$(() => {
   const loader = useAppointmentLoader();
   const statusLoader = useAppointmentStatusLoader();
   const nav = useNavigate();
+  const {
+    url: { searchParams },
+  } = useLocation();
 
   console.log(loader.value);
   console.log(statusLoader.value);
@@ -170,6 +177,15 @@ export default component$(() => {
     ),
   );
 
+  useVisibleTask$(async () => {
+    const offset = searchParams.get("offset");
+    const limit = searchParams.get("limit");
+
+    if (!offset || !limit) {
+      await nav(`/admin_page/?offset=0&limit=10`);
+    }
+  });
+
   return (
     <>
       {/* big box */}
@@ -180,7 +196,7 @@ export default component$(() => {
         width={0}
         height={0}
       />
-      <div class="flex h-screen justify-center">
+      <div class="flex min-h-screen  justify-center">
         <div class="container mx-auto my-8 px-8">
           {/* nav bar */}
           <nav class="mt-8 flex w-full justify-between ">
@@ -209,7 +225,7 @@ export default component$(() => {
             {/* Count Status Cards */}
             <div class="container mx-auto my-10 flex items-center justify-center gap-8">
               {/* scheduledCount */}
-              <div class="relative h-40 flex-1 shrink-0 space-y-4 rounded-lg p-5 shadow">
+              <div class="relative h-40 flex-1 shrink-0 space-y-4 rounded-lg bg-white p-5 shadow">
                 <img
                   class="absolute inset-0 z-20 h-40 w-96 object-cover"
                   src={background_scheduled}
@@ -247,9 +263,9 @@ export default component$(() => {
                 </div>
               </div>
               {/* pendingCount */}
-              <div class="relative h-40 flex-1 shrink-0 space-y-4 rounded-lg p-5 shadow">
+              <div class="relative h-40 flex-1 shrink-0 space-y-4 rounded-lg bg-white p-5 shadow">
                 <img
-                  class="absolute inset-0 -z-10 h-40 w-96 object-cover "
+                  class="absolute inset-0 z-20 h-40 w-96 object-cover"
                   src={background_pending}
                   alt="bg_pending"
                   width={0}
@@ -285,9 +301,9 @@ export default component$(() => {
                 </div>
               </div>
               {/* cancelledCount */}
-              <div class="relative h-40 flex-1 shrink-0 space-y-4 rounded-lg p-5 shadow">
+              <div class="relative h-40 flex-1 shrink-0 space-y-4 rounded-lg bg-white p-5 shadow">
                 <img
-                  class=" absolute inset-0 -z-10 h-40 w-96 object-cover"
+                  class="absolute inset-0 z-20 h-40 w-96 object-cover"
                   src={background_cancelled}
                   alt="bg_cancelled"
                   width={0}
@@ -336,10 +352,9 @@ export default component$(() => {
                 data={loader}
                 emptyState={{ title: "no data" }}
                 onStateChange$={async (state) => {
-                  // const searchParams = new URLSearchParams();
-                  // searchParams.set("offset", String(state.offset));
-                  // searchParams.set("limit", String(state.limit));
-                  // nav(`/admin_page?${searchParams.toString()}`);
+                  await nav(
+                    `/admin_page/?offset=${state.offset}&limit=${state.limit}`,
+                  );
                 }}
               ></Table>
             </div>
