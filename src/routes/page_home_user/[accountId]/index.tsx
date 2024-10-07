@@ -240,11 +240,11 @@ export default component$(() => {
 
           {/* Model pop-up of logout */}
           <Modal isOpen={isOpen}>
-            <div class="size-16 flex-col items-center">
+            <div class=" flex-col items-center">
               <div>
                 <LuLogOut />
               </div>
-              <div></div>
+              <div>Do you confirm to logout?</div>
             </div>
           </Modal>
         </div>
