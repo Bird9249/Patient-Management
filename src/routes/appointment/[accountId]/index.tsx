@@ -77,9 +77,9 @@ export default component$(() => {
         }
       }}
     >
-      <div class="relative flex min-h-screen flex-col justify-center bg-white">
+      <div class="relative mx-auto flex min-h-screen flex-col justify-center bg-white">
         <img
-          class="absolute h-screen w-screen brightness-110"
+          class="fixed h-screen w-screen object-cover"
           src={backgroundpage}
           alt=""
           width={0}
@@ -183,7 +183,7 @@ export default component$(() => {
         </div>
 
         <Modal isOpen={isOpen}>
-            <div class="w-full flex flex-col gap-3 text-center">
+            <div class="p-10 w-full flex flex-col gap-3 text-center">
                 <div class="flex items-center justify-center">
                   <LuCheckCircle font-size="70px" class="text-green-600"/>
                 </div>
