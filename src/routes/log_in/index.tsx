@@ -154,7 +154,7 @@ export default component$(() => {
           {/* logo */}
           <div class="absolute ml-28 mt-14 h-20 w-32">
             <img src={logo_img} alt="logo_icon" width={84} height={54} />
-            <h1 class="ml-1 font-semibold">SnatBas Clinic</h1>
+            <h1 class="ml-1 text-sm font-semibold">SnatBas Clinic</h1>
           </div>
 
           {/* text */}
@@ -174,7 +174,7 @@ export default component$(() => {
                     value={field.value}
                     error={field.error}
                     label="Your phone number"
-                    placeholder="+856 20 xx xxx xxx"
+                    placeholder="xx xxx xxx"
                     type="tel"
                     required
                   />
