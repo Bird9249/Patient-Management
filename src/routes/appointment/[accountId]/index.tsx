@@ -195,7 +195,7 @@ export default component$(() => {
                   type="button"
                   variant="solid"
                   onClick$={async () => {
-                    await nav(`/history/${params.accountId}/`);
+                    await nav(`/page_home_user/${params.accountId}/`);
                    }} 
                    
                    >Confirm</Button>
