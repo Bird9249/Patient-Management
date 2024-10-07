@@ -12,6 +12,7 @@ import type { IAppointmentSchema } from "../schema/appointment";
 import { AppointmentSchema } from "../schema/appointment";
 import backgroundpage from "/public/background (1).jpg";
 import logo_page from "/public/logo project.png";
+import { LuCheckCircle } from "@qwikest/icons/lucide";
 
 export const useDoctorLoader = routeLoader$(async () => {
   return await db.query.doctor.findMany({
@@ -91,7 +92,7 @@ export default component$(() => {
           </div>
           <div class="ml-32">
             <h1 class="mb-4 text-3xl">Hey There 👋</h1>
-            <p class="mb-6">Request a new appointment in 10 seconds</p>
+            <p class="mb-6 text-gray-500">Request a new appointment in 10 seconds</p>
             <div class="w-full max-w-screen-lg rounded-lg bg-gray-50 p-8 text-black">
               <div class="mb-4">
                 {/* Dropdown */}
@@ -182,6 +183,7 @@ export default component$(() => {
         </div>
 
         <Modal isOpen={isOpen}>
+<<<<<<< HEAD
           success
           <Button
             type="button"
@@ -191,6 +193,25 @@ export default component$(() => {
           >
             Ok
           </Button>
+=======
+            <div class="w-full flex flex-col gap-3 text-center">
+                <div class="flex items-center justify-center">
+                  <LuCheckCircle font-size="70px" class="text-green-600"/>
+                </div>
+                <p class="px-10 text-wrap font-medium text-2xl"> Your <span class=" text-green-700">appointment request</span> has been submitted completely!</p>
+                <p class="px-10 text-lg text-gray-500">We'll be in touch shortly to confirm.</p>
+            
+                <Button
+                  block
+                  type="button"
+                  variant="solid"
+                  onClick$={async () => {
+                    await nav(`/history/${params.accountId}/`);
+                   }} 
+                   
+                   >Confirm</Button>
+            </div>
+>>>>>>> origin/prop-up-success
         </Modal>
       </div>
     </Form>
