@@ -1,6 +1,7 @@
 import { component$, useSignal } from "@builder.io/qwik";
 import { routeLoader$, useLocation, useNavigate } from "@builder.io/qwik-city";
 import { formAction$, setValue, useForm, valiForm$ } from "@modular-forms/qwik";
+import { LuCheckCircle } from "@qwikest/icons/lucide";
 import { Button } from "~/components/button/Button";
 import { AdvancedSelect } from "~/components/forms/advanced-select/AdvancedSelect";
 import { TextInput } from "~/components/forms/text-input/TextInput";
@@ -91,7 +92,9 @@ export default component$(() => {
           </div>
           <div class="ml-32">
             <h1 class="mb-4 text-3xl">Hey There 👋</h1>
-            <p class="mb-6">Request a new appointment in 10 seconds</p>
+            <p class="mb-6 text-gray-500">
+              Request a new appointment in 10 seconds
+            </p>
             <div class="w-full max-w-screen-lg rounded-lg bg-gray-50 p-8 text-black">
               <div class="mb-4">
                 {/* Dropdown */}
@@ -182,15 +185,30 @@ export default component$(() => {
         </div>
 
         <Modal isOpen={isOpen}>
-          success
-          <Button
-            type="button"
-            onClick$={async () => {
-              await nav(`/history/${params.accountId}/`);
-            }}
-          >
-            Ok
-          </Button>
+          <div class="flex w-full flex-col gap-3 text-center">
+            <div class="flex items-center justify-center">
+              <LuCheckCircle font-size="70px" class="text-green-600" />
+            </div>
+            <p class="text-wrap px-10 text-2xl font-medium">
+              {" "}
+              Your <span class=" text-green-700">appointment request</span> has
+              been submitted completely!
+            </p>
+            <p class="px-10 text-lg text-gray-500">
+              We'll be in touch shortly to confirm.
+            </p>
+
+            <Button
+              block
+              type="button"
+              variant="solid"
+              onClick$={async () => {
+                await nav(`/page_home_user/${params.accountId}/`);
+              }}
+            >
+              Confirm
+            </Button>
+          </div>
         </Modal>
       </div>
     </Form>

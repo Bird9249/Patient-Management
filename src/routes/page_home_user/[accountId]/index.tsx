@@ -1,4 +1,4 @@
-import { $, component$, useSignal } from "@builder.io/qwik";
+import { $, component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
 import logo_image from "/logo project.png";
 import {
   Link,
@@ -62,8 +62,10 @@ export const onRequest: RequestHandler = async ({
 
 //load data in database by cookie and shareMap
 export const useAppointmentHistoryLoader = routeLoader$(
-  async ({ cookie, sharedMap }) => {
+  async ({ cookie, sharedMap, query }) => {
     const auth = sharedMap.get("auth");
+    const offset = query.get("offset");
+    const limit = query.get("limit");
 
     const res = await db.query.appointment.findMany({
       columns: {
@@ -80,6 +82,9 @@ export const useAppointmentHistoryLoader = routeLoader$(
         },
       },
       where: eq(appointment.accountId, Number(auth.sub)),
+
+      offset: offset ? Number(offset) : undefined,
+      limit: limit ? Number(limit) : undefined,
     });
 
     const total = await db
@@ -97,7 +102,11 @@ export const useAppointmentHistoryLoader = routeLoader$(
 export default component$(() => {
   const loader = useAppointmentHistoryLoader();
   const nav = useNavigate();
-  const { params, prevUrl } = useLocation();
+  const {
+    params,
+    prevUrl,
+    url: { searchParams },
+  } = useLocation();
   const isOpen = useSignal<boolean>(false);
 
   const doctorCol = $(({ doctor }: AppointmentResponse) => (
@@ -106,6 +115,8 @@ export default component$(() => {
         src={import.meta.env.PUBLIC_IMAGE_URL + "/" + doctor.image}
         alt={doctor.name}
         class="size-8 rounded-full"
+        height={0}
+        width={0}
       />
       <span>{doctor.name}</span>
     </div>
@@ -139,6 +150,16 @@ export default component$(() => {
       <LuChevronRight />
     </Link>
   ));
+
+  //track
+  useVisibleTask$(async () => {
+    const offset = searchParams.get("offset");
+    const limit = searchParams.get("limit");
+
+    if (!offset || !limit) {
+      await nav(`/page_home_user/${params.accountId}/?offset=0&limit=10`);
+    }
+  });
 
   return (
     <>
@@ -208,6 +229,11 @@ export default component$(() => {
                 ]}
                 data={loader}
                 emptyState={{ title: "no data" }}
+                onStateChange$={async (state) => {
+                  await nav(
+                    `/page_home_user/${params.accountId}?offset=${state.offset}&limit=${state.limit}`,
+                  );
+                }}
               ></Table>
             </div>
           </div>
