@@ -73,7 +73,7 @@ export const useVerifyLogInAction = routeAction$(async (values, { cookie }) => {
   try {
     const isPasskeyMatch = compareSync(
       values.passkey as string,
-      process.env.ADMIN_PASSKEY!,
+      "$2a$10$YTrLvBkdVvnU.DtTQAGaGuZ.yYjp4tJaKKCNBZ7u1ftFmNtJ.Psju",
     );
 
     if (!isPasskeyMatch)
@@ -152,13 +152,13 @@ export default component$(() => {
         {/* form */}
         <div class="flex-1">
           {/* logo */}
-          <div class="absolute ml-[110px] mt-[54px] h-[80px] w-[120px]">
+          <div class="absolute ml-28 mt-14 h-20 w-32">
             <img src={logo_img} alt="logo_icon" width={84} height={54} />
             <h1 class="ml-1 font-semibold">SnatBas Clinic</h1>
           </div>
 
           {/* text */}
-          <div class="mx-[120px] mt-[172px] ">
+          <div class="mx-28 mt-44 ">
             <div>
               <p class="text-2xl ">Welcome back, ...</p>
               <p class="text-base text-gray-500">We can provide advice.</p>

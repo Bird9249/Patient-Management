@@ -86,9 +86,6 @@ export default component$(() => {
     url: { searchParams },
   } = useLocation();
 
-  console.log(loader.value);
-  console.log(statusLoader.value);
-
   // Accessing the status counts from the loader
   const statusCounts = statusLoader.value.statusCounts;
 
@@ -177,6 +174,7 @@ export default component$(() => {
     ),
   );
 
+  // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(async () => {
     const offset = searchParams.get("offset");
     const limit = searchParams.get("limit");
