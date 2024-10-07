@@ -1,4 +1,4 @@
-import { $, component$ } from "@builder.io/qwik";
+import { $, component$, useSignal } from "@builder.io/qwik";
 import logo_image from "/logo project.png";
 import {
   Link,
@@ -10,10 +10,15 @@ import {
 import { Button } from "~/components/button/Button";
 import {
   LuArrowBigLeft,
+  LuCheck,
+  LuChevronLeft,
+  LuChevronRight,
   LuHourglass,
+  LuLogOut,
   LuPlusCircle,
   LuTimer,
   LuUser,
+  LuX,
 } from "@qwikest/icons/lucide";
 import { db } from "~/lib/db/db";
 import { Table } from "~/components/table/Table";
@@ -21,6 +26,8 @@ import { useAccountLoader } from "~/routes/information/[accountId]";
 import { count, eq } from "drizzle-orm";
 import { appointment } from "~/lib/db/schema";
 import { datetime } from "drizzle-orm/mysql-core";
+import { Modal } from "~/components/modal/Modal";
+import { isoDate } from "valibot";
 
 type AppointmentResponse = {
   status: "scheduled" | "pending" | "cancelled";
@@ -79,7 +86,7 @@ export const useAppointmentHistoryLoader = routeLoader$(
       .select({ count: count() })
       .from(appointment)
       .where(eq(appointment.accountId, Number(auth.sub)));
-
+    console.log(auth);
     return {
       data: res,
       total,
@@ -91,6 +98,7 @@ export default component$(() => {
   const loader = useAppointmentHistoryLoader();
   const nav = useNavigate();
   const { params, prevUrl } = useLocation();
+  const isOpen = useSignal<boolean>(false);
 
   const doctorCol = $(({ doctor }: AppointmentResponse) => (
     <div class="flex gap-x-2 px-4 py-2">
@@ -106,18 +114,31 @@ export default component$(() => {
   const statusCol = $(({ status }: AppointmentResponse) =>
     status === "pending" ? (
       <span class="inline-flex items-center gap-x-1.5 rounded-full bg-blue-600 px-3 py-1.5 text-xs font-medium text-white dark:bg-blue-500">
+        <LuHourglass />
         pending
       </span>
     ) : status === "scheduled" ? (
       <span class="inline-flex items-center gap-x-1.5 rounded-full bg-teal-500 px-3 py-1.5 text-xs font-medium text-white">
+        <LuCheck />
         scheduled
       </span>
     ) : (
       <span class="inline-flex items-center gap-x-1.5 rounded-full bg-red-500 px-3 py-1.5 text-xs font-medium text-white">
+        <LuX />
         cancelled
       </span>
     ),
   );
+
+  const detailCol = $(({ id }: AppointmentResponse) => (
+    <Link
+      class="flex items-center gap-x-4 "
+      href={`/page_home_user/${params.accountId}/${id}/`}
+    >
+      detail
+      <LuChevronRight />
+    </Link>
+  ));
 
   return (
     <>
@@ -145,7 +166,14 @@ export default component$(() => {
               </li>
               <li class="flex items-center gap-1">
                 <LuUser class="size-5" />
-                <Link href="#">Log out</Link>
+                <Link
+                  href="#"
+                  onClick$={() => {
+                    isOpen.value = true;
+                  }}
+                >
+                  Log out
+                </Link>
               </li>
             </ul>
           </nav>
@@ -176,14 +204,23 @@ export default component$(() => {
                   { label: "Doctor", key: "doctor", content$: doctorCol },
                   { label: "Date", key: "dateTime" },
                   { label: "Status", key: "status", content$: statusCol },
-                  { label: "Detail", key: "detail" },
+                  { label: "Detail", key: "detail", content$: detailCol },
                 ]}
                 data={loader}
                 emptyState={{ title: "no data" }}
-                onStateChange$={async (state) => {}}
               ></Table>
             </div>
           </div>
+
+          {/* Model pop-up of logout */}
+          <Modal isOpen={isOpen}>
+            <div class="size-16 flex-col items-center">
+              <div>
+                <LuLogOut />
+              </div>
+              <div></div>
+            </div>
+          </Modal>
         </div>
       </div>
     </>
