@@ -7,7 +7,7 @@ export const onRequest: RequestHandler = async ({
   redirect,
   sharedMap,
 }) => {
-  const token = cookie.get("auth-token");
+  const token = cookie.get("admin-session");
 
   if (!token) throw redirect(301, "/log_in/");
 
@@ -15,7 +15,7 @@ export const onRequest: RequestHandler = async ({
   try {
     const { payload } = await jwtVerify(token.value, secret);
 
-    sharedMap.set("auth", payload);
+    sharedMap.set("admin", payload);
 
     await next();
   } catch (error) {
