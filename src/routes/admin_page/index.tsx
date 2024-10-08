@@ -16,6 +16,7 @@ import background_pending from "/background_pending.png";
 import background_scheduled from "/background_scheduled.png";
 import logo_image from "/logo project.png";
 import { AppointmentSchema } from "../appointment/schema/appointment";
+import { LuChevronRight } from "@qwikest/icons/lucide";
 
 type AppointmentResponse = {
   status: "scheduled" | "pending" | "cancelled";
@@ -121,7 +122,17 @@ export default component$(() => {
     </div>
   ));
 
-  const detailCol = $(({ id }: AppointmentResponse) => <Link></Link>);
+  const detailCol = $(({ id }: AppointmentResponse) => (
+    <Link
+      class="flex items-center justify-center text-sm text-gray-600"
+      onClick$={async () => {
+        await nav(`/details_page/${id}`);
+      }}
+    >
+      Detial
+      <LuChevronRight />
+    </Link>
+  ));
 
   const statusCol = $(({ status }: AppointmentResponse) =>
     status === "pending" ? (
