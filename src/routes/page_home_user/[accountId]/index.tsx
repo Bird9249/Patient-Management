@@ -29,7 +29,7 @@ import { appointment } from "~/lib/db/schema";
 import { datetime } from "drizzle-orm/mysql-core";
 import { Modal } from "~/components/modal/Modal";
 import { isoDate } from "valibot";
-import background_of_history from "/background_of_history.png";
+import background_of_history from "/backgroud_of_history.png";
 
 type AppointmentResponse = {
   status: "scheduled" | "pending" | "cancelled";
@@ -194,7 +194,7 @@ export default component$(() => {
 
   const detailCol = $(({ id }: AppointmentResponse) => (
     <Link
-      class="flex items-center gap-x-4 "
+      class="inline-flex items-center justify-center text-gray-500"
       href={`/page_home_user/${params.accountId}/detail/${id}`}
     >
       detail
