@@ -29,6 +29,7 @@ import { appointment } from "~/lib/db/schema";
 import { datetime } from "drizzle-orm/mysql-core";
 import { Modal } from "~/components/modal/Modal";
 import { isoDate } from "valibot";
+import background_of_history from "/background_of_history.png";
 
 type AppointmentResponse = {
   status: "scheduled" | "pending" | "cancelled";
@@ -194,7 +195,7 @@ export default component$(() => {
   const detailCol = $(({ id }: AppointmentResponse) => (
     <Link
       class="flex items-center gap-x-4 "
-      href={`/page_home_user/${params.accountId}/${id}/`}
+      href={`/page_home_user/${params.accountId}/detail/${id}`}
     >
       detail
       <LuChevronRight />
@@ -214,6 +215,13 @@ export default component$(() => {
   return (
     <>
       {/* big box */}
+      <img
+        class="fixed -z-10 h-screen w-screen object-cover"
+        src={background_of_history}
+        alt="bg-history"
+        width={0}
+        height={0}
+      />
       <div class="flex h-screen justify-center">
         <div class="container">
           {/* header */}
