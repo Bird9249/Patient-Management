@@ -1,7 +1,12 @@
 import type { JSXChildren } from "@builder.io/qwik";
 import { $, component$, useVisibleTask$ } from "@builder.io/qwik";
-import { routeLoader$, useLocation, useNavigate } from "@builder.io/qwik-city";
-import { desc, sql } from "drizzle-orm";
+import {
+  Link,
+  routeLoader$,
+  useLocation,
+  useNavigate,
+} from "@builder.io/qwik-city";
+import { asc, sql } from "drizzle-orm";
 import { Table } from "~/components/table/Table";
 import { db } from "~/lib/db/db";
 import { appointment } from "~/lib/db/schema";
@@ -10,6 +15,7 @@ import background_cancelled from "/background_cancelled.png";
 import background_pending from "/background_pending.png";
 import background_scheduled from "/background_scheduled.png";
 import logo_image from "/logo project.png";
+import { AppointmentSchema } from "../appointment/schema/appointment";
 
 type AppointmentResponse = {
   status: "scheduled" | "pending" | "cancelled";
@@ -53,7 +59,7 @@ export const useAppointmentLoader = routeLoader$(
           },
         },
       },
-      orderBy: desc(appointment.dateTime),
+      orderBy: asc(appointment.dateTime),
       offset: offset ? Number(offset) : undefined,
       limit: limit ? Number(limit) : undefined,
     });
@@ -114,6 +120,8 @@ export default component$(() => {
       <span>{account.name}</span>
     </div>
   ));
+
+  const detailCol = $(({ id }: AppointmentResponse) => <Link></Link>);
 
   const statusCol = $(({ status }: AppointmentResponse) =>
     status === "pending" ? (
@@ -342,10 +350,10 @@ export default component$(() => {
               <Table
                 columns={[
                   { label: "Patient", key: "patient", content$: accountCol },
-                  { label: "Status", key: "status", content$: statusCol },
                   { label: "Date", key: "dateTime" },
                   { label: "Doctor", key: "doctor", content$: doctorCol },
-                  { label: "Action", key: "action" },
+                  { label: "Status", key: "status", content$: statusCol },
+                  { label: "Details", key: "details", content$: detailCol },
                 ]}
                 data={loader}
                 emptyState={{ title: "no data" }}
