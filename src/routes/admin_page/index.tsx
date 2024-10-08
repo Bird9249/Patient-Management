@@ -6,6 +6,7 @@ import {
   useLocation,
   useNavigate,
 } from "@builder.io/qwik-city";
+import { LuChevronRight } from "@qwikest/icons/lucide";
 import { asc, sql } from "drizzle-orm";
 import { Table } from "~/components/table/Table";
 import { db } from "~/lib/db/db";
@@ -15,7 +16,6 @@ import background_cancelled from "/background_cancelled.png";
 import background_pending from "/background_pending.png";
 import background_scheduled from "/background_scheduled.png";
 import logo_image from "/logo project.png";
-import { AppointmentSchema } from "../appointment/schema/appointment";
 
 type AppointmentResponse = {
   status: "scheduled" | "pending" | "cancelled";
@@ -29,6 +29,7 @@ type AppointmentResponse = {
     image: string;
   };
   account: {
+    id: number;
     name: string;
   };
 };
@@ -55,6 +56,7 @@ export const useAppointmentLoader = routeLoader$(
         },
         account: {
           columns: {
+            id: true,
             name: true,
           },
         },
@@ -90,6 +92,7 @@ export default component$(() => {
   const nav = useNavigate();
   const {
     url: { searchParams },
+    params,
   } = useLocation();
 
   // Accessing the status counts from the loader
@@ -121,7 +124,17 @@ export default component$(() => {
     </div>
   ));
 
-  const detailCol = $(({ id }: AppointmentResponse) => <Link></Link>);
+  const detailCol = $(({ id, account }: AppointmentResponse) => (
+    <Link
+      class="flex items-center justify-center gap-1 text-sm text-gray-600 hover:cursor-pointer"
+      onClick$={async () => {
+        await nav(`details_page/${account.id}/${id}`);
+      }}
+    >
+      Detial
+      <LuChevronRight />
+    </Link>
+  ));
 
   const statusCol = $(({ status }: AppointmentResponse) =>
     status === "pending" ? (
