@@ -1,5 +1,5 @@
 import { component$, noSerialize } from "@builder.io/qwik";
-import { routeLoader$, useNavigate } from "@builder.io/qwik-city";
+import { routeLoader$, useLocation, useNavigate } from "@builder.io/qwik-city";
 import { formAction$, setValue, useForm, valiForm$ } from "@modular-forms/qwik";
 import { eq } from "drizzle-orm";
 import { Button } from "~/components/button/Button";
@@ -66,6 +66,7 @@ export default component$(() => {
   const accountLoader = useAccountLoader();
   const action = useAddUser();
   const nav = useNavigate();
+  const { params } = useLocation();
 
   const [form, { Field, Form }] = useForm<IRegisterSchema>({
     loader: {
@@ -119,7 +120,7 @@ export default component$(() => {
         if (res.value.response.data?.success) {
           await uploadFile(values.identify.image!, fileName);
 
-          await nav(`/appointment/${res.value.response.data.id}/`);
+          await nav(`/appointment/${params.accountId}/`);
         } else {
           alert("your image can not upload, please try again");
         }
@@ -480,7 +481,7 @@ export default component$(() => {
                     options={[
                       { label: "Family Book", value: "family_book" },
                       { label: "ID Card", value: "id_card" },
-                      { label: "Driver License", value: "driver_lincense" },
+                      { label: "Driver License", value: "driver_license" },
                       { label: "Passport", value: "passport" },
                     ]}
                     value={field.value}

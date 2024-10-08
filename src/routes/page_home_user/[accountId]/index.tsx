@@ -1,13 +1,19 @@
 import { $, component$ } from "@builder.io/qwik";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import logo_image from "/logo project.png";
 import {
   Link,
   RequestHandler,
+=======
+import {
+  Link,
+>>>>>>> origin/admin_page
   routeLoader$,
   useLocation,
   useNavigate,
 } from "@builder.io/qwik-city";
+<<<<<<< HEAD
 import { Button } from "~/components/button/Button";
 import {
   LuArrowBigLeft,
@@ -21,6 +27,8 @@ import { Table } from "~/components/table/Table";
 import { useAccountLoader } from "~/routes/information/[accountId]";
 =======
 import { Link, routeLoader$, useNavigate } from "@builder.io/qwik-city";
+=======
+>>>>>>> origin/admin_page
 import { LuPlusCircle, LuUser } from "@qwikest/icons/lucide";
 >>>>>>> origin/verification_login_admin
 import { count, eq } from "drizzle-orm";
@@ -98,7 +106,13 @@ export const useAppointmentHistoryLoader = routeLoader$(
 export default component$(() => {
   const loader = useAppointmentHistoryLoader();
   const nav = useNavigate();
+<<<<<<< HEAD
   const { params, prevUrl } = useLocation();
+=======
+  const { params } = useLocation();
+
+  console.log(loader.value);
+>>>>>>> origin/admin_page
 
   const doctorCol = $(({ doctor }: AppointmentResponse) => (
     <div class="flex gap-x-2 px-4 py-2">
@@ -106,8 +120,8 @@ export default component$(() => {
         src={import.meta.env.PUBLIC_IMAGE_URL + "/" + doctor.image}
         alt={doctor.name}
         class="size-8 rounded-full"
-        width={0}
         height={0}
+        width={0}
       />
       <span>{doctor.name}</span>
     </div>
@@ -173,7 +187,11 @@ export default component$(() => {
                 type="button"
                 size="default"
                 onClick$={() => {
+<<<<<<< HEAD
                   nav(`/appointment/${params.accountId}/`);
+=======
+                  nav(`/appointment/${params.accountId}`);
+>>>>>>> origin/admin_page
                 }}
               >
                 New appointment | <LuPlusCircle class="size-5" />
