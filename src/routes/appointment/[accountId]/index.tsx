@@ -183,7 +183,6 @@ export default component$(() => {
             </div>
           </div>
         </div>
-
         <Modal isOpen={isOpen}>
           <div class="flex w-full flex-col gap-3 text-center">
             <div class="flex items-center justify-center">
@@ -209,6 +208,25 @@ export default component$(() => {
               Confirm
             </Button>
           </div>
+          <p class="text-wrap px-10 text-2xl font-medium">
+            {" "}
+            Your <span class=" text-green-700">appointment request</span> has
+            been submitted completely!
+          </p>
+          <p class="px-10 text-lg text-gray-500">
+            We'll be in touch shortly to confirm.
+          </p>
+
+          <Button
+            block
+            type="button"
+            variant="solid"
+            onClick$={async () => {
+              await nav(`/page_home_user/${params.accountId}/`);
+            }}
+          >
+            Confirm
+          </Button>
         </Modal>
       </div>
     </Form>
