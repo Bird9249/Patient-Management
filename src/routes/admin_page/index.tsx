@@ -34,43 +34,39 @@ type AppointmentResponse = {
   };
 };
 
-export const useAppointmentLoader = routeLoader$(
-  async ({ cookie, sharedMap, query }) => {
-    const admin = sharedMap.get("admin");
+export const useAppointmentLoader = routeLoader$(async ({ query }) => {
+  const offset = query.get("offset");
+  const limit = query.get("limit");
 
-    const offset = query.get("offset");
-    const limit = query.get("limit");
-
-    const res = await db.query.appointment.findMany({
-      columns: {
-        id: true,
-        dateTime: true,
-        status: true,
-      },
-      with: {
-        doctor: {
-          columns: {
-            name: true,
-            image: true,
-          },
-        },
-        account: {
-          columns: {
-            id: true,
-            name: true,
-          },
+  const res = await db.query.appointment.findMany({
+    columns: {
+      id: true,
+      dateTime: true,
+      status: true,
+    },
+    with: {
+      doctor: {
+        columns: {
+          name: true,
+          image: true,
         },
       },
-      orderBy: asc(appointment.dateTime),
-      offset: offset ? Number(offset) : undefined,
-      limit: limit ? Number(limit) : undefined,
-    });
+      account: {
+        columns: {
+          id: true,
+          name: true,
+        },
+      },
+    },
+    orderBy: asc(appointment.dateTime),
+    offset: offset ? Number(offset) : undefined,
+    limit: limit ? Number(limit) : undefined,
+  });
 
-    return {
-      data: res,
-    };
-  },
-);
+  return {
+    data: res,
+  };
+});
 
 export const useAppointmentStatusLoader = routeLoader$(async () => {
   const statusCounts = await db
@@ -92,7 +88,6 @@ export default component$(() => {
   const nav = useNavigate();
   const {
     url: { searchParams },
-    params,
   } = useLocation();
 
   // Accessing the status counts from the loader
@@ -124,12 +119,10 @@ export default component$(() => {
     </div>
   ));
 
-  const detailCol = $(({ id, account }: AppointmentResponse) => (
+  const detailCol = $(({ id }: AppointmentResponse) => (
     <Link
       class="flex items-center justify-center gap-1 text-sm text-gray-600 hover:cursor-pointer"
-      onClick$={async () => {
-        await nav(`details_page/${account.id}/${id}`);
-      }}
+      href={`/admin_page/details_page/${id}/`}
     >
       Detial
       <LuChevronRight />
