@@ -16,6 +16,7 @@ export const onRequest: RequestHandler = async ({
     const { payload } = await jwtVerify(token.value, secret);
 
     sharedMap.set("admin", payload);
+    console.log(payload);
 
     await next();
   } catch (error) {

@@ -122,9 +122,7 @@ export default component$(() => {
   const detailCol = $(({ id }: AppointmentResponse) => (
     <Link
       class="flex items-center justify-center gap-1 text-sm text-gray-600 hover:cursor-pointer"
-      onClick$={async () => {
-        await nav(`details_page/${id}`);
-      }}
+      href={`/admin_page/details_page/${id}/`}
     >
       Detial
       <LuChevronRight />
