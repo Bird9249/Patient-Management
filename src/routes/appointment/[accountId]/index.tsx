@@ -1,5 +1,5 @@
 import { component$, useSignal } from "@builder.io/qwik";
-import { routeLoader$, useLocation, useNavigate } from "@builder.io/qwik-city";
+import { Link, routeLoader$, useLocation, useNavigate } from "@builder.io/qwik-city";
 import { formAction$, setValue, useForm, valiForm$ } from "@modular-forms/qwik";
 import { Button } from "~/components/button/Button";
 import { AdvancedSelect } from "~/components/forms/advanced-select/AdvancedSelect";
@@ -86,9 +86,35 @@ export default component$(() => {
           height={0}
         />
         <div class="z-10">
-          <div class="mb-12 ml-28">
+          <div class="mb-4 ml-28">
             <img class="w-20" src={logo_page} width={0} height={0} />
             <span class="ml-1 text-sm font-semibold">SnatBas Clinic</span>
+          </div>
+          <div>
+            <Link
+                  class="mb-4 ml-32 inline-flex items-center gap-x-1  hover:text-primary-600 hover:cursor-pointer focus:text-primary-600 focus:outline-none "
+                  onClick$={ async () => {
+                    nav(`/page_home_user/${params.accountId}/`);
+                  }}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="34"
+                    height="34"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-circle-arrow-left"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M16 12H8" />
+                    <path d="m12 8-4 4 4 4" />
+                  </svg>
+                  Back
+                  </Link>
           </div>
           <div class="ml-32">
             <h1 class="mb-4 text-3xl">Hey There 👋</h1>
