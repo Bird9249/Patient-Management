@@ -10,6 +10,8 @@ import {
 import { LuUser } from "@qwikest/icons/lucide";
 import { Column } from "drizzle-orm";
 import { db } from "~/lib/db/db";
+import { appointment } from "~/lib/db/schema";
+import { eq } from "drizzle-orm";
 
 type AppointmentResponse = {
   status: "scheduled" | "pending" | "cancelled";
@@ -22,6 +24,9 @@ type AppointmentResponse = {
   reasonOfAppointment: string;
   createdAt: string;
   comment: string;
+  reasonOfScheduled: string;
+  reasonOfCancelled: string;
+  updatedAt: string;
 };
 
 //load data in database
@@ -31,14 +36,47 @@ export const useAppointmentHistoryLoader = routeLoader$(async ({ params }) => {
       id: true,
       dateTime: true,
       status: true,
+      reasonOfAppointment: true,
+      createdAt: true,
+      comment: true,
+      reasonOfScheduled: true,
+      reasonOfCancelled: true,
+      updatedAt: true,
     },
+    with: {
+      doctor: {
+        columns: {
+          name: true,
+          image: true,
+        },
+      },
+    },
+    where: eq(appointment.id, Number(params.id)),
   });
+  return {
+    data: res,
+  };
 });
 
 export default component$(() => {
+  const loader = useAppointmentHistoryLoader();
   const isOpen = useSignal<boolean>(false);
   const nav = useNavigate();
   const { params } = useLocation();
+
+  const doctorCol = $(({ doctor }: AppointmentResponse) => (
+    <div class="flex gap-x-2 px-4 py-2">
+      <img
+        src={import.meta.env.PUBLIC_IMAGE_URL + "/" + doctor.image}
+        alt={doctor.name}
+        class="size-8 rounded-full"
+        height={0}
+        width={0}
+      />
+      <span>{doctor.name}</span>
+    </div>
+  ));
+
   return (
     <>
       {/* Bubble background */}
