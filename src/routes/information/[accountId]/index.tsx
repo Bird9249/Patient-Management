@@ -1,5 +1,5 @@
 import { component$, noSerialize } from "@builder.io/qwik";
-import { routeLoader$, useNavigate } from "@builder.io/qwik-city";
+import { routeLoader$, useLocation, useNavigate } from "@builder.io/qwik-city";
 import { formAction$, setValue, useForm, valiForm$ } from "@modular-forms/qwik";
 import { eq } from "drizzle-orm";
 import { Button } from "~/components/button/Button";
@@ -66,6 +66,7 @@ export default component$(() => {
   const accountLoader = useAccountLoader();
   const action = useAddUser();
   const nav = useNavigate();
+  const { params } = useLocation();
 
   const [form, { Field, Form }] = useForm<IRegisterSchema>({
     loader: {
@@ -119,7 +120,7 @@ export default component$(() => {
         if (res.value.response.data?.success) {
           await uploadFile(values.identify.image!, fileName);
 
-          await nav(`/appointment/${res.value.response.data.id}/`);
+          await nav(`/appointment/${params.accountId}/`);
         } else {
           alert("your image can not upload, please try again");
         }
@@ -227,7 +228,7 @@ export default component$(() => {
                       value={field.value}
                       error={field.error}
                       label="Phone Number"
-                      placeholder="+856 20 xx xxx xxx"
+                      placeholder="xx xxx xxx"
                       type="tel"
                       required
                     />
@@ -279,9 +280,9 @@ export default component$(() => {
                   {/* radio */}
                   <div class="mx-auto flex flex-auto gap-4 pt-7">
                     {[
-                      { label: "Male", value: "MALE" },
-                      { label: "Female", value: "FEMALE" },
-                      { label: "Other", value: "OTHER" },
+                      { label: "Male", value: "male" },
+                      { label: "Female", value: "female" },
+                      { label: "Other", value: "other" },
                     ].map(({ label, value }) => (
                       <Field key={value} name="userInfo.gender">
                         {(field, props) => (
@@ -343,7 +344,7 @@ export default component$(() => {
                       value={field.value}
                       error={field.error}
                       label="Phone number"
-                      placeholder="+856 20 xx xxx xxx"
+                      placeholder="xx xxx xxx"
                       type="tel"
                       required
                     />
@@ -478,10 +479,10 @@ export default component$(() => {
                   <Select
                     {...props}
                     options={[
-                      { label: "Family Book", value: "FAMILY_BOOK" },
-                      { label: "ID Card", value: "ID_CARD" },
-                      { label: "Driver License", value: "DRIVER_LICENSE" },
-                      { label: "Passport", value: "PASSPORT" },
+                      { label: "Family Book", value: "family_book" },
+                      { label: "ID Card", value: "id_card" },
+                      { label: "Driver License", value: "driver_license" },
+                      { label: "Passport", value: "passport" },
                     ]}
                     value={field.value}
                     error={field.error}
