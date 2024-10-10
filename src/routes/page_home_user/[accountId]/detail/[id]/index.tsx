@@ -263,6 +263,7 @@ export default component$(() => {
                       class="h-48 w-full cursor-default resize-none rounded-lg border-gray-500 px-4 py-3"
                       readOnly
                       placeholder="please wait for confirmation"
+                      value={loader.value.data?.reasonOfAdmin || ""}
                     ></textarea>
                   </div>
                 </div>
