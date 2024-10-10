@@ -110,6 +110,9 @@ export const appointment = pgTable('appointment', {
   comment: text('comment'),
   status: statusEnum('status').notNull().default('pending'),
   createdAt: timestamp('created_at', { precision: 6, withTimezone: true }).defaultNow().notNull(),
+  reasonOfScheduled: text('reason_of_scheduled'),
+  reasonOfCancelled: text('reason_of_cancelled'),
+  updatedAt: timestamp('updated_at', { precision: 6, withTimezone:true}),
 });
 export const appointmentRelations = relations(appointment, ({ one }) => ({
   account: one(account, {
