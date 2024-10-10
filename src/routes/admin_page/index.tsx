@@ -149,7 +149,7 @@ export default component$(() => {
         pending
       </span>
     ) : status === "scheduled" ? (
-      <span class=" inline-flex items-center gap-x-1.5 rounded-full bg-teal-400 px-3 py-1.5 text-xs font-medium text-teal-800">
+      <span class=" inline-flex items-center gap-x-1.5 rounded-full bg-emerald-400 px-3 py-1.5 text-xs font-medium text-emerald-900">
         <svg
           width="14"
           height="18"
