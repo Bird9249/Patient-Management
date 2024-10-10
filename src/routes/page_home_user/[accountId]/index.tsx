@@ -1,7 +1,7 @@
 import { $, component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
+import type { RequestHandler } from "@builder.io/qwik-city";
 import {
   Link,
-  RequestHandler,
   routeAction$,
   routeLoader$,
   useLocation,

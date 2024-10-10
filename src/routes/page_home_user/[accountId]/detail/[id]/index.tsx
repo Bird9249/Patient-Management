@@ -73,7 +73,7 @@ export default component$(() => {
 
             <ul class="flex items-center gap-16">
               <li>
-                <Link href="#">Home</Link>
+                <Link href={`/page_home_user/${params.accountId}/`}>Home</Link>
               </li>
               <li>
                 <Link href="#">My form</Link>
@@ -248,9 +248,11 @@ export default component$(() => {
 
                 {/* updatedAt */}
                 <div class="flex justify-end">
+                  <span class="mr-2">Update date:</span>
+
                   {loader.value.data!.updatedAt
                     ? convertToCustomFormat(loader.value.data!.updatedAt)
-                    : "not yet"}
+                    : "in progress"}
                 </div>
 
                 {/* Reason for schedule */}
