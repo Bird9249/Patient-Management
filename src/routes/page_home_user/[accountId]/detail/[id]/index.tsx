@@ -1,18 +1,12 @@
-import { $, component$, useSignal } from "@builder.io/qwik";
-import background_of_history from "/backgroud_of_history.png";
-import logo_image from "/logo project.png";
-import {
-  Link,
-  routeLoader$,
-  useLocation,
-  useNavigate,
-} from "@builder.io/qwik-city";
+import { component$, useSignal } from "@builder.io/qwik";
+import { Link, routeLoader$, useLocation } from "@builder.io/qwik-city";
 import { LuUser } from "@qwikest/icons/lucide";
-import { Column } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { db } from "~/lib/db/db";
 import { appointment } from "~/lib/db/schema";
-import { eq } from "drizzle-orm";
 import { convertToCustomFormat } from "~/utils/convertToCustomFormat";
+import background_of_history from "/backgroud_of_history.png";
+import logo_image from "/logo project.png";
 
 //load data in database
 export const useAppointmentHistoryLoader = routeLoader$(async ({ params }) => {
@@ -45,7 +39,7 @@ export const useAppointmentHistoryLoader = routeLoader$(async ({ params }) => {
 export default component$(() => {
   const loader = useAppointmentHistoryLoader();
   const isOpen = useSignal<boolean>(false);
-  const nav = useNavigate();
+  // const nav = useNavigate();
   const { params } = useLocation();
 
   return (

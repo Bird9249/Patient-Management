@@ -5,6 +5,7 @@ import { eq } from "drizzle-orm";
 import { Schedule_Modal } from "~/components/modal/scheduled/scheduled";
 import { db } from "~/lib/db/db";
 import { appointment } from "~/lib/db/schema";
+import { convertToCustomFormat } from "~/utils/convertToCustomFormat";
 import type { IAdminSchema } from "../../schema/adminSchema";
 import { AdminSchema } from "../../schema/adminSchema";
 import background_admin from "/Background_admin.png";
@@ -281,7 +282,7 @@ export default component$(() => {
                   >
                     Date of Appointment:{" "}
                     <span class="ml-2 font-normal">
-                      {loader.value.data?.dateTime}
+                      {convertToCustomFormat(loader.value.data!.dateTime)}
                     </span>
                   </p>
                   <div class="space-y-3">
