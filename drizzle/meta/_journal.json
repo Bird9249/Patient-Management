@@ -71,6 +71,13 @@
       "when": 1728459122710,
       "tag": "0009_brainy_photon",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1728532349179,
+      "tag": "0010_strong_gertrude_yorkes",
+      "breakpoints": true
     }
   ]
 }

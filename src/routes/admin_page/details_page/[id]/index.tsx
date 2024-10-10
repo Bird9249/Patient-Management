@@ -1,7 +1,6 @@
 import { component$, useSignal } from "@builder.io/qwik";
 import { Link, routeLoader$ } from "@builder.io/qwik-city";
 import { eq } from "drizzle-orm";
-import { Textarea } from "~/components/forms/textarea/Textarea";
 import { db } from "~/lib/db/db";
 import { appointment } from "~/lib/db/schema";
 import background_admin from "/Background_admin.png";
@@ -210,12 +209,9 @@ export default component$(() => {
               </div>
               {/* from request */}
               <div class="flex-1 items-center space-y-4 rounded-3xl bg-white px-4 py-3 text-sm">
-                <p
-                  class="font-medium
-                "
-                >
-                  Doctor:{" "}
-                  <span class="ml-4 inline-block">
+                <div class="flex items-center">
+                  <div class="font-medium">Doctor: </div>
+                  <div class="ml-4 inline-block">
                     <img
                       src={
                         import.meta.env.PUBLIC_IMAGE_URL +
@@ -227,11 +223,11 @@ export default component$(() => {
                       width={0}
                       height={0}
                     />
-                  </span>
-                  <span class="ml-2 font-normal">
+                  </div>
+                  <div class="ml-2 font-normal">
                     {loader.value.data?.doctor.name}
-                  </span>
-                </p>
+                  </div>
+                </div>
                 <p
                   class="font-medium
                 "
@@ -241,16 +237,16 @@ export default component$(() => {
                     {loader.value.data?.dateTime}
                   </span>
                 </p>
-                <Textarea
-                  readonly
-                  name=""
-                  label="Reason of Appointment"
+                <p class="font-medium ">Reason of Appointment</p>
+                <textarea
+                  class="block h-20 w-full rounded-lg px-4 py-3 text-sm"
+                  readOnly
                   value={loader.value.data?.reasonOfAppointment || ""}
                 />
-                <Textarea
-                  readonly
-                  name=""
-                  label="Additional comment\notes"
+                <p>Additional comment\notes</p>
+                <textarea
+                  class="block h-20 w-full rounded-lg px-4 py-3 text-sm"
+                  readOnly
                   value={loader.value.data?.comment || ""}
                 />
               </div>
