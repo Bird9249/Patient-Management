@@ -1,7 +1,6 @@
 import { component$, useSignal } from "@builder.io/qwik";
 import { Link, routeLoader$ } from "@builder.io/qwik-city";
 import { eq } from "drizzle-orm";
-import { Textarea } from "~/components/forms/textarea/Textarea";
 import { db } from "~/lib/db/db";
 import { appointment } from "~/lib/db/schema";
 import background_admin from "/Background_admin.png";
@@ -239,16 +238,26 @@ export default component$(() => {
                       {loader.value.data?.dateTime}
                     </span>
                   </p>
-                  <Textarea
-                    name="reason"
-                    label="Reason of Appointment"
-                    value={loader.value.data?.reasonOfAppointment || ""}
-                  />
-                  <Textarea
-                    name="comment"
-                    label="Additional comment\notes"
-                    value={loader.value.data?.comment || ""}
-                  />
+                  <div class="space-y-3">
+                    <p class="font-medium">Reason of Appointment</p>
+                    <textarea
+                      class="block w-full rounded-lg border-gray-200 px-4 py-3 text-sm focus:border-primary-500 focus:ring-primary-500 disabled:pointer-events-none disabled:opacity-50"
+                      rows={3}
+                      placeholder="Readonly"
+                      readOnly
+                      value={loader.value.data?.reasonOfAppointment || ""}
+                    ></textarea>
+                  </div>
+                  <div class="space-y-3">
+                    <p class="font-medium">Additional comment\notes</p>
+                    <textarea
+                      class="block w-full rounded-lg border-gray-200 px-4 py-3 text-sm focus:border-primary-500 focus:ring-primary-500 disabled:pointer-events-none disabled:opacity-50"
+                      rows={3}
+                      placeholder="Readonly"
+                      readOnly
+                      value={loader.value.data?.comment || ""}
+                    ></textarea>
+                  </div>
                 </div>
               </div>
             </div>
