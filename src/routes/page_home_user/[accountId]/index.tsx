@@ -114,7 +114,6 @@ export default component$(() => {
   const nav = useNavigate();
   const {
     params,
-    prevUrl,
     url: { searchParams },
   } = useLocation();
   const isOpen = useSignal<boolean>(false);
