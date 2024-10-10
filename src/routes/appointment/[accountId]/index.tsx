@@ -226,7 +226,6 @@ export default component$(() => {
                   onClick$={async () => {
                     await nav(`/page_home_user/${params.accountId}/`);
                    }} 
-                   
                    >Confirm</Button>
             </div>
         </Modal>
