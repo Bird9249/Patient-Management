@@ -24,8 +24,7 @@ export const useAppointmentHistoryLoader = routeLoader$(async ({ params }) => {
       reasonOfAppointment: true,
       createdAt: true,
       comment: true,
-      reasonOfScheduled: true,
-      reasonOfCancelled: true,
+      reasonOfAdmin: true,
       updatedAt: true,
     },
     with: {
