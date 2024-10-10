@@ -62,9 +62,6 @@ export default component$(() => {
         dateTime: "",
         doctorId: 0,
         comment: "",
-        reasonOfScheduled: undefined,
-        reasonOfCancelled: undefined,
-        updatedAt: undefined
       },
     },
     validate: valiForm$(AppointmentSchema),
