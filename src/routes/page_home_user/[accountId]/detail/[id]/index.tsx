@@ -73,7 +73,7 @@ export default component$(() => {
 
             <ul class="flex items-center gap-16">
               <li>
-                <Link href="#">Home</Link>
+                <Link href={`/page_home_user/${params.accountId}/`}>Home</Link>
               </li>
               <li>
                 <Link href="#">My form</Link>
