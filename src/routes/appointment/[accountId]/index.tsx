@@ -6,6 +6,7 @@ import {
   useNavigate,
 } from "@builder.io/qwik-city";
 import { formAction$, setValue, useForm, valiForm$ } from "@modular-forms/qwik";
+import { LuCheckCircle } from "@qwikest/icons/lucide";
 import { Button } from "~/components/button/Button";
 import { AdvancedSelect } from "~/components/forms/advanced-select/AdvancedSelect";
 import { TextInput } from "~/components/forms/text-input/TextInput";
@@ -17,7 +18,6 @@ import type { IAppointmentSchema } from "../schema/appointment";
 import { AppointmentSchema } from "../schema/appointment";
 import backgroundpage from "/public/background (1).jpg";
 import logo_page from "/public/logo project.png";
-import { LuCheckCircle } from "@qwikest/icons/lucide";
 
 export const useDoctorLoader = routeLoader$(async () => {
   return await db.query.doctor.findMany({

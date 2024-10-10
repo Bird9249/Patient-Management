@@ -1,16 +1,26 @@
 import type { Signal } from "@builder.io/qwik";
 import { component$ } from "@builder.io/qwik";
+import { useNavigate } from "@builder.io/qwik-city";
 import { setValue, useForm, valiForm$ } from "@modular-forms/qwik";
 import { AdvancedSelect } from "~/components/forms/advanced-select/AdvancedSelect";
 import { Textarea } from "~/components/forms/textarea/Textarea";
-import { useDoctorSelectLoader } from "~/routes/admin_page/details_page/[id]";
-import type { IAdminSchema } from "~/routes/admin_page/schema/adminSchema";
-import { AppointmentSchema } from "~/routes/appointment/schema/appointment";
+import {
+  useAppointmentLoader,
+  useDoctorSelectLoader,
+  useReAppointmentAction,
+} from "~/routes/admin_page/details_page/[id]";
+import {
+  AdminSchema,
+  type IAdminSchema,
+} from "~/routes/admin_page/schema/adminSchema";
 import { Modal } from "../Modal";
 
 export const Schedule_Modal = component$<{ isOpen: Signal<boolean> }>(
   ({ isOpen }) => {
     const doctorLoader = useDoctorSelectLoader();
+    const loader = useAppointmentLoader();
+    const action = useReAppointmentAction();
+    const nav = useNavigate();
 
     const [form, { Field, Form }] = useForm<IAdminSchema>({
       loader: {
@@ -19,13 +29,20 @@ export const Schedule_Modal = component$<{ isOpen: Signal<boolean> }>(
           reasonOfAdmin: "",
         },
       },
-      validate: valiForm$(AppointmentSchema),
+      validate: valiForm$(AdminSchema),
     });
 
     return (
       <>
         <Modal isOpen={isOpen} header={{ title: "Schedule Appointment" }}>
-          <Form>
+          <Form
+            onSubmit$={async (values) => {
+              await action.submit(values);
+              if (action.value?.response.data?.success) {
+                nav(`/admin_page/`);
+              }
+            }}
+          >
             <div>
               <h1 class="mx-4 text-start text-lg text-gray-400">
                 Please fill in the following details to schedule
@@ -48,7 +65,7 @@ export const Schedule_Modal = component$<{ isOpen: Signal<boolean> }>(
                         typeof val === "number" ? val : val[0],
                       );
                     }}
-                    value={field.value}
+                    value={loader.value.data?.doctor.id}
                     error={field.error}
                     placeholder="Select your doctor"
                     required
@@ -75,7 +92,7 @@ export const Schedule_Modal = component$<{ isOpen: Signal<boolean> }>(
               </div>
             </div>
             <div class="mx-auto flex flex-col items-center p-5">
-              <button class="rounded-full bg-emerald-400 px-5 py-1 text-white">
+              <button class="mb-10 block w-full rounded-lg bg-emerald-400 px-5 py-3 text-white">
                 Confirm Schedule
               </button>
             </div>

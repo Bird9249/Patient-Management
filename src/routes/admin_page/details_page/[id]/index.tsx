@@ -65,7 +65,7 @@ export const useDoctorSelectLoader = routeLoader$(async function () {
 export const useReAppointmentAction = formAction$<
   IAdminSchema,
   { success: boolean; message: string; id?: number }
->(async (values) => {
+>(async (values, { params }) => {
   try {
     const res = await db
       .update(appointment)
@@ -74,21 +74,23 @@ export const useReAppointmentAction = formAction$<
         doctorId: values.doctorId,
         reasonOfAdmin: values.reasonOfAdmin,
       })
-      .where(eq(appointment.id, 1));
+      .where(eq(appointment.id, Number(params.id)))
+      .returning({ id: appointment.id });
 
+    if (res.length === 0) {
+      throw new Error("No appointment was updated.");
+    }
     return {
       data: {
-        res,
+        id: res[0].id,
         success: true,
         message: "update schedule successfully!",
       },
     };
   } catch (error) {
+    console.error("Error updating appointment:", error);
     return {
-      data: {
-        success: false,
-        message: (error as Error).message,
-      },
+      data: { success: false, message: (error as Error).message },
     };
   }
 }, valiForm$(AdminSchema));
