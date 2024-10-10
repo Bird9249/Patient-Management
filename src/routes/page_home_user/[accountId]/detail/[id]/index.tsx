@@ -248,9 +248,11 @@ export default component$(() => {
 
                 {/* updatedAt */}
                 <div class="flex justify-end">
+                  <span class="mr-2">Update date:</span>
+
                   {loader.value.data!.updatedAt
                     ? convertToCustomFormat(loader.value.data!.updatedAt)
-                    : "not yet"}
+                    : "in progress"}
                 </div>
 
                 {/* Reason for schedule */}
