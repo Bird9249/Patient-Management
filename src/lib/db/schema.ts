@@ -1,4 +1,4 @@
-import { relations } from 'drizzle-orm';
+import { relations, sql } from 'drizzle-orm';
 import { date, integer, pgEnum, pgTable, serial, text, timestamp, varchar } from "drizzle-orm/pg-core";
 
 export const statusEnum = pgEnum('status', [
@@ -109,9 +109,9 @@ export const appointment = pgTable('appointment', {
   doctorId: integer('doctor_id').references(() => doctor.id, {onDelete:'set null'}).notNull(),
   comment: text('comment'),
   status: statusEnum('status').notNull().default('pending'),
-  createdAt: timestamp('created_at', { precision: 6, withTimezone: true }).defaultNow().notNull(),
+  createdAt: timestamp('created_at', { precision: 6, withTimezone: true, mode: "string" }).defaultNow().notNull(),
   reasonOfAdmin: text('reason_of_Admin'),
-  updatedAt: timestamp('updated_at', { precision: 6, withTimezone: true }),
+  updatedAt: timestamp('updated_at', { precision: 6, withTimezone: true, mode: "string" }).$onUpdate(()=>sql`now()`),
 });
 export const appointmentRelations = relations(appointment, ({ one }) => ({
   account: one(account, {
