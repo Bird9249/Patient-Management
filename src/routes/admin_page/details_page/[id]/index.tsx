@@ -9,6 +9,7 @@ import { convertToCustomFormat } from "~/utils/convertToCustomFormat";
 import { AdminSchema } from "../../schema/adminSchema";
 import background_admin from "/Background_admin.png";
 import logo_image from "/logo project.png";
+import { Cancel_Modal } from "~/components/modal/canceled/canceled";
 
 export const useAppointmentLoader = routeLoader$(async ({ params }) => {
   const res = await db.query.appointment.findFirst({
@@ -349,6 +350,7 @@ export default component$(() => {
         </div>
       </div>
       <Schedule_Modal isOpen={isScheduleOpen} />
+      <Cancel_Modal isOpen={isCancelOpen} />
     </>
   );
 });
