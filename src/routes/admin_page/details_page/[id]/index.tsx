@@ -7,7 +7,7 @@ import { Schedule_Modal } from "~/components/modal/scheduled/scheduled";
 import { db } from "~/lib/db/db";
 import { appointment } from "~/lib/db/schema";
 import { convertToCustomFormat } from "~/utils/convertToCustomFormat";
-import { AdminSchema } from "../../schema/adminSchema";
+import { AdminCancelSchema, AdminSchema } from "../../schema/adminSchema";
 import background_admin from "/Background_admin.png";
 import logo_image from "/logo project.png";
 
@@ -114,7 +114,7 @@ export const useReAppointmentAction = routeAction$(
 export const useCancelAppointmentAction = routeAction$(
   async (values, { params }) => {
     try {
-      const result = safeParse(AdminSchema, values);
+      const result = safeParse(AdminCancelSchema, values);
 
       if (result.success) {
         const res = await db
