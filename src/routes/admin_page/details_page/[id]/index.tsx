@@ -2,6 +2,7 @@ import { component$, useSignal } from "@builder.io/qwik";
 import { Link, routeAction$, routeLoader$ } from "@builder.io/qwik-city";
 import { eq } from "drizzle-orm";
 import { flatten, safeParse } from "valibot";
+import { Cancel_Modal } from "~/components/modal/canceled/canceled";
 import { Schedule_Modal } from "~/components/modal/scheduled/scheduled";
 import { db } from "~/lib/db/db";
 import { appointment } from "~/lib/db/schema";
@@ -9,7 +10,6 @@ import { convertToCustomFormat } from "~/utils/convertToCustomFormat";
 import { AdminSchema } from "../../schema/adminSchema";
 import background_admin from "/Background_admin.png";
 import logo_image from "/logo project.png";
-import { Cancel_Modal } from "~/components/modal/canceled/canceled";
 
 export const useAppointmentLoader = routeLoader$(async ({ params }) => {
   const res = await db.query.appointment.findFirst({
@@ -87,6 +87,53 @@ export const useReAppointmentAction = routeAction$(
             id: res[0].id,
             success: true,
             message: "update schedule successfully!",
+          },
+        };
+      } else {
+        console.log(flatten(result.issues));
+        return {
+          data: {
+            success: false,
+            type: "validate",
+            errors: flatten(result.issues),
+          },
+        };
+      }
+    } catch (error) {
+      console.error("Error updating appointment:", error);
+      return {
+        data: {
+          success: false,
+          type: "error",
+          message: (error as Error).message,
+        },
+      };
+    }
+  },
+);
+export const useCancelAppointmentAction = routeAction$(
+  async (values, { params }) => {
+    try {
+      const result = safeParse(AdminSchema, values);
+
+      if (result.success) {
+        const res = await db
+          .update(appointment)
+          .set({
+            status: "cancelled",
+            reasonOfAdmin: result.output.reasonOfAdmin,
+          })
+          .where(eq(appointment.id, Number(params.id)))
+          .returning({ id: appointment.id });
+
+        if (res.length === 0) {
+          throw new Error("No appointment was updated.");
+        }
+        return {
+          data: {
+            id: res[0].id,
+            success: true,
+            message: "update cancel successfully!",
           },
         };
       } else {
