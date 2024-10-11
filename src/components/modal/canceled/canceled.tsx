@@ -20,7 +20,7 @@ export const Cancel_Modal = component$<{ isOpen: Signal<boolean> }>(
       <>
         <Modal isOpen={isOpen} header={{ title: "Cancel Appointment" }}>
           <div>
-            <h1 class="mx-4 text-start text-base text-gray-400">
+            <h1 class="my-2 mx-4 text-start text-base text-gray-400">
               Are you sure you want to cancel your patient appointment
             </h1>
           </div>
