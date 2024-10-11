@@ -1,35 +1,26 @@
 import { $, component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
-import logo_image from "/logo project.png";
+import type { RequestHandler } from "@builder.io/qwik-city";
 import {
   Link,
-  RequestHandler,
   routeAction$,
   routeLoader$,
   useLocation,
   useNavigate,
 } from "@builder.io/qwik-city";
-import { Button } from "~/components/button/Button";
 import {
-  LuArrowBigLeft,
-  LuCheck,
-  LuChevronLeft,
   LuChevronRight,
-  LuHourglass,
   LuLogOut,
   LuPlusCircle,
-  LuTimer,
   LuUser,
-  LuX,
 } from "@qwikest/icons/lucide";
-import { db } from "~/lib/db/db";
-import { Table } from "~/components/table/Table";
-import { useAccountLoader } from "~/routes/information/[accountId]";
 import { count, eq } from "drizzle-orm";
-import { appointment } from "~/lib/db/schema";
-import { datetime } from "drizzle-orm/mysql-core";
+import { Button } from "~/components/button/Button";
 import { Modal } from "~/components/modal/Modal";
-import { isoDate } from "valibot";
+import { Table } from "~/components/table/Table";
+import { db } from "~/lib/db/db";
+import { appointment } from "~/lib/db/schema";
 import background_of_history from "/backgroud_of_history.png";
+import logo_image from "/logo project.png";
 
 type AppointmentResponse = {
   status: "scheduled" | "pending" | "cancelled";
@@ -64,7 +55,7 @@ export const onRequest: RequestHandler = async ({
 
 //load data in database by cookie and shareMap
 export const useAppointmentHistoryLoader = routeLoader$(
-  async ({ cookie, sharedMap, query }) => {
+  async ({ sharedMap, query }) => {
     const auth = sharedMap.get("auth");
     const offset = query.get("offset");
     const limit = query.get("limit");
@@ -114,7 +105,6 @@ export default component$(() => {
   const nav = useNavigate();
   const {
     params,
-    prevUrl,
     url: { searchParams },
   } = useLocation();
   const isOpen = useSignal<boolean>(false);

@@ -14,7 +14,7 @@ export const account = pgTable('account', {
   email: varchar('email', { length: 255 }),
   password: varchar('password', {length: 255}),
   phone: varchar('phone', { length: 20 }).unique().notNull(),
- createdAt: timestamp('created_at', { precision: 6, withTimezone: true }).defaultNow().notNull(),
+ createdAt: timestamp('created_at', {withTimezone: true,precision: 0 }).defaultNow().notNull(),
 });
 export const accountRelations = relations(account, ({ one, many }) => ({
   userInfo: one(userInfo, {
@@ -33,7 +33,7 @@ export const userInfo = pgTable('userinfo', {
   occupation: varchar('occupation', {length:255}).notNull(),
   emergencyName: varchar('emergency_name', { length: 255 }).notNull(),
   emergencyPhone: varchar('emergency_phone', { length: 20 }).notNull(),
- createdAt: timestamp('created_at', { precision: 6, withTimezone: true }).defaultNow().notNull(),
+ createdAt: timestamp('created_at', {withTimezone: true,precision: 0 }).defaultNow().notNull(),
 });
 export const userInfoRelations = relations(userInfo, ({ one, many }) => ({
   account: one(account, {
@@ -75,7 +75,7 @@ export const medicalInfo = pgTable('medicalinfo', {
   currentMedication: text('current_medication').notNull(),
   familyMedicalHistory: text('family_medical_history'),
   medicalHistory: text('medical_history').notNull(),
- createdAt: timestamp('created_at', { precision: 6, withTimezone: true }).defaultNow().notNull(),
+ createdAt: timestamp('created_at', {withTimezone: true,precision: 0 }).defaultNow().notNull(),
 });
 export const medicalInfoRelations = relations(medicalInfo, ({ one }) => ({
   userInfo: one(userInfo, {
@@ -93,7 +93,7 @@ export const doctor = pgTable('doctor', {
   name: varchar('name', { length: 255 }).notNull(),
   phone: varchar('phone', { length: 20 }).notNull(),
   image: text('image').notNull(),
- createdAt: timestamp('created_at', { precision: 6, withTimezone: true }).defaultNow().notNull(),
+ createdAt: timestamp('created_at', {withTimezone: true,precision: 0 }).defaultNow().notNull(),
 });
 
 export const doctorRelations = relations(doctor, ({ many }) => ({
@@ -109,9 +109,9 @@ export const appointment = pgTable('appointment', {
   doctorId: integer('doctor_id').references(() => doctor.id, {onDelete:'set null'}).notNull(),
   comment: text('comment'),
   status: statusEnum('status').notNull().default('pending'),
-  createdAt: timestamp('created_at', { precision: 6, withTimezone: true, mode: "string" }).defaultNow().notNull(),
+  createdAt: timestamp('created_at', {withTimezone: true,precision: 0, mode: "string" }).defaultNow().notNull(),
   reasonOfAdmin: text('reason_of_Admin'),
-  updatedAt: timestamp('updated_at', { precision: 6, withTimezone: true, mode: "string" }).$onUpdate(()=>sql`now()`),
+  updatedAt: timestamp('updated_at', {withTimezone: true,precision: 0, mode: "string" }).$onUpdate(()=>sql`now()`),
 });
 export const appointmentRelations = relations(appointment, ({ one }) => ({
   account: one(account, {

@@ -1,8 +1,13 @@
 import { component$, useSignal } from "@builder.io/qwik";
 import { Link, routeLoader$ } from "@builder.io/qwik-city";
+import { formAction$, valiForm$ } from "@modular-forms/qwik";
 import { eq } from "drizzle-orm";
+import { Schedule_Modal } from "~/components/modal/scheduled/scheduled";
 import { db } from "~/lib/db/db";
 import { appointment } from "~/lib/db/schema";
+import { convertToCustomFormat } from "~/utils/convertToCustomFormat";
+import type { IAdminSchema } from "../../schema/adminSchema";
+import { AdminSchema } from "../../schema/adminSchema";
 import background_admin from "/Background_admin.png";
 import logo_image from "/logo project.png";
 
@@ -17,6 +22,7 @@ export const useAppointmentLoader = routeLoader$(async ({ params }) => {
     with: {
       doctor: {
         columns: {
+          id: true,
           name: true,
           image: true,
         },
@@ -51,9 +57,50 @@ export const useAppointmentLoader = routeLoader$(async ({ params }) => {
   };
 });
 
+export const useDoctorSelectLoader = routeLoader$(async function () {
+  return await db.query.doctor.findMany({
+    columns: { id: true, image: true, name: true },
+  });
+});
+
+export const useReAppointmentAction = formAction$<
+  IAdminSchema,
+  { success: boolean; message: string; id?: number }
+>(async (values, { params }) => {
+  try {
+    const res = await db
+      .update(appointment)
+      .set({
+        status: "scheduled",
+        doctorId: values.doctorId,
+        reasonOfAdmin: values.reasonOfAdmin,
+      })
+      .where(eq(appointment.id, Number(params.id)))
+      .returning({ id: appointment.id });
+
+    if (res.length === 0) {
+      throw new Error("No appointment was updated.");
+    }
+    return {
+      data: {
+        id: res[0].id,
+        success: true,
+        message: "update schedule successfully!",
+      },
+    };
+  } catch (error) {
+    console.error("Error updating appointment:", error);
+    return {
+      data: { success: false, message: (error as Error).message },
+    };
+  }
+}, valiForm$(AdminSchema));
+
 export default component$(() => {
   const loader = useAppointmentLoader();
-  const isOpen = useSignal<boolean>(false);
+
+  const isScheduleOpen = useSignal<boolean>(false);
+  const isCancelOpen = useSignal<boolean>(false);
 
   console.log(loader.value.data);
 
@@ -235,7 +282,7 @@ export default component$(() => {
                   >
                     Date of Appointment:{" "}
                     <span class="ml-2 font-normal">
-                      {loader.value.data?.dateTime}
+                      {convertToCustomFormat(loader.value.data!.dateTime)}
                     </span>
                   </p>
                   <div class="space-y-3">
@@ -266,7 +313,7 @@ export default component$(() => {
                 <button
                   class="rounded-full bg-emerald-400 px-3 py-1 text-base font-medium text-white hover:bg-teal-500 "
                   onClick$={() => {
-                    isOpen.value = true;
+                    isScheduleOpen.value = true;
                   }}
                 >
                   Schedule
@@ -276,7 +323,7 @@ export default component$(() => {
                 <button
                   class="rounded-full bg-red-600 px-3 py-1 text-base font-medium text-white hover:bg-red-700"
                   onClick$={() => {
-                    isOpen.value = true;
+                    isCancelOpen.value = true;
                   }}
                 >
                   Cancel
@@ -286,6 +333,7 @@ export default component$(() => {
           </div>
         </div>
       </div>
+      <Schedule_Modal isOpen={isScheduleOpen} />
     </>
   );
 });
