@@ -20,7 +20,7 @@ export const Cancel_Modal = component$<{ isOpen: Signal<boolean> }>(
       <>
         <Modal isOpen={isOpen} header={{ title: "Cancel Appointment" }}>
           <div>
-            <h1 class="mx-4 text-start text-lg text-gray-400">
+            <h1 class="mx-4 text-start text-base text-gray-400">
               Are you sure you want to cancel your patient appointment
             </h1>
           </div>
@@ -43,7 +43,7 @@ export const Cancel_Modal = component$<{ isOpen: Signal<boolean> }>(
           <div class="mx-auto flex flex-col items-center p-5">
             <button
               type="button"
-              class="mb-10 block w-full rounded-lg bg-red-600 px-5 py-3 text-white"
+              class="m-4 block w-full rounded-lg bg-red-600 px-5 py-3 text-white"
               onClick$={async () => {
                 const res = await action.submit({
                   reasonOfAdmin: formStore.reasonOfAdmin,
