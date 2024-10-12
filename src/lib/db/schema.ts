@@ -53,7 +53,7 @@ export const userInfoRelations = relations(userInfo, ({ one, many }) => ({
 export const identify = pgTable('identify', {
   id: serial ('id').primaryKey(),
   userinfoId: integer ('userinfo_id').references(()=> userInfo.id, {onDelete:'cascade'}).notNull(),
-  type: identifyEnum('type'),
+  type: identifyEnum('type').notNull(),
   number: varchar('number', { length: 255 }).notNull(),
   image: text('image').notNull(),
   createdAt: timestamp('created_at').defaultNow().notNull()
