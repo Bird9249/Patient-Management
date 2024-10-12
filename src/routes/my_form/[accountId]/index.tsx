@@ -80,38 +80,41 @@ export const useUpdateUser = formAction$<
   }
 }, valiForm$(EditFormServerSchema));
 
-export const useUserInfoLoader = routeLoader$(async ({ params, redirect }) => {
-  const res = await db.query.userInfo.findFirst({
-    columns: {
-      gender: true,
-      address: true,
-      dateOfBirth: true,
-      emergencyName: true,
-      emergencyPhone: true,
-      occupation: true,
-    },
-    with: {
-      identify: {
-        columns: {
-          type: true,
-          number: true,
-          image: true,
+export const useUserInfoLoader = routeLoader$(
+  async ({ redirect, sharedMap }) => {
+    const auth = sharedMap.get("auth");
+    const res = await db.query.userInfo.findFirst({
+      columns: {
+        gender: true,
+        address: true,
+        dateOfBirth: true,
+        emergencyName: true,
+        emergencyPhone: true,
+        occupation: true,
+      },
+      with: {
+        identify: {
+          columns: {
+            type: true,
+            number: true,
+            image: true,
+          },
+        },
+        account: {
+          columns: {
+            name: true,
+            phone: true,
+            email: true,
+          },
         },
       },
-      account: {
-        columns: {
-          name: true,
-          phone: true,
-          email: true,
-        },
-      },
-    },
-    where: eq(userInfo.accountId, Number(params.accountId)),
-  });
-
-  if (res) return res;
-  else throw redirect(301, "/log_in");
-});
+      where: eq(userInfo.accountId, Number(auth.sub)),
+    });
+    console.log("my form auth:", auth);
+    if (res) return res;
+    else throw redirect(301, "/log_in");
+  },
+);
 
 export const useLogoutAction = routeAction$(async (values, { cookie }) => {
   cookie.delete("auth-token", { path: "/" });
@@ -200,7 +203,7 @@ export default component$(() => {
               </p>
             </div>
             <div class="flex-1">
-              <div class="flex flex-col gap-8 text-lg font-medium sm:mt-0 sm:flex-row sm:items-center sm:justify-end sm:ps-5">
+              <div class="flex flex-col gap-14 text-lg font-medium sm:mt-0 sm:flex-row sm:items-center sm:justify-end sm:ps-5">
                 <a
                   class=" text-primary-800 hover:text-primary-700"
                   href={`/page_home_user/${params.accountId}/`}
@@ -234,7 +237,7 @@ export default component$(() => {
                 <div class="flex text-red-500">
                   <LuLogOut class="size-20 " />
                 </div>
-                <div class="flex text-2xl">Do You Confirm to LOG OUT</div>
+                <div class="flex text-2xl">Do you confirm to LOG OUT ?</div>
                 <div class=" flex gap-14">
                   <button
                     type="button"

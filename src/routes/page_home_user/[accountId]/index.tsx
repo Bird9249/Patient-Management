@@ -228,7 +228,7 @@ export default component$(() => {
                 <Link href="#">Home</Link>
               </li>
               <li>
-                <Link href="#">My form</Link>
+                <Link href={`/my_form/${params.accountId}/`}>My form</Link>
               </li>
               <li>
                 <Link href="#">Contact us</Link>
