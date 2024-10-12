@@ -1,18 +1,20 @@
-import { component$, noSerialize } from "@builder.io/qwik";
+import { component$, noSerialize, useSignal } from "@builder.io/qwik";
 import {
   Link,
+  routeAction$,
   routeLoader$,
   useLocation,
   useNavigate,
 } from "@builder.io/qwik-city";
 import { formAction$, setValue, useForm, valiForm$ } from "@modular-forms/qwik";
-import { LuChevronDown, LuUser2 } from "@qwikest/icons/lucide";
+import { LuChevronDown, LuLogOut, LuUser2 } from "@qwikest/icons/lucide";
 import { eq } from "drizzle-orm";
 import { Button } from "~/components/button/Button";
 import PreviewImage from "~/components/forms/preview-image/PreviewImage";
 import { Radio } from "~/components/forms/radio/Radio";
 import { Select } from "~/components/forms/select/Select";
 import { TextInput } from "~/components/forms/text-input/TextInput";
+import { Modal } from "~/components/modal/Modal";
 import { db } from "~/lib/db/db";
 import { account, identify, userInfo } from "~/lib/db/schema";
 import { uploadFile } from "~/utils/file";
@@ -40,7 +42,7 @@ export const useUpdateUser = formAction$<
           address: user.userInfo.userInfo.address,
           occupation: user.userInfo.userInfo.occupation,
           emergencyName: user.userInfo.userInfo.emergencyName,
-          emergencyPhone: user.userInfo.userInfo.emergencyPhone,
+          emergencyPhone: `+85620${user.userInfo.userInfo.emergencyPhone}`,
         })
         .where(eq(userInfo.accountId, Number(params.accountId)))
         .returning({
@@ -52,7 +54,7 @@ export const useUpdateUser = formAction$<
         .set({
           name: user.userInfo.userInfo.name,
           email: user.userInfo.userInfo.email,
-          phone: user.userInfo.userInfo.phone,
+          phone: `+85620${user.userInfo.userInfo.phone}`,
         })
         .where(eq(account.id, Number(params.accountId)));
 
@@ -111,12 +113,22 @@ export const useUserInfoLoader = routeLoader$(async ({ params, redirect }) => {
   else throw redirect(301, "/log_in");
 });
 
+export const useLogoutAction = routeAction$(async (values, { cookie }) => {
+  cookie.delete("auth-token", { path: "/" });
+
+  return {
+    success: true,
+  };
+});
+
 // browser
 export default component$(() => {
   const userInfoLoader = useUserInfoLoader();
   const action = useUpdateUser();
   const nav = useNavigate();
   const { params } = useLocation();
+  const logoutAction = useLogoutAction();
+  const isOpen = useSignal<boolean>(false);
 
   const [form, { Field, Form }] = useForm<IEditFromSchema>({
     loader: {
@@ -191,7 +203,7 @@ export default component$(() => {
               <div class="flex flex-col gap-8 text-lg font-medium sm:mt-0 sm:flex-row sm:items-center sm:justify-end sm:ps-5">
                 <a
                   class=" text-primary-800 hover:text-primary-700"
-                  href="#"
+                  href={`/page_home_user/${params.accountId}/`}
                   aria-current="page"
                 >
                   Home
@@ -206,21 +218,57 @@ export default component$(() => {
                 <a class=" text-primary-800 hover:text-primary-700 " href="#">
                   Contact us
                 </a>
-                <a
+                <button
                   class=" flex flex-row items-center gap-1 text-primary-800 hover:text-primary-700 "
-                  href="#"
+                  onClick$={() => {
+                    isOpen.value = true;
+                  }}
                 >
                   <LuUser2 />
                   Log out
-                </a>
+                </button>
               </div>
             </div>
+            <Modal isOpen={isOpen}>
+              <div class="mb-10 flex flex-col items-center justify-center space-y-14 p-5">
+                <div class="flex text-red-500">
+                  <LuLogOut class="size-20 " />
+                </div>
+                <div class="flex text-2xl">Do You Confirm to LOG OUT</div>
+                <div class=" flex gap-14">
+                  <button
+                    type="button"
+                    class="inline-flex h-11 w-28 items-center justify-center rounded-full border border-transparent bg-red-500 px-3 py-2 text-base font-medium text-white hover:bg-red-600 focus:bg-red-600 focus:outline-none disabled:pointer-events-none disabled:opacity-50"
+                    onClick$={async () => {
+                      await nav(`/page_home_user/${params.accountId}/`);
+                    }}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    onClick$={async () => {
+                      const res = await logoutAction.submit();
+                      console.log(res);
+
+                      if (res.value.success) {
+                        await nav("/log_in/");
+                      }
+                    }}
+                    class="inline-flex h-11 w-28 items-center justify-center gap-x-2 rounded-full border border-transparent bg-gray-200 px-4 py-2 text-base font-medium text-red-500 hover:bg-gray-300 focus:bg-gray-300  focus:outline-none disabled:pointer-events-none disabled:opacity-50"
+                    disabled={logoutAction.isRunning}
+                  >
+                    Log out
+                  </button>
+                </div>
+              </div>
+            </Modal>
           </nav>
         </div>
         {/* back button */}
         <Link
           class="inline-flex items-center gap-x-1 text-lg text-gray-800 hover:cursor-pointer hover:text-primary-600 focus:text-primary-600"
-          href={`/admin_page/`}
+          href={`/page_home_user/${params.accountId}/`}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
