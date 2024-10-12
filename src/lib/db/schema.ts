@@ -112,6 +112,7 @@ export const appointment = pgTable('appointment', {
   createdAt: timestamp('created_at', {withTimezone: true,precision: 0, mode: "string" }).defaultNow().notNull(),
   reasonOfAdmin: text('reason_of_Admin'),
   updatedAt: timestamp('updated_at', {withTimezone: true,precision: 0, mode: "string" }).$onUpdate(()=>sql`now()`),
+
 });
 export const appointmentRelations = relations(appointment, ({ one }) => ({
   account: one(account, {
