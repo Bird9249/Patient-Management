@@ -1,6 +1,12 @@
 import { component$, noSerialize } from "@builder.io/qwik";
-import { routeLoader$, useLocation, useNavigate } from "@builder.io/qwik-city";
+import {
+  Link,
+  routeLoader$,
+  useLocation,
+  useNavigate,
+} from "@builder.io/qwik-city";
 import { formAction$, setValue, useForm, valiForm$ } from "@modular-forms/qwik";
+import { LuChevronDown, LuUser2 } from "@qwikest/icons/lucide";
 import { eq } from "drizzle-orm";
 import { Button } from "~/components/button/Button";
 import PreviewImage from "~/components/forms/preview-image/PreviewImage";
@@ -20,22 +26,13 @@ import background from "/image.png";
 import image_logo from "/logo project.png";
 
 // server
-export const useAddUser = formAction$<
+export const useUpdateUser = formAction$<
   IEditFromServerSchema,
-  { message: string; success: boolean; id?: number }
+  { message: string; success: boolean }
 >(async (user, { params }) => {
   try {
-    const result = await db.transaction(async (tx) => {
-      const res = await tx
-        .update(account)
-        .set({
-          name: user.userInfo.userInfo.name,
-          email: user.userInfo.userInfo.email,
-          phone: user.userInfo.userInfo.phone,
-        })
-        .where(eq(account.id, Number(params.accountId)));
-
-      await tx
+    await db.transaction(async (tx) => {
+      const [{ id }] = await tx
         .update(userInfo)
         .set({
           gender: user.userInfo.userInfo.gender,
@@ -46,7 +43,18 @@ export const useAddUser = formAction$<
           emergencyPhone: user.userInfo.userInfo.emergencyPhone,
         })
         .where(eq(userInfo.accountId, Number(params.accountId)))
-        .returning({ id: userInfo.id });
+        .returning({
+          id: userInfo.id,
+        });
+
+      await tx
+        .update(account)
+        .set({
+          name: user.userInfo.userInfo.name,
+          email: user.userInfo.userInfo.email,
+          phone: user.userInfo.userInfo.phone,
+        })
+        .where(eq(account.id, Number(params.accountId)));
 
       await tx
         .update(identify)
@@ -55,13 +63,10 @@ export const useAddUser = formAction$<
           number: user.identify.number,
           image: user.identify.image,
         })
-        .where(eq(identify.userinfoId, userInfo.id));
-
-      return res;
+        .where(eq(identify.userinfoId, id));
     });
     return {
       data: {
-        id: Number(result),
         success: true,
         message: "Update user successful",
       },
@@ -73,8 +78,8 @@ export const useAddUser = formAction$<
   }
 }, valiForm$(EditFormServerSchema));
 
-export const useUserInfoLoader = routeLoader$(async ({ params }) => {
-  return await db.query.userInfo.findFirst({
+export const useUserInfoLoader = routeLoader$(async ({ params, redirect }) => {
+  const res = await db.query.userInfo.findFirst({
     columns: {
       gender: true,
       address: true,
@@ -101,14 +106,15 @@ export const useUserInfoLoader = routeLoader$(async ({ params }) => {
     },
     where: eq(userInfo.accountId, Number(params.accountId)),
   });
-  // if (res) return res;
-  // else throw redirect(301, "/log_in");
+
+  if (res) return res;
+  else throw redirect(301, "/log_in");
 });
 
 // browser
 export default component$(() => {
   const userInfoLoader = useUserInfoLoader();
-  const action = useAddUser();
+  const action = useUpdateUser();
   const nav = useNavigate();
   const { params } = useLocation();
 
@@ -118,12 +124,15 @@ export default component$(() => {
         userInfo: {
           userInfo: {
             name: userInfoLoader.value!.account.name,
-            email: userInfoLoader.value?.account.email || "",
+            email: userInfoLoader.value.account.email || "",
             phone: userInfoLoader.value!.account.phone.replace("+85620", ""),
             address: userInfoLoader.value!.address,
             dayOfBirth: userInfoLoader.value!.dateOfBirth,
             emergencyName: userInfoLoader.value!.emergencyName,
-            emergencyPhone: userInfoLoader.value!.emergencyPhone,
+            emergencyPhone: userInfoLoader.value!.emergencyPhone.replace(
+              "+85620",
+              "",
+            ),
             gender: userInfoLoader.value!.gender,
             occupation: userInfoLoader.value!.occupation,
           },
@@ -140,7 +149,7 @@ export default component$(() => {
 
   return (
     <Form
-      class="mb-14"
+      class="mb-10"
       onSubmit$={async (values) => {
         const fileName = generate_file_name(
           values.identify.image!.name,
@@ -167,15 +176,75 @@ export default component$(() => {
         height={0}
       />
       <div class="container mx-auto my-8 px-8">
-        {/* logo */}
-        <div class="mb-12">
-          <img src={image_logo} alt="logo" width={84} height={54} />
-          <p class="ml-1 text-sm font-semibold text-black">SnatBas Clinic</p>
+        {/* nav */}
+        <div class="mb-5 flex w-full flex-row justify-between">
+          <nav class="mx-auto w-full sm:flex sm:items-center sm:justify-between">
+            {/* logo */}
+            <div class="flex flex-col">
+              <img src={image_logo} alt="logo" width={84} height={54} />
+              <p class="ml-1 text-sm font-semibold text-black">
+                SnatBas Clinic
+              </p>
+            </div>
+            <div class="flex-1">
+              <div class="flex flex-col gap-8 text-lg font-medium sm:mt-0 sm:flex-row sm:items-center sm:justify-end sm:ps-5">
+                <a
+                  class=" text-primary-800 hover:text-primary-700"
+                  href="#"
+                  aria-current="page"
+                >
+                  Home
+                </a>
+                <a
+                  class=" flex flex-row items-center gap-1 text-primary-800 hover:text-primary-700"
+                  href="#"
+                >
+                  Profile
+                  <LuChevronDown class="size-4" />
+                </a>
+                <a class=" text-primary-800 hover:text-primary-700 " href="#">
+                  Contact us
+                </a>
+                <a
+                  class=" flex flex-row items-center gap-1 text-primary-800 hover:text-primary-700 "
+                  href="#"
+                >
+                  <LuUser2 />
+                  Log out
+                </a>
+              </div>
+            </div>
+          </nav>
         </div>
+        {/* back button */}
+        <Link
+          class="inline-flex items-center gap-x-1 text-lg text-gray-800 hover:cursor-pointer hover:text-primary-600 focus:text-primary-600"
+          href={`/admin_page/`}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="34"
+            height="34"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-circle-arrow-left"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <path d="M16 12H8" />
+            <path d="m12 8-4 4 4 4" />
+          </svg>
+          Back
+        </Link>
         {/* Hi.. */}
-        <div class="w-full text-black">
-          <p class="text-4xl font-normal">Hi, How Are you ...</p>
-          <p class="text-mg text-gray-500">Let us know more about yourself</p>
+        <div class="mt-5 w-full space-y-2 text-black">
+          <p class="text-3xl font-normal">My Form</p>
+          <p class="text-sm text-gray-500">
+            You can edit and Change information to be correct
+          </p>
         </div>
       </div>
       {/* main div */}
