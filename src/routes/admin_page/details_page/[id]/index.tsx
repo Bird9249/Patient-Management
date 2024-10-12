@@ -225,17 +225,17 @@ export default component$(() => {
             <div class="container mx-auto flex w-full flex-col gap-x-5 space-y-4 rounded-xl bg-primary-100 p-5">
               <div class="flex h-10 items-center justify-start gap-5">
                 {/* personal info */}
-                <div class="flex-1 rounded-lg bg-white px-4 py-2">
+                <div class="flex-1 rounded-xl bg-white px-4 py-2">
                   <p class="text-lg">Personal Information</p>
                 </div>
                 {/* from request */}
-                <div class="flex-1 rounded-lg bg-white px-4 py-2">
+                <div class="flex-1 rounded-xl bg-white px-4 py-2">
                   <p class="text-lg">From request</p>
                 </div>
               </div>
               {/* info */}
               <div class="flex gap-5">
-                <div class="flex-1 space-y-5 rounded-lg bg-white px-4 py-3 text-sm">
+                <div class="flex-1 space-y-5 rounded-xl bg-white px-4 py-3 text-sm">
                   <p
                     class=" font-medium
                 "
@@ -319,7 +319,7 @@ export default component$(() => {
                   </p>
                 </div>
                 {/* from request */}
-                <div class="flex-1 items-center space-y-4 rounded-lg bg-white px-4 py-3 text-sm">
+                <div class="flex-1 items-center space-y-4 rounded-xl bg-white px-4 py-3 text-sm">
                   <div class="flex items-center">
                     <div class="font-medium">Doctor: </div>
                     <div class="ml-4 inline-block">
@@ -351,7 +351,7 @@ export default component$(() => {
                   <div class="space-y-3">
                     <p class="font-medium">Reason of Appointment</p>
                     <textarea
-                      class="block w-full rounded-lg border-gray-200 px-4 py-3 text-sm focus:border-primary-500 focus:ring-primary-500 disabled:pointer-events-none disabled:opacity-50"
+                      class="block w-full rounded-xl border-gray-200 px-4 py-3 text-sm focus:border-primary-500 focus:ring-primary-500 disabled:pointer-events-none disabled:opacity-50"
                       rows={3}
                       placeholder="Readonly"
                       readOnly
@@ -361,7 +361,7 @@ export default component$(() => {
                   <div class="space-y-3">
                     <p class="font-medium">Additional comment\notes</p>
                     <textarea
-                      class="block w-full rounded-lg border-gray-200 px-4 py-3 text-sm focus:border-primary-500 focus:ring-primary-500 disabled:pointer-events-none disabled:opacity-50"
+                      class="block w-full rounded-xl border-gray-200 px-4 py-3 text-sm focus:border-primary-500 focus:ring-primary-500 disabled:pointer-events-none disabled:opacity-50"
                       rows={3}
                       placeholder="Readonly"
                       readOnly
@@ -384,7 +384,7 @@ export default component$(() => {
               </div>
               <div class="flex-none items-center">
                 <button
-                  class="h-10 w-28 rounded-full bg-red-600 px-3 py-1 text-base font-medium text-white hover:bg-red-700"
+                  class="h-10 w-28 rounded-full bg-red-500 px-3 py-1 text-base font-medium text-white hover:bg-red-600"
                   onClick$={() => {
                     isCancelOpen.value = true;
                   }}
