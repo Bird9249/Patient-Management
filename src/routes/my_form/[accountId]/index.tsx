@@ -164,6 +164,7 @@ export default component$(() => {
 
           await nav(`/page_home_user/${params.accountId}/`);
         } else {
+          console.log("error :", res.value.errors);
           alert("your image can not upload, please try again");
         }
       }}
