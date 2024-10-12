@@ -54,7 +54,7 @@ export const Table = component$<TableProps>(
             <div class="relative flex items-center justify-center sm:col-span-2 md:grow">
               {isLoading ? (
                 <div class="absolute left-0 top-0 z-10 size-full bg-gray-400/30">
-                  <div class="flex min-h-[400px] w-full flex-col items-center justify-center px-6 py-4">
+                  <div class="flex min-h-[300px] w-full flex-col items-center justify-center px-6 py-4">
                     <div class="flex flex-col items-center">
                       <span
                         class="inline-block size-8 animate-spin rounded-full border-[4px] border-current border-t-transparent text-gray-700"
@@ -70,7 +70,7 @@ export const Table = component$<TableProps>(
                 <></>
               )}
               {data.value.data.length <= 0 ? (
-                <div class="flex min-h-[400px] w-full flex-col items-center justify-center px-6 py-4">
+                <div class="flex min-h-[300px] w-full flex-col items-center justify-center px-6 py-4">
                   <div>
                     {emptyState.icon ? (
                       <div class="flex size-[46px] items-center justify-center rounded-lg bg-gray-100">
@@ -105,7 +105,7 @@ export const Table = component$<TableProps>(
                   </div>
                 </div>
               ) : (
-                <div class="flex min-h-[400px] w-full flex-col justify-between">
+                <div class="flex min-h-[300px] w-full flex-col justify-between">
                   <table class="min-w-full divide-y divide-neutral-200">
                     <thead class="text-nowrap bg-gray-50">
                       <tr>
@@ -115,7 +115,7 @@ export const Table = component$<TableProps>(
                             class="px-6 py-3 text-start"
                             key={idx}
                           >
-                            <div class="flex items-center gap-x-2">
+                            <div class="flex items-center justify-center gap-x-2">
                               <span class="text-xs font-semibold uppercase tracking-wide text-gray-800 ">
                                 {col.label}
                               </span>
@@ -125,7 +125,7 @@ export const Table = component$<TableProps>(
                       </tr>
                     </thead>
 
-                    <tbody class="divide-y divide-gray-200">
+                    <tbody class="divide-y divide-gray-200 text-center">
                       {data.value.data.map((_: any, index: number) => (
                         <tr key={index} class="bg-white hover:bg-gray-50">
                           {columns.map((col, idx) => (

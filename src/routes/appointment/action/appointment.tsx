@@ -16,6 +16,5 @@ export default async (
       reasonOfAppointment: appointmentData.reasonOfAppointment,
     })
     .returning({ id: appointment.id });
-
   return id;
 };

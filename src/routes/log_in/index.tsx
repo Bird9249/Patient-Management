@@ -1,11 +1,12 @@
 /* eslint-disable qwik/no-use-visible-task */
-import { component$, useVisibleTask$ } from "@builder.io/qwik";
-import { Link, useNavigate } from "@builder.io/qwik-city";
+import { component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
+import { Link, routeAction$, useNavigate } from "@builder.io/qwik-city";
 import { formAction$, useForm, valiForm$ } from "@modular-forms/qwik";
 import { compareSync } from "bcrypt-ts";
 import { SignJWT } from "jose";
 import { Button } from "~/components/button/Button";
 import { TextInput } from "~/components/forms/text-input/TextInput";
+import { PinVerification } from "~/components/modal/pin-verification/pin-verification";
 import logo_img from "../../../public/logo project.png";
 import background_img from "../../../public/picture prompt.png";
 import { checkAccount } from "./Action/action";
@@ -45,6 +46,7 @@ export const useLoginAction = formAction$<
         alg: "HS256",
       })
       .setIssuedAt()
+      .setExpirationTime("1y")
       .sign(secret);
 
     cookie.set("auth-token", token, { path: "/", httpOnly: true });
@@ -68,9 +70,55 @@ export const useLoginAction = formAction$<
   }
 }, valiForm$(LoginSchema));
 
+export const useVerifyLogInAction = routeAction$(async (values, { cookie }) => {
+  try {
+    const isPasskeyMatch = compareSync(
+      values.passkey as string,
+      "$2a$10$YTrLvBkdVvnU.DtTQAGaGuZ.yYjp4tJaKKCNBZ7u1ftFmNtJ.Psju",
+    );
+
+    if (!isPasskeyMatch)
+      return {
+        errors: {
+          passkey: "passkey not match",
+        },
+      };
+
+    const secret_passkey = new TextEncoder().encode(process.env.AUTH_SECRET);
+
+    const token = await new SignJWT({
+      sub: "admin",
+    })
+      .setProtectedHeader({
+        alg: "HS256",
+      })
+      .setIssuedAt()
+      .sign(secret_passkey);
+
+    cookie.set("admin-session", token, { path: "/", httpOnly: true });
+
+    return {
+      data: {
+        success: true,
+        message: "Login Successfully",
+      },
+    };
+  } catch (error) {
+    console.error(error);
+
+    return {
+      data: {
+        success: false,
+        message: (error as Error).message,
+      },
+    };
+  }
+});
+
 export default component$(() => {
   const action = useLoginAction();
   const nav = useNavigate();
+  const isStaffLogin = useSignal<boolean>(false);
 
   const [form, { Field, Form }] = useForm<
     ILoginSchema,
@@ -91,7 +139,7 @@ export default component$(() => {
 
     if (action.value) {
       if (action.value.response.data?.success) {
-        await nav(`/history/${action.value.response.data.id}/`);
+        await nav(`/page_home_user/${action.value.response.data.id}/`);
       } else {
         alert("Something was wrong!");
       }
@@ -105,13 +153,13 @@ export default component$(() => {
         {/* form */}
         <div class="flex-1">
           {/* logo */}
-          <div class="absolute ml-[110px] mt-[54px] h-[80px] w-[120px]">
+          <div class="absolute ml-28 mt-14 h-20 w-32">
             <img src={logo_img} alt="logo_icon" width={84} height={54} />
-            <h1 class="ml-1 font-semibold">SnatBas Clinic</h1>
+            <h1 class="ml-1 text-sm font-semibold">SnatBas Clinic</h1>
           </div>
 
           {/* text */}
-          <div class="mx-[120px] mt-[172px] ">
+          <div class="mx-28 mt-44 ">
             <div>
               <p class="text-2xl ">Welcome back, ...</p>
               <p class="text-base text-gray-500">We can provide advice.</p>
@@ -127,7 +175,7 @@ export default component$(() => {
                     value={field.value}
                     error={field.error}
                     label="Your phone number"
-                    placeholder="+856 20 xx xxx xxx"
+                    placeholder="xx xxx xxx"
                     type="tel"
                     required
                   />
@@ -168,12 +216,15 @@ export default component$(() => {
             >
               Sign up
             </Link>
-            <Link
-              href="/stuff"
+            <button
+              type="button"
               class="pl-2 text-primary-600 underline decoration-primary-600 underline-offset-8 hover:opacity-80 focus:opacity-80 focus:outline-none "
+              onClick$={() => {
+                isStaffLogin.value = true;
+              }}
             >
               Staff
-            </Link>
+            </button>
           </div>
         </div>
 
@@ -188,6 +239,7 @@ export default component$(() => {
           />
         </div>
       </div>
+      <PinVerification isOpen={isStaffLogin} />
     </Form>
   );
 });

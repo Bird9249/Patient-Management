@@ -1,6 +1,12 @@
 import { component$, useSignal } from "@builder.io/qwik";
-import { routeLoader$, useLocation, useNavigate } from "@builder.io/qwik-city";
+import {
+  Link,
+  routeLoader$,
+  useLocation,
+  useNavigate,
+} from "@builder.io/qwik-city";
 import { formAction$, setValue, useForm, valiForm$ } from "@modular-forms/qwik";
+import { LuCheckCircle } from "@qwikest/icons/lucide";
 import { Button } from "~/components/button/Button";
 import { AdvancedSelect } from "~/components/forms/advanced-select/AdvancedSelect";
 import { TextInput } from "~/components/forms/text-input/TextInput";
@@ -76,22 +82,50 @@ export default component$(() => {
         }
       }}
     >
-      <div class="relative flex min-h-screen flex-col justify-center bg-white">
+      <div class="relative mx-auto flex min-h-screen flex-col justify-center bg-white">
         <img
-          class="absolute h-screen w-screen brightness-110"
+          class="fixed h-screen w-screen object-cover"
           src={backgroundpage}
           alt=""
           width={0}
           height={0}
         />
         <div class="z-10">
-          <div class="mb-12 ml-28">
+          <div class="mb-4 ml-28">
             <img class="w-20" src={logo_page} width={0} height={0} />
             <span class="ml-1 text-sm font-semibold">SnatBas Clinic</span>
           </div>
+          <div>
+            <Link
+              class="mb-4 ml-32 inline-flex items-center gap-x-1  hover:cursor-pointer hover:text-primary-600 focus:text-primary-600 focus:outline-none "
+              onClick$={async () => {
+                nav(`/page_home_user/${params.accountId}/`);
+              }}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="34"
+                height="34"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-circle-arrow-left"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <path d="M16 12H8" />
+                <path d="m12 8-4 4 4 4" />
+              </svg>
+              Back
+            </Link>
+          </div>
           <div class="ml-32">
             <h1 class="mb-4 text-3xl">Hey There 👋</h1>
-            <p class="mb-6">Request a new appointment in 10 seconds</p>
+            <p class="mb-6 text-gray-500">
+              Request a new appointment in 10 seconds
+            </p>
             <div class="w-full max-w-screen-lg rounded-lg bg-gray-50 p-8 text-black">
               <div class="mb-4">
                 {/* Dropdown */}
@@ -182,15 +216,30 @@ export default component$(() => {
         </div>
 
         <Modal isOpen={isOpen}>
-          success
-          <Button
-            type="button"
-            onClick$={async () => {
-              await nav(`/history/${params.accountId}/`);
-            }}
-          >
-            Ok
-          </Button>
+          <div class="flex w-full flex-col gap-3 p-10 text-center">
+            <div class="flex items-center justify-center">
+              <LuCheckCircle font-size="70px" class="text-green-600" />
+            </div>
+            <p class="text-wrap px-10 text-2xl font-medium">
+              {" "}
+              Your <span class=" text-green-700">appointment request</span> has
+              been submitted completely!
+            </p>
+            <p class="px-10 text-lg text-gray-500">
+              We'll be in touch shortly to confirm.
+            </p>
+
+            <Button
+              block
+              type="button"
+              variant="solid"
+              onClick$={async () => {
+                await nav(`/page_home_user/${params.accountId}/`);
+              }}
+            >
+              Confirm
+            </Button>
+          </div>
         </Modal>
       </div>
     </Form>
