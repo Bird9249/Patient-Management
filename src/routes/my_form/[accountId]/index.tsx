@@ -1,112 +1,170 @@
-import { component$, noSerialize } from "@builder.io/qwik";
-import { routeLoader$, useLocation, useNavigate } from "@builder.io/qwik-city";
+import { component$, noSerialize, useSignal } from "@builder.io/qwik";
+import {
+  Link,
+  routeAction$,
+  routeLoader$,
+  useLocation,
+  useNavigate,
+} from "@builder.io/qwik-city";
 import { formAction$, setValue, useForm, valiForm$ } from "@modular-forms/qwik";
+import { LuChevronDown, LuLogOut, LuUser2 } from "@qwikest/icons/lucide";
 import { eq } from "drizzle-orm";
 import { Button } from "~/components/button/Button";
-import { AdvancedSelect } from "~/components/forms/advanced-select/AdvancedSelect";
-import { Checkbox } from "~/components/forms/checkbox/Checkbox";
 import PreviewImage from "~/components/forms/preview-image/PreviewImage";
 import { Radio } from "~/components/forms/radio/Radio";
 import { Select } from "~/components/forms/select/Select";
 import { TextInput } from "~/components/forms/text-input/TextInput";
-import { Textarea } from "~/components/forms/textarea/Textarea";
+import { Modal } from "~/components/modal/Modal";
 import { db } from "~/lib/db/db";
-import { account } from "~/lib/db/schema";
+import { account, identify, userInfo } from "~/lib/db/schema";
 import { uploadFile } from "~/utils/file";
 import generate_file_name from "~/utils/generate_file_name";
-import { addUserInfo } from "../Actions/userInfo";
 import type {
-  IRegisterSchema,
-  IRegisterServerSchema,
-} from "../schema/register";
-import { RegisterSchema, RegisterServerSchema } from "../schema/register";
+  IEditFromSchema,
+  IEditFromServerSchema,
+} from "../schema/myFormSchema";
+import { EditFormSchema, EditFormServerSchema } from "../schema/myFormSchema";
 import background from "/image.png";
 import image_logo from "/logo project.png";
 
 // server
-export const useAddUser = formAction$<
-  IRegisterServerSchema,
-  { message: string; success: boolean; id?: number }
+export const useUpdateUser = formAction$<
+  IEditFromServerSchema,
+  { message: string; success: boolean }
 >(async (user, { params }) => {
   try {
-    const id = await addUserInfo(user, Number(params.accountId));
+    await db.transaction(async (tx) => {
+      const [{ id }] = await tx
+        .update(userInfo)
+        .set({
+          gender: user.userInfo.userInfo.gender,
+          dateOfBirth: user.userInfo.userInfo.dayOfBirth,
+          address: user.userInfo.userInfo.address,
+          occupation: user.userInfo.userInfo.occupation,
+          emergencyName: user.userInfo.userInfo.emergencyName,
+          emergencyPhone: `+85620${user.userInfo.userInfo.emergencyPhone}`,
+        })
+        .where(eq(userInfo.accountId, Number(params.accountId)))
+        .returning({
+          id: userInfo.id,
+        });
 
+      await tx
+        .update(account)
+        .set({
+          name: user.userInfo.userInfo.name,
+          email: user.userInfo.userInfo.email,
+          phone: `+85620${user.userInfo.userInfo.phone}`,
+        })
+        .where(eq(account.id, Number(params.accountId)));
+
+      await tx
+        .update(identify)
+        .set({
+          type: user.identify.type,
+          number: user.identify.number,
+          image: user.identify.image,
+        })
+        .where(eq(identify.userinfoId, id));
+    });
     return {
-      data: { success: true, message: "Add user successful", id },
+      data: {
+        success: true,
+        message: "Update user successful",
+      },
     };
   } catch (error) {
     console.error(error);
 
     return { data: { message: (error as Error).message, success: false } };
   }
-}, valiForm$(RegisterServerSchema));
+}, valiForm$(EditFormServerSchema));
 
-export const useDoctorLoader = routeLoader$(async function () {
-  return await db.query.doctor.findMany({
-    columns: { id: true, image: true, name: true },
-  });
-});
+export const useUserInfoLoader = routeLoader$(
+  async ({ redirect, sharedMap }) => {
+    const auth = sharedMap.get("auth");
+    const res = await db.query.userInfo.findFirst({
+      columns: {
+        gender: true,
+        address: true,
+        dateOfBirth: true,
+        emergencyName: true,
+        emergencyPhone: true,
+        occupation: true,
+      },
+      with: {
+        identify: {
+          columns: {
+            type: true,
+            number: true,
+            image: true,
+          },
+        },
+        account: {
+          columns: {
+            name: true,
+            phone: true,
+            email: true,
+          },
+        },
+      },
+      where: eq(userInfo.accountId, Number(auth.sub)),
+    });
+    console.log("my form auth:", auth);
+    if (res) return res;
+    else throw redirect(301, "/log_in");
+  },
+);
 
-export const useAccountLoader = routeLoader$(async ({ params, redirect }) => {
-  const res = await db.query.account.findFirst({
-    where: eq(account.id, Number(params.accountId)),
-    columns: {
-      password: false,
-      createdAt: false,
-    },
-  });
+export const useLogoutAction = routeAction$(async (values, { cookie }) => {
+  cookie.delete("auth-token", { path: "/" });
 
-  if (res) return res;
-  else throw redirect(301, "/sign-up");
+  return {
+    success: true,
+  };
 });
 
 // browser
 export default component$(() => {
-  const doctorLoader = useDoctorLoader();
-  const accountLoader = useAccountLoader();
-  const action = useAddUser();
+  const userInfoLoader = useUserInfoLoader();
+  const action = useUpdateUser();
   const nav = useNavigate();
   const { params } = useLocation();
+  const logoutAction = useLogoutAction();
+  const isOpen = useSignal<boolean>(false);
 
-  const [form, { Field, Form }] = useForm<IRegisterSchema>({
+  const [form, { Field, Form }] = useForm<IEditFromSchema>({
     loader: {
       value: {
         userInfo: {
-          name: accountLoader.value.name,
-          email: accountLoader.value.email || "",
-          phone: accountLoader.value.phone.replace("+85620", ""),
-          address: "",
-          dayOfBirth: "",
-          emergencyName: "",
-          emergencyPhone: "",
-          gender: "male",
-          occupation: "",
+          userInfo: {
+            name: userInfoLoader.value!.account.name,
+            email: userInfoLoader.value.account.email || "",
+            phone: userInfoLoader.value!.account.phone.replace("+85620", ""),
+            address: userInfoLoader.value!.address,
+            dayOfBirth: userInfoLoader.value!.dateOfBirth,
+            emergencyName: userInfoLoader.value!.emergencyName,
+            emergencyPhone: userInfoLoader.value!.emergencyPhone.replace(
+              "+85620",
+              "",
+            ),
+            gender: userInfoLoader.value!.gender,
+            occupation: userInfoLoader.value!.occupation,
+          },
         },
         identify: {
-          type: "id_card",
-          number: "",
+          type: userInfoLoader.value!.identify.type,
+          number: userInfoLoader.value!.identify.number,
           image: undefined,
-          receiveTreatmentHealth: false,
-          disclosureHealthInformation: false,
-          acKnowledgeReviewAndAgree: false,
-        },
-        medicalInfo: {
-          doctorId: 0,
-          insuranceName: "",
-          insuranceNumber: "",
-          allergies: "",
-          currentMedication: "",
-          familyMedicalHistory: "",
-          medicalHistory: "",
         },
       },
     },
-    validate: valiForm$(RegisterSchema),
+    validate: valiForm$(EditFormSchema),
   });
 
   return (
     <Form
-      class="mb-14"
+      class="mb-10"
       onSubmit$={async (values) => {
         const fileName = generate_file_name(
           values.identify.image!.name,
@@ -115,13 +173,13 @@ export default component$(() => {
         const res = await action.submit({
           userInfo: values.userInfo,
           identify: { ...values.identify, image: fileName },
-          medicalInfo: values.medicalInfo,
         });
         if (res.value.response.data?.success) {
           await uploadFile(values.identify.image!, fileName);
 
-          await nav(`/appointment/${params.accountId}/`);
+          await nav(`/page_home_user/${params.accountId}/`);
         } else {
+          console.log("error :", res.value.errors);
           alert("your image can not upload, please try again");
         }
       }}
@@ -134,15 +192,111 @@ export default component$(() => {
         height={0}
       />
       <div class="container mx-auto my-8 px-8">
-        {/* logo */}
-        <div class="mb-12">
-          <img src={image_logo} alt="logo" width={84} height={54} />
-          <p class="ml-1 text-sm font-semibold text-black">SnatBas Clinic</p>
+        {/* nav */}
+        <div class="mb-5 flex w-full flex-row justify-between">
+          <nav class="mx-auto w-full sm:flex sm:items-center sm:justify-between">
+            {/* logo */}
+            <div class="flex flex-col">
+              <img src={image_logo} alt="logo" width={84} height={54} />
+              <p class="ml-1 text-sm font-semibold text-black">
+                SnatBas Clinic
+              </p>
+            </div>
+            <div class="flex-1">
+              <div class="flex flex-col gap-14 text-lg font-medium sm:mt-0 sm:flex-row sm:items-center sm:justify-end sm:ps-5">
+                <a
+                  class=" text-primary-800 hover:text-primary-700"
+                  href={`/page_home_user/${params.accountId}/`}
+                  aria-current="page"
+                >
+                  Home
+                </a>
+                <a
+                  class=" flex flex-row items-center gap-1 text-primary-800 hover:text-primary-700"
+                  href="#"
+                >
+                  Profile
+                  <LuChevronDown class="size-4" />
+                </a>
+                <a class=" text-primary-800 hover:text-primary-700 " href="#">
+                  Contact us
+                </a>
+                <button
+                  class=" flex flex-row items-center gap-1 text-primary-800 hover:text-primary-700 "
+                  onClick$={() => {
+                    isOpen.value = true;
+                  }}
+                >
+                  <LuUser2 />
+                  Log out
+                </button>
+              </div>
+            </div>
+            <Modal isOpen={isOpen}>
+              <div class="mb-10 flex flex-col items-center justify-center space-y-14 p-5">
+                <div class="flex text-red-500">
+                  <LuLogOut class="size-20 " />
+                </div>
+                <div class="flex text-2xl">Do you confirm to LOG OUT ?</div>
+                <div class=" flex gap-14">
+                  <button
+                    type="button"
+                    class="inline-flex h-11 w-28 items-center justify-center rounded-full border border-transparent bg-red-500 px-3 py-2 text-base font-medium text-white hover:bg-red-600 focus:bg-red-600 focus:outline-none disabled:pointer-events-none disabled:opacity-50"
+                    onClick$={async () => {
+                      await nav(`/page_home_user/${params.accountId}/`);
+                    }}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    onClick$={async () => {
+                      const res = await logoutAction.submit();
+                      console.log(res);
+
+                      if (res.value.success) {
+                        await nav("/log_in/");
+                      }
+                    }}
+                    class="inline-flex h-11 w-28 items-center justify-center gap-x-2 rounded-full border border-transparent bg-gray-200 px-4 py-2 text-base font-medium text-red-500 hover:bg-gray-300 focus:bg-gray-300  focus:outline-none disabled:pointer-events-none disabled:opacity-50"
+                    disabled={logoutAction.isRunning}
+                  >
+                    Log out
+                  </button>
+                </div>
+              </div>
+            </Modal>
+          </nav>
         </div>
+        {/* back button */}
+        <Link
+          class="inline-flex items-center gap-x-1 text-lg text-gray-800 hover:cursor-pointer hover:text-primary-600 focus:text-primary-600"
+          href={`/page_home_user/${params.accountId}/`}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="34"
+            height="34"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-circle-arrow-left"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <path d="M16 12H8" />
+            <path d="m12 8-4 4 4 4" />
+          </svg>
+          Back
+        </Link>
         {/* Hi.. */}
-        <div class="w-full text-black">
-          <p class="text-4xl font-normal">Hi, How Are you ...</p>
-          <p class="text-mg text-gray-500">Let us know more about yourself</p>
+        <div class="mt-5 w-full space-y-2 text-black">
+          <p class="text-3xl font-normal">My Form</p>
+          <p class="text-sm text-gray-500">
+            You can edit and Change information to be correct
+          </p>
         </div>
       </div>
       {/* main div */}
@@ -156,7 +310,7 @@ export default component$(() => {
                 Personal Information
               </h1>
               {/* full name */}
-              <Field name="userInfo.name">
+              <Field name="userInfo.userInfo.name">
                 {(field, props) => (
                   <TextInput
                     {...props}
@@ -174,7 +328,7 @@ export default component$(() => {
               <div class="grid grid-cols-2 gap-5 space-y-4">
                 <div class="mt-4">
                   {/* email address */}
-                  <Field name="userInfo.email">
+                  <Field name="userInfo.userInfo.email">
                     {(field, props) => (
                       <TextInput
                         {...props}
@@ -205,7 +359,7 @@ export default component$(() => {
                   </Field>
                 </div>
                 {/* phone Number */}
-                <Field name="userInfo.phone">
+                <Field name="userInfo.userInfo.phone">
                   {(field, props) => (
                     <TextInput
                       {...props}
@@ -235,7 +389,7 @@ export default component$(() => {
                   )}
                 </Field>
                 {/* Date of birth */}
-                <Field name="userInfo.dayOfBirth">
+                <Field name="userInfo.userInfo.dayOfBirth">
                   {(field, props) => (
                     <TextInput
                       {...props}
@@ -284,7 +438,7 @@ export default component$(() => {
                       { label: "Female", value: "female" },
                       { label: "Other", value: "other" },
                     ].map(({ label, value }) => (
-                      <Field key={value} name="userInfo.gender">
+                      <Field key={value} name="userInfo.userInfo.gender">
                         {(field, props) => (
                           <Radio
                             {...props}
@@ -298,7 +452,7 @@ export default component$(() => {
                     ))}
                   </div>
                 </div>
-                <Field name="userInfo.address">
+                <Field name="userInfo.userInfo.address">
                   {(field, props) => (
                     <TextInput
                       {...props}
@@ -311,7 +465,7 @@ export default component$(() => {
                     />
                   )}
                 </Field>
-                <Field name="userInfo.occupation">
+                <Field name="userInfo.userInfo.occupation">
                   {(field, props) => (
                     <TextInput
                       {...props}
@@ -324,7 +478,7 @@ export default component$(() => {
                     />
                   )}
                 </Field>
-                <Field name="userInfo.emergencyName">
+                <Field name="userInfo.userInfo.emergencyName">
                   {(field, props) => (
                     <TextInput
                       {...props}
@@ -337,7 +491,7 @@ export default component$(() => {
                     />
                   )}
                 </Field>
-                <Field name="userInfo.emergencyPhone">
+                <Field name="userInfo.userInfo.emergencyPhone">
                   {(field, props) => (
                     <TextInput
                       {...props}
@@ -346,121 +500,6 @@ export default component$(() => {
                       label="Phone number"
                       placeholder="xx xxx xxx"
                       type="tel"
-                      required
-                    />
-                  )}
-                </Field>
-              </div>
-            </div>
-          </div>
-          {/* Medical information */}
-          <div class=" flex-1 justify-center rounded-3xl bg-gray-50">
-            <div class="space-y-4 p-5">
-              <h1 class=" text-2xl font-medium text-black">
-                Medical Information
-              </h1>
-              {/* doctorId */}
-              {/* TODO: drop down */}
-              <Field name="medicalInfo.doctorId" type="number">
-                {(field, props) => (
-                  <AdvancedSelect
-                    name={props.name}
-                    // import .env brpwser
-                    options={doctorLoader.value.map(({ id, name, image }) => ({
-                      label: name,
-                      value: id,
-                      img: import.meta.env.PUBLIC_IMAGE_URL + "/" + image,
-                    }))}
-                    value={field.value}
-                    error={field.error}
-                    onSelected$={(val) => {
-                      setValue(
-                        form,
-                        "medicalInfo.doctorId",
-                        typeof val === "number" ? val : val[0],
-                      );
-                    }}
-                    placeholder="select your doctor"
-                    label="Primary care physical"
-                    class="text-gray-500"
-                  />
-                )}
-              </Field>
-              <div class="grid grid-cols-2 gap-5 space-y-4">
-                {/* insurance name */}
-                <div class="mt-4">
-                  <Field name="medicalInfo.insuranceName">
-                    {(field, props) => (
-                      <TextInput
-                        {...props}
-                        value={field.value}
-                        error={field.error}
-                        label="Insurance Provider"
-                        placeholder="ex: Jacorp"
-                        type="text"
-                      />
-                    )}
-                  </Field>
-                </div>
-                {/* insurance_Number */}
-                <Field name="medicalInfo.insuranceNumber">
-                  {(field, props) => (
-                    <TextInput
-                      {...props}
-                      value={field.value}
-                      error={field.error}
-                      label="Insurance Policy Number"
-                      placeholder="ex:ABC1234"
-                      type="text"
-                    />
-                  )}
-                </Field>
-                {/* allergies */}
-                <Field name="medicalInfo.allergies">
-                  {(field, props) => (
-                    <Textarea
-                      {...props}
-                      value={field.value}
-                      error={field.error}
-                      label="Allergies (if any)"
-                      placeholder="ex: Peanuts, Penicillin, Pollen"
-                    />
-                  )}
-                </Field>
-                {/* current medication */}
-                <Field name="medicalInfo.currentMedication">
-                  {(field, props) => (
-                    <Textarea
-                      {...props}
-                      value={field.value}
-                      error={field.error}
-                      label="Current Medication"
-                      placeholder="ex: Ibuprofen 200mg, Levothyroxine 50mcg"
-                      required
-                    />
-                  )}
-                </Field>
-                {/* Family medical history (if relevant) */}
-                <Field name="medicalInfo.familyMedicalHistory">
-                  {(field, props) => (
-                    <Textarea
-                      {...props}
-                      value={field.value}
-                      error={field.error}
-                      label="Family medical history (if relevant)"
-                      placeholder="ex: Mother had breast cancer"
-                    />
-                  )}
-                </Field>
-                {/* Past medical histiory */}
-                <Field name="medicalInfo.medicalHistory">
-                  {(field, props) => (
-                    <Textarea
-                      {...props}
-                      value={field.value}
-                      error={field.error}
-                      label="Past medical histiory"
-                      placeholder="ex: Asthma diagnosis in childhood"
                       required
                     />
                   )}
@@ -529,42 +568,6 @@ export default component$(() => {
               </div>
             </div>
           </div>
-          {/* check box */}
-          <div class=" flex-1 justify-center rounded-3xl bg-cyan-50">
-            <div class="space-y-4 p-5">
-              <h1 class="text-3xl text-black">Consent and Privacy</h1>
-              <Field name="identify.receiveTreatmentHealth" type="boolean">
-                {(field, props) => (
-                  <Checkbox
-                    {...props}
-                    label="I consent to receive treatment for my health condition."
-                    error={field.error}
-                    checked={field.value}
-                  />
-                )}
-              </Field>
-              <Field name="identify.disclosureHealthInformation" type="boolean">
-                {(field, props) => (
-                  <Checkbox
-                    {...props}
-                    label="I consent to the use and disclosure of my health information for treatment purposes."
-                    error={field.error}
-                    checked={field.value}
-                  />
-                )}
-              </Field>
-              <Field name="identify.acKnowledgeReviewAndAgree" type="boolean">
-                {(field, props) => (
-                  <Checkbox
-                    {...props}
-                    label="I acknowledge that I have reviewed and agree to the privacy policy."
-                    error={field.error}
-                    checked={field.value}
-                  />
-                )}
-              </Field>
-            </div>
-          </div>
           {/* button submit and continue */}
           <div>
             <Button
@@ -573,7 +576,7 @@ export default component$(() => {
               type="submit"
               isLoading={form.submitting}
             >
-              Submit and continue
+              Correct form correction
             </Button>
           </div>
         </div>

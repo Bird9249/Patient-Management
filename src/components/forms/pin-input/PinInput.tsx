@@ -1,5 +1,5 @@
 import type { PropFunction } from "@builder.io/qwik";
-import { $, component$ } from "@builder.io/qwik";
+import { $, component$, useSignal } from "@builder.io/qwik";
 
 type PinInputProps = {
   length: number;
@@ -9,14 +9,22 @@ type PinInputProps = {
 
 export const PinInput = component$(
   ({ length, value, onChange$ }: PinInputProps) => {
+    const pinValue = useSignal<string[]>(["", "", "", "", "", ""]);
+
     const handleInput = $((event: Event, index: number) => {
       const input = event.target as HTMLInputElement;
       const newValue = [...value];
       newValue[index] = input.value;
-      onChange$(newValue);
+      if (input.value) {
+        pinValue.value[index] = input.value;
+      } else {
+        pinValue.value[index] = "";
+      }
+
+      onChange$(pinValue.value);
 
       if (input.value && index < length - 1) {
-        const nextInput = document.querySelectorAll("input")[
+        const nextInput = document.querySelectorAll("input.pin-input")[
           index + 1
         ] as HTMLInputElement;
         nextInput.focus();
@@ -26,7 +34,7 @@ export const PinInput = component$(
     const handleKeyDown = $((event: KeyboardEvent, index: number) => {
       const input = event.target as HTMLInputElement;
       if (event.key === "Backspace" && !input.value && index > 0) {
-        const prevInput = document.querySelectorAll("input")[
+        const prevInput = document.querySelectorAll("input.pin-input")[
           index - 1
         ] as HTMLInputElement;
         prevInput.focus();
@@ -39,13 +47,13 @@ export const PinInput = component$(
           <input
             key={index}
             type="text"
-            class="block w-[38px] rounded-md border-gray-200 text-center text-sm focus:border-blue-500 focus:ring-primary-500 disabled:pointer-events-none disabled:opacity-50"
+            class="pin-input block w-[50px] rounded-md border-primary-200 bg-gray-100 text-center  text-4xl text-primary-600 focus:border-primary-600 focus:bg-primary-100 focus:ring-primary-500 disabled:pointer-events-none disabled:opacity-50"
             value={value[index] || ""}
             onInput$={(event) => handleInput(event, index)}
             onKeyDown$={(event) => handleKeyDown(event, index)}
             maxLength={1}
             aria-label={`Pin digit ${index + 1}`}
-            placeholder="⚬"
+            placeholder=""
           />
         ))}
       </div>
