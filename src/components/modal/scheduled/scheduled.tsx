@@ -96,7 +96,7 @@ export const Schedule_Modal = component$<{ isOpen: Signal<boolean> }>(
                 }
               }}
             >
-              Confirm Schedule
+            Confirm Schedule
             </button>
           </div>
         </Modal>
