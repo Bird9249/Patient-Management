@@ -1,13 +1,15 @@
 import type { JSXChildren } from "@builder.io/qwik";
-import { $, component$, useVisibleTask$ } from "@builder.io/qwik";
+import { $, component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
 import {
   Link,
+  routeAction$,
   routeLoader$,
   useLocation,
   useNavigate,
 } from "@builder.io/qwik-city";
-import { LuChevronRight } from "@qwikest/icons/lucide";
+import { LuChevronRight, LuLogOut, LuUser2 } from "@qwikest/icons/lucide";
 import { asc, sql } from "drizzle-orm";
+import { Modal } from "~/components/modal/Modal";
 import { Table } from "~/components/table/Table";
 import { db } from "~/lib/db/db";
 import { appointment } from "~/lib/db/schema";
@@ -81,11 +83,20 @@ export const useAppointmentStatusLoader = routeLoader$(async () => {
     statusCounts,
   };
 });
+export const useLogoutAction = routeAction$(async (values, { cookie }) => {
+  cookie.delete("auth-token", { path: "/" });
+
+  return {
+    success: true,
+  };
+});
 
 export default component$(() => {
   const loader = useAppointmentLoader();
   const statusLoader = useAppointmentStatusLoader();
   const nav = useNavigate();
+  const logoutAction = useLogoutAction();
+  const isOpen = useSignal<boolean>(false);
   const {
     url: { searchParams },
   } = useLocation();
@@ -218,24 +229,67 @@ export default component$(() => {
               <span class="ml-1 text-sm font-semibold">SnatBas Clinic</span>
             </div>
             {/* admin */}
-            <div class="flex items-center">
-              <button class="h-8 w-20 rounded-full bg-primary-600 text-sm text-white hover:bg-primary-700">
+            <div class="flex items-center gap-x-10">
+              <div class="flex h-8 w-20 items-center justify-center rounded-full bg-primary-600 text-sm text-white">
                 Admin
+              </div>
+              <button
+                class="flex flex-row items-center gap-1 hover:text-primary-800  "
+                onClick$={() => {
+                  isOpen.value = true;
+                }}
+              >
+                <LuUser2 />
+                Log out
               </button>
             </div>
+            <Modal isOpen={isOpen}>
+              <div class="mb-10 flex flex-col items-center justify-center space-y-14 p-5">
+                <div class="flex text-red-500">
+                  <LuLogOut class="size-20 " />
+                </div>
+                <div class="flex text-2xl">Do you confirm to LOG OUT ?</div>
+                <div class=" flex gap-14">
+                  <button
+                    type="button"
+                    class="inline-flex h-11 w-28 items-center justify-center rounded-full border border-transparent bg-red-500 px-3 py-2 text-base font-medium text-white hover:bg-red-600 focus:bg-red-600 focus:outline-none disabled:pointer-events-none disabled:opacity-50"
+                    onClick$={() => {
+                      isOpen.value = false;
+                    }}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    onClick$={async () => {
+                      const res = await logoutAction.submit();
+                      console.log(res);
+
+                      if (res.value.success) {
+                        await nav("/log_in/");
+                      }
+                    }}
+                    class="inline-flex h-11 w-28 items-center justify-center gap-x-2 rounded-full border border-transparent bg-gray-200 px-4 py-2 text-base font-medium text-red-500 hover:bg-gray-300 focus:bg-gray-300  focus:outline-none disabled:pointer-events-none disabled:opacity-50"
+                    disabled={logoutAction.isRunning}
+                  >
+                    Log out
+                  </button>
+                </div>
+              </div>
+            </Modal>
           </nav>
 
           {/* 2 div */}
           <div class="mx-auto mt-6 flex-col">
             {/* welcome, admin*/}
-            <div class="mx-16">
+            <div class="px-10">
               <span class="text-2xl font-semibold">Welcome, Admin</span>
               <p class="mt-2 text-sm text-black">
                 Start day with managing new appointments
               </p>
             </div>
             {/* Count Status Cards */}
-            <div class="container mx-auto my-10 flex items-center justify-center gap-8">
+            <div class="container mx-auto my-10 flex items-center justify-center gap-8 px-10">
               {/* scheduledCount */}
               <div class="relative h-40 flex-1 shrink-0 space-y-4 rounded-lg bg-white p-5 shadow">
                 <img
@@ -352,7 +406,7 @@ export default component$(() => {
               </div>
             </div>
             {/* table */}
-            <div class="mt-6">
+            <div class="mt-6 px-10">
               <Table
                 columns={[
                   { label: "Patient", key: "patient", content$: accountCol },

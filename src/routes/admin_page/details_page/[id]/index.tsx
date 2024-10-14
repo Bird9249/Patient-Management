@@ -188,9 +188,9 @@ export default component$(() => {
             </div>
             {/* admin */}
             <div class="flex items-center">
-              <button class="rounded-full bg-primary-600 px-4 py-2 text-sm text-white hover:bg-primary-700">
+              <div class="flex h-8 w-20 items-center justify-center rounded-full bg-primary-600 text-sm text-white">
                 Admin
-              </button>
+              </div>
             </div>
           </nav>
           {/* back button */}
