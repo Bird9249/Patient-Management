@@ -351,7 +351,7 @@ export default component$(() => {
                   <div class="space-y-3">
                     <p class="font-medium">Reason of Appointment</p>
                     <textarea
-                      class="block w-full rounded-xl border-gray-200 px-4 py-3 text-sm focus:border-primary-500 focus:ring-primary-500 disabled:pointer-events-none disabled:opacity-50"
+                      class="block w-full resize-none rounded-xl border-gray-200 px-4 py-3 text-sm focus:border-primary-500 focus:ring-primary-500 disabled:pointer-events-none disabled:opacity-50"
                       rows={3}
                       placeholder="Readonly"
                       readOnly
@@ -361,7 +361,7 @@ export default component$(() => {
                   <div class="space-y-3">
                     <p class="font-medium">Additional comment\notes</p>
                     <textarea
-                      class="block w-full rounded-xl border-gray-200 px-4 py-3 text-sm focus:border-primary-500 focus:ring-primary-500 disabled:pointer-events-none disabled:opacity-50"
+                      class="block w-full resize-none rounded-xl border-gray-200 px-4 py-3 text-sm focus:border-primary-500 focus:ring-primary-500 disabled:pointer-events-none disabled:opacity-50"
                       rows={3}
                       placeholder="Readonly"
                       readOnly
