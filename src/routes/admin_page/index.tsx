@@ -15,7 +15,7 @@ import background_admin from "/Background_admin.png";
 import background_cancelled from "/background_cancelled.png";
 import background_pending from "/background_pending.png";
 import background_scheduled from "/background_scheduled.png";
-import logo_image from "/logo project.png";
+import image_logo from "/logo project.png";
 
 type AppointmentResponse = {
   status: "scheduled" | "pending" | "cancelled";
@@ -211,10 +211,10 @@ export default component$(() => {
       <div class="flex min-h-screen  justify-center">
         <div class="container mx-auto my-8 px-8">
           {/* nav bar */}
-          <nav class="mt-8 flex w-full justify-between ">
+          <nav class="flex w-full justify-between ">
             {/* logo and name */}
-            <div class="flex-none">
-              <img width={84} height={54} src={logo_image} alt="" />
+            <div class="flex flex-col">
+              <img width={84} height={54} src={image_logo} alt="" />
               <span class="ml-1 text-sm font-semibold">SnatBas Clinic</span>
             </div>
             {/* admin */}
