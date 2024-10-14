@@ -180,9 +180,9 @@ export default component$(() => {
       <div class="flex min-h-screen w-screen justify-center ">
         <div class="container mx-auto my-8 space-y-4 px-8">
           {/* nav bar */}
-          <nav class="mt-8 flex w-full justify-between ">
+          <nav class="flex w-full justify-between ">
             {/* logo and name */}
-            <div class="flex-none">
+            <div class="flex flex-col">
               <img width={84} height={54} src={logo_image} alt="" />
               <span class="ml-1 text-sm font-semibold">SnatBas Clinic</span>
             </div>
@@ -195,7 +195,7 @@ export default component$(() => {
           </nav>
           {/* back button */}
           <Link
-            class="inline-flex items-center gap-x-1 text-lg text-gray-800 hover:cursor-pointer hover:text-primary-600 focus:text-primary-600"
+            class="mx-10 inline-flex items-center gap-x-1 text-lg text-gray-800 hover:cursor-pointer hover:text-primary-600 focus:text-primary-600"
             href={`/admin_page/`}
           >
             <svg

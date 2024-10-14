@@ -83,15 +83,15 @@ export default component$(() => {
       }}
     >
       <img
-          class="fixed h-screen w-screen object-cover"
-          src={backgroundpage}
-          alt=""
-          width={0}
-          height={0}
-        />
+        class="fixed h-screen w-screen object-cover"
+        src={backgroundpage}
+        alt=""
+        width={0}
+        height={0}
+      />
       <div class="relative flex flex-col justify-center">
         <div class="container mx-auto my-8 px-8">
-          <div class="mb-4">
+          <div class="mb-4 flex flex-col">
             <img src={logo_page} width={84} height={54} />
             <span class="ml-1 text-sm font-semibold">SnatBas Clinic</span>
           </div>
