@@ -203,26 +203,26 @@ export default component$(() => {
               </p>
             </div>
             <div class="flex-1">
-              <div class="flex flex-col gap-14 text-lg font-medium sm:mt-0 sm:flex-row sm:items-center sm:justify-end sm:ps-5">
+              <div class="flex flex-col gap-14 text-lg font-normal  text-black  sm:mt-0 sm:flex-row sm:items-center sm:justify-end sm:ps-5">
                 <a
-                  class=" text-primary-800 hover:text-primary-700"
+                  class="hover:text-primary-800"
                   href={`/page_home_user/${params.accountId}/`}
                   aria-current="page"
                 >
                   Home
                 </a>
                 <a
-                  class=" flex flex-row items-center gap-1 text-primary-800 hover:text-primary-700"
+                  class="flex flex-row items-center gap-1 hover:text-primary-800 "
                   href="#"
                 >
                   Profile
                   <LuChevronDown class="size-4" />
                 </a>
-                <a class=" text-primary-800 hover:text-primary-700 " href="#">
+                <a class="hover:text-primary-800" href="#">
                   Contact us
                 </a>
                 <button
-                  class=" flex flex-row items-center gap-1 text-primary-800 hover:text-primary-700 "
+                  class="flex flex-row items-center gap-1 hover:text-primary-800  "
                   onClick$={() => {
                     isOpen.value = true;
                   }}
