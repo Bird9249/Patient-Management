@@ -270,7 +270,7 @@ export default component$(() => {
         </div>
         {/* back button */}
         <Link
-          class="inline-flex items-center gap-x-1 text-lg text-gray-800 hover:cursor-pointer hover:text-primary-600 focus:text-primary-600"
+          class="ml-10 inline-flex items-center gap-x-1 text-lg text-gray-800 hover:cursor-pointer hover:text-primary-600 focus:text-primary-600"
           href={`/page_home_user/${params.accountId}/`}
         >
           <svg
@@ -292,7 +292,7 @@ export default component$(() => {
           Back
         </Link>
         {/* Hi.. */}
-        <div class="mt-5 w-full space-y-2 text-black">
+        <div class="mx-10 mt-5 w-full space-y-2 text-black">
           <p class="text-3xl font-normal">My Form</p>
           <p class="text-sm text-gray-500">
             You can edit and Change information to be correct
@@ -302,7 +302,7 @@ export default component$(() => {
       {/* main div */}
       <div class="container mx-auto px-8">
         {/* form */}
-        <div class="flex h-auto w-full flex-col space-y-8">
+        <div class="flex h-auto w-full flex-col space-y-8 px-10">
           {/* Personal information */}
           <div class=" flex-1 justify-center rounded-3xl bg-gray-50">
             <div class="space-y-4 p-5">

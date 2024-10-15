@@ -180,22 +180,16 @@ export default component$(() => {
       <div class="flex min-h-screen w-screen justify-center ">
         <div class="container mx-auto my-8 space-y-4 px-8">
           {/* nav bar */}
-          <nav class="mt-8 flex w-full justify-between ">
+          <nav class="flex w-full justify-between ">
             {/* logo and name */}
-            <div class="flex-none">
+            <div class="flex flex-col">
               <img width={84} height={54} src={logo_image} alt="" />
               <span class="ml-1 text-sm font-semibold">SnatBas Clinic</span>
-            </div>
-            {/* admin */}
-            <div class="flex items-center">
-              <button class="rounded-full bg-primary-600 px-4 py-2 text-sm text-white hover:bg-primary-700">
-                Admin
-              </button>
             </div>
           </nav>
           {/* back button */}
           <Link
-            class="inline-flex items-center gap-x-1 text-lg text-gray-800 hover:cursor-pointer hover:text-primary-600 focus:text-primary-600"
+            class="mx-10 inline-flex items-center gap-x-1 text-lg text-gray-800 hover:cursor-pointer hover:text-primary-600 focus:text-primary-600"
             href={`/admin_page/`}
           >
             <svg
@@ -351,7 +345,7 @@ export default component$(() => {
                   <div class="space-y-3">
                     <p class="font-medium">Reason of Appointment</p>
                     <textarea
-                      class="block w-full rounded-xl border-gray-200 px-4 py-3 text-sm focus:border-primary-500 focus:ring-primary-500 disabled:pointer-events-none disabled:opacity-50"
+                      class="block w-full resize-none rounded-xl border-gray-200 px-4 py-3 text-sm focus:border-primary-500 focus:ring-primary-500 disabled:pointer-events-none disabled:opacity-50"
                       rows={3}
                       placeholder="Readonly"
                       readOnly
@@ -361,7 +355,7 @@ export default component$(() => {
                   <div class="space-y-3">
                     <p class="font-medium">Additional comment\notes</p>
                     <textarea
-                      class="block w-full rounded-xl border-gray-200 px-4 py-3 text-sm focus:border-primary-500 focus:ring-primary-500 disabled:pointer-events-none disabled:opacity-50"
+                      class="block w-full resize-none rounded-xl border-gray-200 px-4 py-3 text-sm focus:border-primary-500 focus:ring-primary-500 disabled:pointer-events-none disabled:opacity-50"
                       rows={3}
                       placeholder="Readonly"
                       readOnly
@@ -371,33 +365,40 @@ export default component$(() => {
                 </div>
               </div>
             </div>
-            <div class="mt-5 flex items-center justify-center gap-14">
-              <div class="flex-none items-center">
-                <button
-                  class="h-10 w-28 rounded-full bg-emerald-400 px-3 py-1 text-base font-medium text-white hover:bg-teal-500 "
-                  onClick$={() => {
-                    isScheduleOpen.value = true;
-                  }}
-                >
-                  Schedule
-                </button>
+            <div class="mt-5 flex flex-col items-center justify-center space-y-5">
+              <div class="flex-1">
+                <p class="text-center text-lg">
+                  Would you like to confirm the appointment ?
+                </p>
               </div>
-              <div class="flex-none items-center">
-                <button
-                  class="h-10 w-28 rounded-full bg-red-500 px-3 py-1 text-base font-medium text-white hover:bg-red-600"
-                  onClick$={() => {
-                    isCancelOpen.value = true;
-                  }}
-                >
-                  Cancel
-                </button>
+              <div class="flex flex-row gap-10">
+                <div class="flex items-center">
+                  <button
+                    class="h-10 w-28 rounded-full bg-emerald-400 px-3 py-1 text-base font-medium text-white hover:bg-teal-500 "
+                    onClick$={() => {
+                      isScheduleOpen.value = true;
+                    }}
+                  >
+                    Confirm
+                  </button>
+                </div>
+                <Schedule_Modal isOpen={isScheduleOpen} />
+                <div class="flex-none items-center">
+                  <button
+                    class="h-10 w-28 rounded-full bg-red-500 px-3 py-1 text-base font-medium text-white hover:bg-red-600"
+                    onClick$={() => {
+                      isCancelOpen.value = true;
+                    }}
+                  >
+                    No
+                  </button>
+                </div>
+                <Cancel_Modal isOpen={isCancelOpen} />
               </div>
             </div>
           </div>
         </div>
       </div>
-      <Schedule_Modal isOpen={isScheduleOpen} />
-      <Cancel_Modal isOpen={isCancelOpen} />
     </>
   );
 });

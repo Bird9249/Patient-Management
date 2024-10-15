@@ -93,7 +93,7 @@ export const Textarea = component$(
             rows={3}
             {...props}
             id={name}
-            class={`block w-full rounded-lg ${icon ? "pl-12" : "pl-4"} ${inputClasses} ${borderColor}`}
+            class={`block w-full resize-none rounded-lg ${icon ? "pl-12" : "pl-4"} ${inputClasses} ${borderColor}`}
             placeholder={placeholder}
             aria-invalid={!!error}
             aria-errormessage={error ? `${name}-error` : undefined}
