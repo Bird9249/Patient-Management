@@ -92,12 +92,14 @@ export default component$(() => {
     <Form>
       {/* whole sign in section*/}
       <div class="flex h-screen items-center justify-center overflow-hidden">
-        <div class=" grid w-full grid-cols-2 items-center">
+        <div class=" grid w-full grid-cols-2">
           {/* left section: sign in page */}
+          <div class="container px-28 py-14 ">
 
-          <div class="grid-span-1 m-auto w-full max-w-sm ">
+          
+          <div class="grid-span-1 w-full ">
             {/* logo tag */}
-            <div class="mb-3">
+            <div class="flex flex-col">
               <img width={84} height={54} src={logo_image} alt="" />
               <span class="ml-1 text-sm font-semibold">SnatBas Clinic</span>
             </div>
@@ -242,7 +244,8 @@ export default component$(() => {
                   Get started
                 </Button>
               </div>
-            </div>
+            </div>  
+          
             {/* bottom link */}
             <div class="mt-7 flex justify-center gap-5">
               <Link
@@ -260,6 +263,7 @@ export default component$(() => {
               </Link>
             </div>
           </div>
+        </div>
 
           {/* right section: image */}
 

@@ -91,7 +91,7 @@ export default component$(() => {
       />
       <div class="relative flex flex-col justify-center">
         <div class="container mx-auto my-8 px-8">
-          <div class="mb-4">
+          <div class="flex flex-col mb-4">
             <img src={logo_page} width={84} height={54} />
             <span class="ml-1 text-sm font-semibold">SnatBas Clinic</span>
           </div>
