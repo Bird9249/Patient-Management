@@ -279,9 +279,9 @@ export default component$(() => {
                   {/* radio */}
                   <div class="mx-auto flex flex-auto gap-4 pt-7">
                     {[
-                      { label: "Male", value: "MALE" },
-                      { label: "Female", value: "FEMALE" },
-                      { label: "Other", value: "OTHER" },
+                      { label: "Male", value: "male" },
+                      { label: "Female", value: "female" },
+                      { label: "Other", value: "other" },
                     ].map(({ label, value }) => (
                       <Field key={value} name="userInfo.gender">
                         {(field, props) => (
@@ -478,10 +478,10 @@ export default component$(() => {
                   <Select
                     {...props}
                     options={[
-                      { label: "Family Book", value: "FAMILY_BOOK" },
-                      { label: "ID Card", value: "ID_CARD" },
-                      { label: "Driver License", value: "DRIVER_LICENSE" },
-                      { label: "Passport", value: "PASSPORT" },
+                      { label: "Family Book", value: "family_book" },
+                      { label: "ID Card", value: "id_card" },
+                      { label: "Driver License", value: "driver_license" },
+                      { label: "Passport", value: "passport" },
                     ]}
                     value={field.value}
                     error={field.error}
