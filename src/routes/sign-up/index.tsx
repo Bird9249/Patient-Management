@@ -257,7 +257,7 @@ export default component$(() => {
 
               <Link
                 href="#"
-                class="border-ga-100 border-r pr-2 text-primary-600 underline decoration-primary-600 underline-offset-8 hover:opacity-80 focus:opacity-80 focus:outline-none"
+                class="border-ga-100 pr-2 text-primary-600 underline decoration-primary-600 underline-offset-8 hover:opacity-80 focus:opacity-80 focus:outline-none"
               >
                 Contact us
               </Link>
