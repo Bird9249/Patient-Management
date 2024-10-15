@@ -37,7 +37,6 @@ export default component$(() => {
     },
     validate: valiForm$(EditFormSchema),
   });
-
   return (
     <Form>
       <div class="container mx-auto my-8 h-screen px-8">
@@ -49,25 +48,25 @@ export default component$(() => {
           </div>
 
           {/* link  */}
-          <div class="mr-10">
+          <div class="mr-10 ">
             <ul class="flex items-center gap-x-8">
               <li>
-                <Link href="#" class=" text-primary-800">
+                <Link href="#" class=" text-primary-700">
                   Home
                 </Link>
               </li>
               <li>
-                <Link href="#" class=" text-primary-800">
+                <Link href="#" class=" text-primary-700">
                   my form
                 </Link>
               </li>
               <li>
-                <Link href="#" class=" text-primary-800">
+                <Link href="#" class=" text-primary-700">
                   Contact us
                 </Link>
               </li>
               <li>
-                <Link href="#" class=" text-primary-800">
+                <Link href="#" class=" text-primary-700">
                   Log out
                 </Link>
               </li>
@@ -89,6 +88,7 @@ export default component$(() => {
             <h1 class=" text-2xl font-medium text-black">
               Personal Information
             </h1>
+
             {/* full name */}
             <Field name="userInfo.name">
               {(field, props) => (
@@ -138,6 +138,7 @@ export default component$(() => {
                   )}
                 </Field>
               </div>
+
               {/* phone Number */}
               <Field name="userInfo.phone">
                 {(field, props) => (
@@ -168,6 +169,7 @@ export default component$(() => {
                   />
                 )}
               </Field>
+
               {/* Date of birth */}
               <Field name="userInfo.dayOfBirth">
                 {(field, props) => (
@@ -206,6 +208,7 @@ export default component$(() => {
                   />
                 )}
               </Field>
+
               <div class="flex ">
                 {/* gender */}
                 <div class="absolute mb-2 block text-sm font-medium">
@@ -287,7 +290,6 @@ export default component$(() => {
             </div>
           </div>
         </div>
-
         {/* identification and Verification */}
         <div class=" flex-1 justify-center rounded-3xl bg-gray-50">
           <div class="space-y-4 p-5">
@@ -311,6 +313,7 @@ export default component$(() => {
                 />
               )}
             </Field>
+
             {/* div */}
             <div class="mt-4 space-y-8">
               {/* Identify number */}
@@ -327,6 +330,7 @@ export default component$(() => {
                   />
                 )}
               </Field>
+
               {/* image upload */}
               <Field name="identify.image" type="File">
                 {(field, props) => (
@@ -349,6 +353,7 @@ export default component$(() => {
             </div>
           </div>
         </div>
+
         {/* check box */}
         <div class=" flex-1 justify-center rounded-3xl bg-cyan-50">
           <div class="space-y-4 p-5">
