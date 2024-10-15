@@ -293,7 +293,7 @@ export default component$(() => {
                 <LuLogOut class="size-20 text-red-500" />
               </div>
               <div>
-                <p class="text-2xl">Do you confirm to logout?</p>
+                <p class="text-2xl">Do you confirm to LOG OUT?</p>
               </div>
               <div class="space-x-14">
                 <button
@@ -301,7 +301,7 @@ export default component$(() => {
                   onClick$={() => {
                     isOpen.value = false;
                   }}
-                  class="inline-flex h-11 w-28 items-center justify-center gap-x-2 rounded-full border border-transparent bg-red-500 px-4 py-3 text-sm font-medium text-white hover:bg-red-700 focus:bg-red-700 focus:outline-none disabled:pointer-events-none disabled:opacity-50"
+                  class="inline-flex h-11 w-28 items-center justify-center gap-x-2 rounded-full border border-transparent bg-red-500 px-4 py-3 text-sm font-medium text-white hover:bg-red-600 focus:bg-red-600 focus:outline-none disabled:pointer-events-none disabled:opacity-50"
                 >
                   Cancel
                 </button>
@@ -315,7 +315,7 @@ export default component$(() => {
                       await nav("/log_in/");
                     }
                   }}
-                  class="inline-flex h-11 w-28 items-center justify-center gap-x-2 rounded-full border border-transparent bg-slate-300 px-4 py-3 text-sm font-medium text-red-500 hover:bg-slate-500 focus:bg-slate-500  focus:outline-none disabled:pointer-events-none disabled:opacity-50"
+                  class="inline-flex h-11 w-28 items-center justify-center gap-x-2 rounded-full border border-transparent bg-gray-300 px-4 py-3 text-sm font-medium text-red-500 hover:bg-gray-400 focus:bg-gray-400  focus:outline-none disabled:pointer-events-none disabled:opacity-50"
                   disabled={logoutAction.isRunning}
                 >
                   Log out

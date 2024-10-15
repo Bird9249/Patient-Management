@@ -233,7 +233,7 @@ export default component$(() => {
               </div>
             </div>
             <Modal isOpen={isOpen}>
-              <div class="mb-10 flex flex-col items-center justify-center space-y-14 p-5">
+              <div class="flex flex-col items-center justify-center space-y-14 p-5">
                 <div class="flex text-red-500">
                   <LuLogOut class="size-20 " />
                 </div>
@@ -242,8 +242,8 @@ export default component$(() => {
                   <button
                     type="button"
                     class="inline-flex h-11 w-28 items-center justify-center rounded-full border border-transparent bg-red-500 px-3 py-2 text-base font-medium text-white hover:bg-red-600 focus:bg-red-600 focus:outline-none disabled:pointer-events-none disabled:opacity-50"
-                    onClick$={async () => {
-                      await nav(`/page_home_user/${params.accountId}/`);
+                    onClick$={() => {
+                      isOpen.value = false;
                     }}
                   >
                     Cancel
