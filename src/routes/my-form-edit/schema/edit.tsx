@@ -7,12 +7,10 @@ import {
   RegisterServerSchema,
 } from "~/routes/information/schema/register";
 
-export const EditFormSchema = v.object({
-  register: v.omit(RegisterSchema, ["medicalInfo"]),
-});
+export const EditFormSchema = v.omit(RegisterSchema, ["medicalInfo"]);
 export type IEditFromSchema = InferInput<typeof EditFormSchema>;
 
-export const EditFormServerSchema = v.object({
-  registerServer: v.omit(RegisterServerSchema, ["medicalInfo"]),
-});
+export const EditFormServerSchema = v.omit(RegisterServerSchema, [
+  "medicalInfo",
+]);
 export type IEditServerFromSchema = InferInput<typeof EditFormServerSchema>;

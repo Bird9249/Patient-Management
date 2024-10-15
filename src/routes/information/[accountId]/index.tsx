@@ -135,7 +135,6 @@ export default component$(() => {
       <div class="container mx-auto my-8 px-8">
         {/* logo */}
         <div class="mb-12">
-          <img src={image_logo} alt="logo" width={84} height={54} />
           <p class="ml-1 text-sm font-semibold text-black">SnatBas Clinic</p>
         </div>
         {/* Hi.. */}
