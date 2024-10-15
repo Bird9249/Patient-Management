@@ -21,6 +21,7 @@ import type {
 } from "../schema/register";
 import { RegisterSchema, RegisterServerSchema } from "../schema/register";
 import background from "/image.png";
+import logo_image from "/logo project.png";
 
 // server
 export const useAddUser = formAction$<
@@ -134,6 +135,7 @@ export default component$(() => {
       <div class="container mx-auto my-8 px-8">
         {/* logo */}
         <div class="mb-12">
+          <img width={84} height={54} src={logo_image} alt="" />
           <p class="ml-1 text-sm font-semibold text-black">SnatBas Clinic</p>
         </div>
         {/* Hi.. */}
