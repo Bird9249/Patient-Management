@@ -85,6 +85,8 @@ export const AdvancedSelect = component$(
                         class="inline-block rounded-full"
                         src={option?.img}
                         alt={option?.label}
+                        height={40}
+                        width={40}
                       />
                     </div>
                     <div class="whitespace-nowrap text-gray-800" data-title="">
