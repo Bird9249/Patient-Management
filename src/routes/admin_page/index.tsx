@@ -241,7 +241,7 @@ export default component$(() => {
               </button>
             </div>
             <Modal isOpen={isOpen}>
-              <div class="mb-10 flex flex-col items-center justify-center space-y-14 p-5">
+              <div class="flex flex-col items-center justify-center space-y-14 p-5">
                 <div class="flex text-red-500">
                   <LuLogOut class="size-20 " />
                 </div>

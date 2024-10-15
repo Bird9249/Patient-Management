@@ -1,7 +1,14 @@
 import { component$, useSignal } from "@builder.io/qwik";
-import { Link, routeLoader$, useLocation } from "@builder.io/qwik-city";
-import { LuUser2 } from "@qwikest/icons/lucide";
+import {
+  Link,
+  routeAction$,
+  routeLoader$,
+  useLocation,
+  useNavigate,
+} from "@builder.io/qwik-city";
+import { LuLogOut, LuUser2 } from "@qwikest/icons/lucide";
 import { eq } from "drizzle-orm";
+import { Modal } from "~/components/modal/Modal";
 import { db } from "~/lib/db/db";
 import { appointment } from "~/lib/db/schema";
 import { convertToCustomFormat } from "~/utils/convertToCustomFormat";
@@ -35,11 +42,19 @@ export const useAppointmentHistoryLoader = routeLoader$(async ({ params }) => {
     data: res,
   };
 });
+export const useLogoutAction = routeAction$(async (values, { cookie }) => {
+  cookie.delete("auth-token", { path: "/" });
+
+  return {
+    success: true,
+  };
+});
 
 export default component$(() => {
   const loader = useAppointmentHistoryLoader();
   const isOpen = useSignal<boolean>(false);
-  // const nav = useNavigate();
+  const logoutAction = useLogoutAction();
+  const nav = useNavigate();
   const { params } = useLocation();
 
   return (
@@ -54,8 +69,8 @@ export default component$(() => {
       />
 
       {/* big box */}
-      <div class="flex h-screen justify-center">
-        <div class="container mx-auto my-8 px-8">
+      <div class="flex min-h-screen justify-center">
+        <div class="container mx-auto my-8 px-8 ">
           {/* header */}
           <nav class="flex w-full justify-between">
             {/* logo and name */}
@@ -96,7 +111,7 @@ export default component$(() => {
               {/* back to home button */}
               <div>
                 <Link
-                  class="inline-flex cursor-pointer items-center gap-x-1 text-xl text-gray-800 hover:text-primary-600 hover:underline focus:text-primary-600 focus:outline-none "
+                  class="inline-flex cursor-pointer items-center gap-x-1 text-xl text-gray-800 hover:text-primary-600 focus:text-primary-600 focus:outline-none "
                   href={`/page_home_user/${params.accountId}/`}
                 >
                   <svg
@@ -115,7 +130,7 @@ export default component$(() => {
                     <path d="M16 12H8" />
                     <path d="m12 8-4 4 4 4" />
                   </svg>
-                  Back to home
+                  Back
                 </Link>
               </div>
               {/* text and created time */}
@@ -157,7 +172,7 @@ export default component$(() => {
                   <div class="mb-1 font-medium">Reason of appointment</div>
                   <div>
                     <textarea
-                      class="h-24 w-full cursor-default resize-none rounded-lg border-gray-500 px-4 py-3"
+                      class="h-24 w-full cursor-default resize-none rounded-lg border-gray-200 px-4 py-3"
                       value={loader.value.data?.reasonOfAppointment}
                       readOnly
                     ></textarea>
@@ -169,7 +184,7 @@ export default component$(() => {
                   <div class="font-medium">additional comment/notes</div>
                   <div>
                     <textarea
-                      class="h-24 w-full cursor-default resize-none rounded-lg border-gray-500 px-4 py-3"
+                      class="h-24 w-full cursor-default resize-none rounded-lg border-gray-200 px-4 py-3"
                       value={loader.value.data?.comment || ""}
                       readOnly
                       placeholder="No comment"
@@ -256,7 +271,7 @@ export default component$(() => {
                   </span>
                   <div class="">
                     <textarea
-                      class="h-60 w-full cursor-default resize-none rounded-lg border-gray-500 px-4 py-3"
+                      class="h-60 w-full cursor-default resize-none rounded-lg border-gray-200 px-4 py-3"
                       readOnly
                       placeholder="please wait for confirmation"
                       value={loader.value.data?.reasonOfAdmin || ""}
@@ -265,6 +280,43 @@ export default component$(() => {
                 </div>
               </div>
             </div>
+            {/* Model pop-up of logout */}
+            <Modal isOpen={isOpen}>
+              <div class="my-5 flex flex-col items-center justify-center space-y-12">
+                <div>
+                  <LuLogOut class="size-20 text-red-500" />
+                </div>
+                <div>
+                  <p class="text-2xl">Do you confirm to LOG OUT?</p>
+                </div>
+                <div class="space-x-14">
+                  <button
+                    type="button"
+                    onClick$={() => {
+                      isOpen.value = false;
+                    }}
+                    class="inline-flex h-11 w-28 items-center justify-center gap-x-2 rounded-full border border-transparent bg-red-500 px-4 py-3 text-sm font-medium text-white hover:bg-red-600 focus:bg-red-600 focus:outline-none disabled:pointer-events-none disabled:opacity-50"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    onClick$={async () => {
+                      const res = await logoutAction.submit();
+                      console.log(res);
+
+                      if (res.value.success) {
+                        await nav("/log_in/");
+                      }
+                    }}
+                    class="inline-flex h-11 w-28 items-center justify-center gap-x-2 rounded-full border border-transparent bg-gray-200 px-4 py-3 text-sm font-medium text-red-500 hover:bg-gray-300 focus:bg-gray-300  focus:outline-none disabled:pointer-events-none disabled:opacity-50"
+                    disabled={logoutAction.isRunning}
+                  >
+                    Log out
+                  </button>
+                </div>
+              </div>
+            </Modal>
           </div>
         </div>
       </div>
