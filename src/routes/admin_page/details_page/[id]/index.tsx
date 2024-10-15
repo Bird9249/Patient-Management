@@ -186,12 +186,6 @@ export default component$(() => {
               <img width={84} height={54} src={logo_image} alt="" />
               <span class="ml-1 text-sm font-semibold">SnatBas Clinic</span>
             </div>
-            {/* admin */}
-            <div class="flex items-center">
-              <div class="flex h-8 w-20 items-center justify-center rounded-full bg-primary-600 text-sm text-white">
-                Admin
-              </div>
-            </div>
           </nav>
           {/* back button */}
           <Link
@@ -371,33 +365,40 @@ export default component$(() => {
                 </div>
               </div>
             </div>
-            <div class="mt-5 flex items-center justify-center gap-14">
-              <div class="flex-none items-center">
-                <button
-                  class="h-10 w-28 rounded-full bg-emerald-400 px-3 py-1 text-base font-medium text-white hover:bg-teal-500 "
-                  onClick$={() => {
-                    isScheduleOpen.value = true;
-                  }}
-                >
-                  Schedule
-                </button>
+            <div class="mt-5 flex flex-col items-center justify-center space-y-5">
+              <div class="flex-1">
+                <p class="text-center text-lg">
+                  Would you like to confirm the appointment ?
+                </p>
               </div>
-              <div class="flex-none items-center">
-                <button
-                  class="h-10 w-28 rounded-full bg-red-500 px-3 py-1 text-base font-medium text-white hover:bg-red-600"
-                  onClick$={() => {
-                    isCancelOpen.value = true;
-                  }}
-                >
-                  Cancel
-                </button>
+              <div class="flex flex-row gap-10">
+                <div class="flex items-center">
+                  <button
+                    class="h-10 w-28 rounded-full bg-emerald-400 px-3 py-1 text-base font-medium text-white hover:bg-teal-500 "
+                    onClick$={() => {
+                      isScheduleOpen.value = true;
+                    }}
+                  >
+                    Confirm
+                  </button>
+                </div>
+                <Schedule_Modal isOpen={isScheduleOpen} />
+                <div class="flex-none items-center">
+                  <button
+                    class="h-10 w-28 rounded-full bg-red-500 px-3 py-1 text-base font-medium text-white hover:bg-red-600"
+                    onClick$={() => {
+                      isCancelOpen.value = true;
+                    }}
+                  >
+                    No
+                  </button>
+                </div>
+                <Cancel_Modal isOpen={isCancelOpen} />
               </div>
             </div>
           </div>
         </div>
       </div>
-      <Schedule_Modal isOpen={isScheduleOpen} />
-      <Cancel_Modal isOpen={isCancelOpen} />
     </>
   );
 });
