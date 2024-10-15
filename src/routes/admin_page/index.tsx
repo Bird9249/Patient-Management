@@ -7,7 +7,7 @@ import {
   useLocation,
   useNavigate,
 } from "@builder.io/qwik-city";
-import { LuChevronRight, LuLogOut, LuUser2 } from "@qwikest/icons/lucide";
+import { LuChevronRight, LuLogOut } from "@qwikest/icons/lucide";
 import { asc, sql } from "drizzle-orm";
 import { Modal } from "~/components/modal/Modal";
 import { Table } from "~/components/table/Table";
@@ -230,17 +230,14 @@ export default component$(() => {
             </div>
             {/* admin */}
             <div class="flex items-center gap-x-10">
-              <div class="flex h-8 w-20 items-center justify-center rounded-full bg-primary-600 text-sm text-white">
-                Admin
-              </div>
               <button
-                class="flex flex-row items-center gap-1 hover:text-primary-800  "
+                type="button"
+                class="flex h-8 w-20 items-center justify-center rounded-full bg-primary-600 text-sm text-white"
                 onClick$={() => {
                   isOpen.value = true;
                 }}
               >
-                <LuUser2 />
-                Log out
+                Admin
               </button>
             </div>
             <Modal isOpen={isOpen}>
@@ -283,7 +280,7 @@ export default component$(() => {
           <div class="mx-auto mt-6 flex-col">
             {/* welcome, admin*/}
             <div class="px-10">
-              <span class="text-2xl font-semibold">Welcome, Admin</span>
+              <span class="text-2xl">Welcome, Admin</span>
               <p class="mt-2 text-sm text-black">
                 Start day with managing new appointments
               </p>

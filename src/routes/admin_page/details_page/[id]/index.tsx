@@ -211,9 +211,7 @@ export default component$(() => {
             Back
           </Link>
           {/* Details */}
-          <p class="ml-10 text-2xl font-semibold text-black">
-            Details of Patient
-          </p>
+          <p class="ml-10 text-2xl text-black">Details of Patient</p>
           {/* main div */}
           <div class="mx-10">
             <div class="container mx-auto flex w-full flex-col gap-x-5 space-y-4 rounded-xl bg-primary-100 p-5">
@@ -365,9 +363,9 @@ export default component$(() => {
                 </div>
               </div>
             </div>
-            <div class="mt-5 flex flex-col items-center justify-center space-y-5">
-              <div class="flex-1">
-                <p class="text-center text-lg">
+            <div class="flex flex-col items-center justify-center space-y-4">
+              <div class="mt-2 flex-1">
+                <p class=" text-center text-lg">
                   Would you like to confirm the appointment ?
                 </p>
               </div>

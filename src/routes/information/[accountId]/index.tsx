@@ -141,7 +141,7 @@ export default component$(() => {
         </div>
         {/* Hi.. */}
         <div class="mx-10 w-full text-black">
-          <p class="text-3xl font-normal">Hi, How Are you ...</p>
+          <p class="text-2xl font-normal">Hi, How Are you ...</p>
           <p class="text-sm text-gray-500">Let us know more about yourself</p>
         </div>
       </div>
