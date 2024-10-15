@@ -159,7 +159,7 @@ export default component$(() => {
           </div>
 
           {/* text */}
-          <div class="mx-28 mt-44 ">
+          <div class="mx-28 mt-44 px-5">
             <div>
               <p class="text-2xl ">Welcome back, ...</p>
               <p class="text-base text-gray-500">We can provide advice.</p>
