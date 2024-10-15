@@ -292,8 +292,8 @@ export default component$(() => {
           Back
         </Link>
         {/* Hi.. */}
-        <div class="mx-10 mt-5 w-full space-y-2 text-black">
-          <p class="text-3xl font-normal">My Form</p>
+        <div class="mx-10 mt-3 w-full  text-black">
+          <p class="text-2xl font-normal">My Form</p>
           <p class="text-sm text-gray-500">
             You can edit and Change information to be correct
           </p>

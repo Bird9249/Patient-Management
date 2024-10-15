@@ -11,7 +11,7 @@ import {
   LuChevronRight,
   LuLogOut,
   LuPlusCircle,
-  LuUser,
+  LuUser2,
 } from "@qwikest/icons/lucide";
 import { count, eq } from "drizzle-orm";
 import { Button } from "~/components/button/Button";
@@ -143,7 +143,7 @@ export default component$(() => {
         pending
       </span>
     ) : status === "scheduled" ? (
-      <span class=" inline-flex items-center gap-x-1.5 rounded-full bg-teal-400 px-3 py-1.5 text-xs font-medium text-teal-800">
+      <span class=" inline-flex items-center gap-x-1.5 rounded-full bg-emerald-400 px-3 py-1.5 text-xs font-medium text-emerald-900">
         <svg
           width="14"
           height="18"
@@ -187,7 +187,7 @@ export default component$(() => {
       class="inline-flex items-center justify-center text-gray-500"
       href={`/page_home_user/${params.accountId}/detail/${id}`}
     >
-      detail
+      Detail
       <LuChevronRight />
     </Link>
   ));
@@ -213,28 +213,28 @@ export default component$(() => {
         height={0}
       />
       <div class="flex h-screen justify-center">
-        <div class="container">
+        <div class="container mx-auto my-8 px-8">
           {/* header */}
-          <nav class="mt-8 flex w-full justify-between">
+          <nav class="flex w-full justify-between">
             {/* logo and name */}
-            <div class="flex-none">
+            <div class="flex flex-col">
               <img width={84} height={54} src={logo_image} alt="" />
               <span class="ml-1 text-sm font-semibold">SnatBas Clinic</span>
             </div>
             {/* link */}
 
-            <ul class="flex items-center gap-16">
-              <li>
+            <ul class="flex items-center gap-14 text-lg text-black ">
+              <li class="hover:text-primary-800">
                 <Link href="#">Home</Link>
               </li>
-              <li>
+              <li class="hover:text-primary-800">
                 <Link href={`/my_form/${params.accountId}/`}>My form</Link>
               </li>
-              <li>
+              <li class="hover:text-primary-800">
                 <Link href="#">Contact us</Link>
               </li>
-              <li class="flex items-center gap-1">
-                <LuUser class="size-5" />
+              <li class="flex items-center gap-1 hover:text-primary-800">
+                <LuUser2 />
                 <Link
                   href="#"
                   onClick$={() => {
