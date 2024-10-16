@@ -105,7 +105,7 @@ export default component$(() => {
             </div>
 
             {/* sign in section */}
-            <div class="mt-6 p-5">
+            <div class="mt-6 py-5 px-10">
               <h1 class="text-2xl">Hi there...</h1>
               <p class="mb-6 text-slate-500">Get started with appointment.</p>
 
