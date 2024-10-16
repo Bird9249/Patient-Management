@@ -290,7 +290,7 @@ export default component$(() => {
               {/* scheduledCount */}
               <div class="relative h-40 flex-1 shrink-0 space-y-4 rounded-lg bg-white p-5 shadow">
                 <img
-                  class="absolute inset-0 z-20 h-40 w-96 object-cover"
+                  class="absolute inset-0 z-20 h-40 w-full object-cover"
                   src={background_scheduled}
                   alt="background_scheduled"
                   width={0}
@@ -328,7 +328,7 @@ export default component$(() => {
               {/* pendingCount */}
               <div class="relative h-40 flex-1 shrink-0 space-y-4 rounded-lg bg-white p-5 shadow">
                 <img
-                  class="absolute inset-0 z-20 h-40 w-96 object-cover"
+                  class="absolute inset-0 z-20 h-40 w-full object-cover"
                   src={background_pending}
                   alt="bg_pending"
                   width={0}
@@ -366,7 +366,7 @@ export default component$(() => {
               {/* cancelledCount */}
               <div class="relative h-40 flex-1 shrink-0 space-y-4 rounded-lg bg-white p-5 shadow">
                 <img
-                  class="absolute inset-0 z-20 h-40 w-96 object-cover"
+                  class="absolute inset-0 z-20 h-40 w-full object-cover"
                   src={background_cancelled}
                   alt="bg_cancelled"
                   width={0}
