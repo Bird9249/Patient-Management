@@ -149,22 +149,24 @@ export default component$(() => {
   return (
     <Form>
       {/* main div */}
-      <div class="flex h-screen w-screen flex-row ">
-        {/* form */}
-        <div class="flex-1">
-          {/* logo */}
-          <div class="absolute ml-28 mt-14 h-20 w-32">
-            <img src={logo_img} alt="logo_icon" width={84} height={54} />
-            <h1 class="ml-1 text-sm font-semibold">SnatBas Clinic</h1>
-          </div>
-
-          {/* text */}
-          <div class="mx-28 mt-44 px-5">
-            <div>
-              <p class="text-2xl ">Welcome back, ...</p>
-              <p class="text-base text-gray-500">We can provide advice.</p>
+      <div class="flex h-screen items-center justify-center overflow-hidden">
+      <div class=" grid w-full grid-cols-2">
+        <div class="container px-28 py-14 ">
+         {/* form */}
+          <div class="grid-span-1 w-full ">
+            {/* logo */}
+            <div class="flex flex-col">
+              <img src={logo_img} alt="logo_icon" width={84} height={54} />
+              <h1 class="ml-1 text-sm font-semibold">SnatBas Clinic</h1>
             </div>
-            <br />
+
+            {/* text */}
+            <div class="mt-6 py-5 px-10">
+              <div>
+                <p class="text-2xl ">Welcome back, ...</p>
+                <p class="text-base text-gray-500">We can provide advice.</p>
+              </div>
+              <br />
 
             {/* input number */}
             <div class="space-y-8">
@@ -216,27 +218,30 @@ export default component$(() => {
             >
               Sign up
             </Link>
-            <button
-              type="button"
-              class="pl-2 text-primary-600 underline decoration-primary-600 underline-offset-8 hover:opacity-80 focus:opacity-80 focus:outline-none "
-              onClick$={() => {
-                isStaffLogin.value = true;
-              }}
-            >
+              <button
+                type="button"
+                class="pl-2 text-primary-600 underline decoration-primary-600 underline-offset-8 hover:opacity-80 focus:opacity-80 focus:outline-none "
+                onClick$={() => {
+                  isStaffLogin.value = true;
+                }}
+              >
               Staff
-            </button>
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* image */}
-        <div class="flex-1 ">
-          <img
-            src={background_img}
-            alt="background"
-            width={1000}
-            height={100}
-            class="h-screen w-full object-cover"
-          />
+              {/* image */}
+              <div class="flex-1 ">
+              <img
+              src={background_img}
+              alt="background"
+              width={1000}
+              height={100}
+              class="h-screen w-full object-cover"
+              />
+            </div>
+          
         </div>
       </div>
       <PinVerification isOpen={isStaffLogin} />
