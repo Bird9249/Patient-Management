@@ -94,7 +94,7 @@ export default component$(() => {
       <div class="flex h-screen items-center justify-center overflow-hidden">
         <div class=" grid w-full grid-cols-2">
           {/* left section: sign in page */}
-          <div class="container px-28 py-14 ">
+          <div class="container px-28 my-8 ">
 
           
           <div class="grid-span-1 w-full ">
