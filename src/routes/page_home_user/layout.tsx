@@ -1,5 +1,6 @@
-import type { RequestHandler } from "@builder.io/qwik-city";
+import { RequestHandler } from "@builder.io/qwik-city";
 import { jwtVerify } from "jose";
+import { JWTExpired } from "jose/errors";
 
 export const onRequest: RequestHandler = async ({
   next,
@@ -16,11 +17,9 @@ export const onRequest: RequestHandler = async ({
     const { payload } = await jwtVerify(token.value, secret);
 
     sharedMap.set("auth", payload);
-
-    await next();
   } catch (error) {
-    console.error(error);
-
-    throw redirect(301, "/log_in/");
+    if (error instanceof JWTExpired) throw redirect(301, "/log_in/");
+  } finally {
+    await next();
   }
 };

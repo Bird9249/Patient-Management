@@ -30,8 +30,8 @@
     "migrate": "drizzle-kit push"
   },
   "devDependencies": {
-    "@builder.io/qwik": "^1.9.0",
-    "@builder.io/qwik-city": "^1.9.0",
+    "@builder.io/qwik": "^1.9.1",
+    "@builder.io/qwik-city": "^1.9.1",
     "@modular-forms/qwik": "^0.27.0",
     "@qwikest/icons": "^0.0.13",
     "@tailwindcss/forms": "^0.5.9",
@@ -45,13 +45,13 @@
     "dotenv": "^16.4.5",
     "drizzle-kit": "^0.24.2",
     "eslint": "8.57.0",
-    "eslint-plugin-qwik": "^1.9.0",
+    "eslint-plugin-qwik": "^1.9.1",
     "postcss": "^8.4.47",
     "prettier": "3.3.3",
     "prettier-plugin-tailwindcss": "^0.5.14",
     "tailwindcss": "^3.4.13",
     "typescript": "5.4.5",
-    "undici": "^6.19.8",
+    "undici": "^6.20.0",
     "vercel": "^29.4.0",
     "vite": "5.3.5",
     "vite-tsconfig-paths": "^4.3.2"

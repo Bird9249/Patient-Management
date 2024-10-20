@@ -1,6 +1,13 @@
-import { $, component$, JSXChildren } from "@builder.io/qwik";
-import { routeLoader$, useNavigate } from "@builder.io/qwik-city";
-import { desc, sql } from "drizzle-orm";
+import type { JSXChildren } from "@builder.io/qwik";
+import { $, component$, useVisibleTask$ } from "@builder.io/qwik";
+import {
+  Link,
+  routeLoader$,
+  useLocation,
+  useNavigate,
+} from "@builder.io/qwik-city";
+import { LuChevronRight } from "@qwikest/icons/lucide";
+import { asc, sql } from "drizzle-orm";
 import { Table } from "~/components/table/Table";
 import { db } from "~/lib/db/db";
 import { appointment } from "~/lib/db/schema";
@@ -22,42 +29,44 @@ type AppointmentResponse = {
     image: string;
   };
   account: {
+    id: number;
     name: string;
   };
 };
 
-export const useAppointmentLoader = routeLoader$(
-  async ({ cookie, sharedMap }) => {
-    const admin = sharedMap.get("admin");
+export const useAppointmentLoader = routeLoader$(async ({ query }) => {
+  const offset = query.get("offset");
+  const limit = query.get("limit");
 
-    const res = await db.query.appointment.findMany({
-      columns: {
-        id: true,
-        dateTime: true,
-        status: true,
-      },
-      with: {
-        doctor: {
-          columns: {
-            name: true,
-            image: true,
-          },
-        },
-        account: {
-          columns: {
-            name: true,
-          },
+  const res = await db.query.appointment.findMany({
+    columns: {
+      id: true,
+      dateTime: true,
+      status: true,
+    },
+    with: {
+      doctor: {
+        columns: {
+          name: true,
+          image: true,
         },
       },
+      account: {
+        columns: {
+          id: true,
+          name: true,
+        },
+      },
+    },
+    orderBy: asc(appointment.dateTime),
+    offset: offset ? Number(offset) : undefined,
+    limit: limit ? Number(limit) : undefined,
+  });
 
-      orderBy: desc(appointment.dateTime),
-    });
-
-    return {
-      data: res,
-    };
-  },
-);
+  return {
+    data: res,
+  };
+});
 
 export const useAppointmentStatusLoader = routeLoader$(async () => {
   const statusCounts = await db
@@ -77,9 +86,9 @@ export default component$(() => {
   const loader = useAppointmentLoader();
   const statusLoader = useAppointmentStatusLoader();
   const nav = useNavigate();
-
-  console.log(loader.value);
-  console.log(statusLoader.value);
+  const {
+    url: { searchParams },
+  } = useLocation();
 
   // Accessing the status counts from the loader
   const statusCounts = statusLoader.value.statusCounts;
@@ -110,6 +119,16 @@ export default component$(() => {
     </div>
   ));
 
+  const detailCol = $(({ id }: AppointmentResponse) => (
+    <Link
+      class="flex items-center justify-center gap-1 text-sm text-gray-600 hover:cursor-pointer"
+      href={`/admin_page/details_page/${id}/`}
+    >
+      Detial
+      <LuChevronRight />
+    </Link>
+  ));
+
   const statusCol = $(({ status }: AppointmentResponse) =>
     status === "pending" ? (
       <span class=" inline-flex items-center gap-x-1.5 rounded-full bg-cyan-300 px-3 py-1.5 text-xs font-medium text-cyan-700">
@@ -130,7 +149,7 @@ export default component$(() => {
         pending
       </span>
     ) : status === "scheduled" ? (
-      <span class=" inline-flex items-center gap-x-1.5 rounded-full bg-teal-400 px-3 py-1.5 text-xs font-medium text-teal-800">
+      <span class=" inline-flex items-center gap-x-1.5 rounded-full bg-emerald-400 px-3 py-1.5 text-xs font-medium text-emerald-900">
         <svg
           width="14"
           height="18"
@@ -169,6 +188,16 @@ export default component$(() => {
     ),
   );
 
+  // eslint-disable-next-line qwik/no-use-visible-task
+  useVisibleTask$(async () => {
+    const offset = searchParams.get("offset");
+    const limit = searchParams.get("limit");
+
+    if (!offset || !limit) {
+      await nav(`/admin_page/?offset=0&limit=10`);
+    }
+  });
+
   return (
     <>
       {/* big box */}
@@ -179,7 +208,7 @@ export default component$(() => {
         width={0}
         height={0}
       />
-      <div class="flex h-screen justify-center">
+      <div class="flex min-h-screen  justify-center">
         <div class="container mx-auto my-8 px-8">
           {/* nav bar */}
           <nav class="mt-8 flex w-full justify-between ">
@@ -208,7 +237,7 @@ export default component$(() => {
             {/* Count Status Cards */}
             <div class="container mx-auto my-10 flex items-center justify-center gap-8">
               {/* scheduledCount */}
-              <div class="relative h-40 flex-1 shrink-0 space-y-4 rounded-lg p-5 shadow">
+              <div class="relative h-40 flex-1 shrink-0 space-y-4 rounded-lg bg-white p-5 shadow">
                 <img
                   class="absolute inset-0 z-20 h-40 w-96 object-cover"
                   src={background_scheduled}
@@ -246,9 +275,9 @@ export default component$(() => {
                 </div>
               </div>
               {/* pendingCount */}
-              <div class="relative h-40 flex-1 shrink-0 space-y-4 rounded-lg p-5 shadow">
+              <div class="relative h-40 flex-1 shrink-0 space-y-4 rounded-lg bg-white p-5 shadow">
                 <img
-                  class="absolute inset-0 -z-10 h-40 w-96 object-cover "
+                  class="absolute inset-0 z-20 h-40 w-96 object-cover"
                   src={background_pending}
                   alt="bg_pending"
                   width={0}
@@ -284,9 +313,9 @@ export default component$(() => {
                 </div>
               </div>
               {/* cancelledCount */}
-              <div class="relative h-40 flex-1 shrink-0 space-y-4 rounded-lg p-5 shadow">
+              <div class="relative h-40 flex-1 shrink-0 space-y-4 rounded-lg bg-white p-5 shadow">
                 <img
-                  class=" absolute inset-0 -z-10 h-40 w-96 object-cover"
+                  class="absolute inset-0 z-20 h-40 w-96 object-cover"
                   src={background_cancelled}
                   alt="bg_cancelled"
                   width={0}
@@ -327,18 +356,17 @@ export default component$(() => {
               <Table
                 columns={[
                   { label: "Patient", key: "patient", content$: accountCol },
-                  { label: "Status", key: "status", content$: statusCol },
                   { label: "Date", key: "dateTime" },
                   { label: "Doctor", key: "doctor", content$: doctorCol },
-                  { label: "Action", key: "action" },
+                  { label: "Status", key: "status", content$: statusCol },
+                  { label: "Details", key: "details", content$: detailCol },
                 ]}
                 data={loader}
                 emptyState={{ title: "no data" }}
                 onStateChange$={async (state) => {
-                  // const searchParams = new URLSearchParams();
-                  // searchParams.set("offset", String(state.offset));
-                  // searchParams.set("limit", String(state.limit));
-                  // nav(`/admin_page?${searchParams.toString()}`);
+                  await nav(
+                    `/admin_page/?offset=${state.offset}&limit=${state.limit}`,
+                  );
                 }}
               ></Table>
             </div>
