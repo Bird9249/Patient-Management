@@ -82,22 +82,22 @@ export default component$(() => {
         }
       }}
     >
-      <div class="relative mx-auto flex min-h-screen flex-col justify-center bg-white">
-        <img
-          class="fixed h-screen w-screen object-cover"
-          src={backgroundpage}
-          alt=""
-          width={0}
-          height={0}
-        />
-        <div class="z-10">
-          <div class="mb-4 ml-28">
-            <img class="w-20" src={logo_page} width={0} height={0} />
+      <img
+        class="fixed h-screen w-screen object-cover"
+        src={backgroundpage}
+        alt=""
+        width={0}
+        height={0}
+      />
+      <div class="relative flex flex-col justify-center">
+        <div class="container mx-auto my-8 px-8">
+          <div class="flex flex-col mb-4">
+            <img src={logo_page} width={84} height={54} />
             <span class="ml-1 text-sm font-semibold">SnatBas Clinic</span>
           </div>
           <div>
             <Link
-              class="mb-4 ml-32 inline-flex items-center gap-x-1  hover:cursor-pointer hover:text-primary-600 focus:text-primary-600 focus:outline-none "
+              class="mb-4 ml-10 inline-flex items-center gap-x-1  hover:cursor-pointer hover:text-primary-600 focus:text-primary-600 focus:outline-none "
               onClick$={async () => {
                 nav(`/page_home_user/${params.accountId}/`);
               }}
@@ -121,7 +121,7 @@ export default component$(() => {
               Back
             </Link>
           </div>
-          <div class="ml-32">
+          <div class="mx-10">
             <h1 class="mb-4 text-3xl">Hey There 👋</h1>
             <p class="mb-6 text-gray-500">
               Request a new appointment in 10 seconds

@@ -140,15 +140,15 @@ export default component$(() => {
           <p class="ml-1 text-sm font-semibold text-black">SnatBas Clinic</p>
         </div>
         {/* Hi.. */}
-        <div class="w-full text-black">
-          <p class="text-4xl font-normal">Hi, How Are you ...</p>
-          <p class="text-mg text-gray-500">Let us know more about yourself</p>
+        <div class="mx-10 w-full text-black">
+          <p class="text-2xl font-normal">Hi, How Are you ...</p>
+          <p class="text-sm text-gray-500">Let us know more about yourself</p>
         </div>
       </div>
       {/* main div */}
       <div class="container mx-auto px-8">
         {/* form */}
-        <div class="flex h-auto w-full flex-col space-y-8">
+        <div class="flex h-auto w-full flex-col space-y-8 px-10">
           {/* Personal information */}
           <div class=" flex-1 justify-center rounded-3xl bg-gray-50">
             <div class="space-y-4 p-5">

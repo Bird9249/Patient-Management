@@ -203,26 +203,26 @@ export default component$(() => {
               </p>
             </div>
             <div class="flex-1">
-              <div class="flex flex-col gap-14 text-lg font-medium sm:mt-0 sm:flex-row sm:items-center sm:justify-end sm:ps-5">
+              <div class="flex flex-col gap-14 text-lg font-normal  text-black  sm:mt-0 sm:flex-row sm:items-center sm:justify-end sm:ps-5">
                 <a
-                  class=" text-primary-800 hover:text-primary-700"
+                  class="hover:text-primary-800"
                   href={`/page_home_user/${params.accountId}/`}
                   aria-current="page"
                 >
                   Home
                 </a>
                 <a
-                  class=" flex flex-row items-center gap-1 text-primary-800 hover:text-primary-700"
+                  class="flex flex-row items-center gap-1 hover:text-primary-800 "
                   href="#"
                 >
                   Profile
                   <LuChevronDown class="size-4" />
                 </a>
-                <a class=" text-primary-800 hover:text-primary-700 " href="#">
+                <a class="hover:text-primary-800" href="#">
                   Contact us
                 </a>
                 <button
-                  class=" flex flex-row items-center gap-1 text-primary-800 hover:text-primary-700 "
+                  class="flex flex-row items-center gap-1 hover:text-primary-800  "
                   onClick$={() => {
                     isOpen.value = true;
                   }}
@@ -233,7 +233,7 @@ export default component$(() => {
               </div>
             </div>
             <Modal isOpen={isOpen}>
-              <div class="mb-10 flex flex-col items-center justify-center space-y-14 p-5">
+              <div class="flex flex-col items-center justify-center space-y-14 p-5">
                 <div class="flex text-red-500">
                   <LuLogOut class="size-20 " />
                 </div>
@@ -242,8 +242,8 @@ export default component$(() => {
                   <button
                     type="button"
                     class="inline-flex h-11 w-28 items-center justify-center rounded-full border border-transparent bg-red-500 px-3 py-2 text-base font-medium text-white hover:bg-red-600 focus:bg-red-600 focus:outline-none disabled:pointer-events-none disabled:opacity-50"
-                    onClick$={async () => {
-                      await nav(`/page_home_user/${params.accountId}/`);
+                    onClick$={() => {
+                      isOpen.value = false;
                     }}
                   >
                     Cancel
@@ -270,7 +270,7 @@ export default component$(() => {
         </div>
         {/* back button */}
         <Link
-          class="inline-flex items-center gap-x-1 text-lg text-gray-800 hover:cursor-pointer hover:text-primary-600 focus:text-primary-600"
+          class="ml-10 inline-flex items-center gap-x-1 text-lg text-gray-800 hover:cursor-pointer hover:text-primary-600 focus:text-primary-600"
           href={`/page_home_user/${params.accountId}/`}
         >
           <svg
@@ -292,8 +292,8 @@ export default component$(() => {
           Back
         </Link>
         {/* Hi.. */}
-        <div class="mt-5 w-full space-y-2 text-black">
-          <p class="text-3xl font-normal">My Form</p>
+        <div class="mx-10 mt-3 w-full  text-black">
+          <p class="text-2xl font-normal">My Form</p>
           <p class="text-sm text-gray-500">
             You can edit and Change information to be correct
           </p>
@@ -302,7 +302,7 @@ export default component$(() => {
       {/* main div */}
       <div class="container mx-auto px-8">
         {/* form */}
-        <div class="flex h-auto w-full flex-col space-y-8">
+        <div class="flex h-auto w-full flex-col space-y-8 px-10">
           {/* Personal information */}
           <div class=" flex-1 justify-center rounded-3xl bg-gray-50">
             <div class="space-y-4 p-5">

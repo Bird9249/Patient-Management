@@ -92,20 +92,22 @@ export default component$(() => {
     <Form>
       {/* whole sign in section*/}
       <div class="flex h-screen items-center justify-center overflow-hidden">
-        <div class=" grid w-full grid-cols-2 items-center">
+        <div class=" grid w-full grid-cols-2">
           {/* left section: sign in page */}
+          <div class="container px-28 my-8 ">
 
-          <div class="grid-span-1 m-auto w-full max-w-sm ">
+          
+          <div class="grid-span-1 w-full ">
             {/* logo tag */}
-            <div class="mb-3">
+            <div class="flex flex-col">
               <img width={84} height={54} src={logo_image} alt="" />
               <span class="ml-1 text-sm font-semibold">SnatBas Clinic</span>
             </div>
 
             {/* sign in section */}
-            <div class="">
+            <div class="mt-6 py-5 px-10">
               <h1 class="text-2xl">Hi there...</h1>
-              <p class="mb-3 text-slate-500">Get started with appointment.</p>
+              <p class="mb-6 text-slate-500">Get started with appointment.</p>
 
               <div class="space-y-6">
                 <Field name="name">
@@ -242,7 +244,8 @@ export default component$(() => {
                   Get started
                 </Button>
               </div>
-            </div>
+            </div>  
+          
             {/* bottom link */}
             <div class="mt-7 flex justify-center gap-5">
               <Link
@@ -254,12 +257,13 @@ export default component$(() => {
 
               <Link
                 href="#"
-                class="border-ga-100 border-r pr-2 text-primary-600 underline decoration-primary-600 underline-offset-8 hover:opacity-80 focus:opacity-80 focus:outline-none"
+                class="border-ga-100 pr-2 text-primary-600 underline decoration-primary-600 underline-offset-8 hover:opacity-80 focus:opacity-80 focus:outline-none"
               >
                 Contact us
               </Link>
             </div>
           </div>
+        </div>
 
           {/* right section: image */}
 
