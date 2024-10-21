@@ -1,7 +1,14 @@
 import { component$, useSignal } from "@builder.io/qwik";
-import { Link, routeLoader$, useLocation } from "@builder.io/qwik-city";
-import { LuUser } from "@qwikest/icons/lucide";
+import {
+  Link,
+  routeAction$,
+  routeLoader$,
+  useLocation,
+  useNavigate,
+} from "@builder.io/qwik-city";
+import { LuLogOut, LuUser2 } from "@qwikest/icons/lucide";
 import { eq } from "drizzle-orm";
+import { Modal } from "~/components/modal/Modal";
 import { db } from "~/lib/db/db";
 import { appointment } from "~/lib/db/schema";
 import { convertToCustomFormat } from "~/utils/convertToCustomFormat";
@@ -35,11 +42,19 @@ export const useAppointmentHistoryLoader = routeLoader$(async ({ params }) => {
     data: res,
   };
 });
+export const useLogoutAction = routeAction$(async (values, { cookie }) => {
+  cookie.delete("auth-token", { path: "/" });
+
+  return {
+    success: true,
+  };
+});
 
 export default component$(() => {
   const loader = useAppointmentHistoryLoader();
   const isOpen = useSignal<boolean>(false);
-  // const nav = useNavigate();
+  const logoutAction = useLogoutAction();
+  const nav = useNavigate();
   const { params } = useLocation();
 
   return (
@@ -54,29 +69,29 @@ export default component$(() => {
       />
 
       {/* big box */}
-      <div class="flex h-screen justify-center">
-        <div class="container">
+      <div class="flex min-h-screen justify-center">
+        <div class="container mx-auto my-8 px-8 ">
           {/* header */}
-          <nav class="mt-8 flex w-full justify-between">
+          <nav class="flex w-full justify-between">
             {/* logo and name */}
-            <div class="flex-none">
+            <div class="flex flex-col">
               <img width={84} height={54} src={logo_image} alt="" />
               <span class="ml-1 text-sm font-semibold">SnatBas Clinic</span>
             </div>
             {/* link */}
 
-            <ul class="flex items-center gap-16">
-              <li>
+            <ul class="flex items-center gap-14 text-lg text-black">
+              <li class="hover:text-primary-800">
                 <Link href={`/page_home_user/${params.accountId}/`}>Home</Link>
               </li>
-              <li>
+              <li class="hover:text-primary-800">
                 <Link href="#">My form</Link>
               </li>
-              <li>
+              <li class="hover:text-primary-800">
                 <Link href="#">Contact us</Link>
               </li>
-              <li class="flex items-center gap-1">
-                <LuUser class="size-5" />
+              <li class="flex items-center gap-1 hover:text-primary-800">
+                <LuUser2 />
                 <Link
                   href="#"
                   onClick$={() => {
@@ -92,7 +107,7 @@ export default component$(() => {
           {/* session*/}
           <div class="mx-10 mt-10 flex-col space-y-3">
             {/* back to home button and appointment detail, created time */}
-            <div class="flex-col space-y-5">
+            <div class="mb-5 flex-col space-y-5">
               {/* back to home button */}
               <div>
                 <Link
@@ -120,18 +135,18 @@ export default component$(() => {
               </div>
               {/* text and created time */}
               <div class="flex justify-between">
-                <span class="text-2xl font-semibold">Appointment details</span>
+                <span class="text-2xl">Appointment details</span>
                 <div>{convertToCustomFormat(loader.value.data!.createdAt)}</div>
               </div>
             </div>
 
             {/* detail table */}
-            <div class="flex flex-auto flex-row justify-center gap-8 rounded-lg bg-cyan-100 p-5 font-semibold">
+            <div class="flex flex-auto flex-row justify-center gap-5 rounded-2xl bg-cyan-100 p-4">
               {/* left */}
-              <div class="w-full space-y-3 rounded-lg bg-white p-2 ">
+              <div class="w-full space-y-3 rounded-2xl bg-white p-2">
                 {/* doctor */}
                 <div class="flex items-center gap-2">
-                  <div>Doctor: </div>
+                  <div class="font-medium">Doctor: </div>
                   <img
                     src={
                       import.meta.env.PUBLIC_IMAGE_URL +
@@ -147,17 +162,17 @@ export default component$(() => {
                 </div>
 
                 {/* date of appointment */}
-                <div class="flex gap-2">
-                  <div>Date of appointment: </div>
+                <div class=" flex gap-2">
+                  <div class="font-medium">Date of appointment: </div>
                   <div>{loader.value.data?.dateTime}</div>
                 </div>
 
                 {/* Reason for appointment */}
                 <div class="flex flex-col space-y-2">
-                  <div>Reason of appointment</div>
+                  <div class="mb-1 font-medium">Reason of appointment</div>
                   <div>
                     <textarea
-                      class=" w-full cursor-default resize-none rounded-lg border-gray-500 px-4 py-3"
+                      class="h-24 w-full cursor-default resize-none rounded-lg border-gray-200 px-4 py-3"
                       value={loader.value.data?.reasonOfAppointment}
                       readOnly
                     ></textarea>
@@ -166,10 +181,10 @@ export default component$(() => {
 
                 {/* additional comment/notes */}
                 <div class="flex flex-col space-y-2">
-                  <div>additional comment/notes</div>
+                  <div class="font-medium">additional comment/notes</div>
                   <div>
                     <textarea
-                      class=" w-full cursor-default resize-none rounded-lg border-gray-500 px-4 py-3"
+                      class="h-24 w-full cursor-default resize-none rounded-lg border-gray-200 px-4 py-3"
                       value={loader.value.data?.comment || ""}
                       readOnly
                       placeholder="No comment"
@@ -179,7 +194,7 @@ export default component$(() => {
               </div>
 
               {/* right */}
-              <div class="flex w-full flex-col space-y-3 rounded-lg bg-white p-2">
+              <div class="flex w-full flex-col space-y-3 rounded-2xl bg-white p-2">
                 {/* status */}
                 <div class="flex justify-end ">
                   {loader.value.data?.status === "cancelled" ? (
@@ -242,7 +257,7 @@ export default component$(() => {
 
                 {/* updatedAt */}
                 <div class="flex justify-end">
-                  <span class="mr-2">Update date:</span>
+                  <span class="mr-2 font-medium">Update date:</span>
 
                   {loader.value.data!.updatedAt
                     ? convertToCustomFormat(loader.value.data!.updatedAt)
@@ -251,12 +266,12 @@ export default component$(() => {
 
                 {/* Reason for schedule */}
                 <div class="space-y-2">
-                  <span class="flex justify-end font-semibold">
+                  <span class="flex justify-end font-medium">
                     Reason for schedule
                   </span>
                   <div class="">
                     <textarea
-                      class="h-40 w-full cursor-default resize-none rounded-lg border-gray-500 px-4 py-3"
+                      class="h-60 w-full cursor-default resize-none rounded-lg border-gray-200 px-4 py-3"
                       readOnly
                       placeholder="please wait for confirmation"
                       value={loader.value.data?.reasonOfAdmin || ""}
@@ -265,6 +280,43 @@ export default component$(() => {
                 </div>
               </div>
             </div>
+            {/* Model pop-up of logout */}
+            <Modal isOpen={isOpen}>
+              <div class="my-5 flex flex-col items-center justify-center space-y-12">
+                <div>
+                  <LuLogOut class="size-20 text-red-500" />
+                </div>
+                <div>
+                  <p class="text-2xl">Do you confirm to LOG OUT?</p>
+                </div>
+                <div class="space-x-14">
+                  <button
+                    type="button"
+                    onClick$={() => {
+                      isOpen.value = false;
+                    }}
+                    class="inline-flex h-11 w-28 items-center justify-center gap-x-2 rounded-full border border-transparent bg-red-500 px-4 py-3 text-sm font-medium text-white hover:bg-red-600 focus:bg-red-600 focus:outline-none disabled:pointer-events-none disabled:opacity-50"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    onClick$={async () => {
+                      const res = await logoutAction.submit();
+                      console.log(res);
+
+                      if (res.value.success) {
+                        await nav("/log_in/");
+                      }
+                    }}
+                    class="inline-flex h-11 w-28 items-center justify-center gap-x-2 rounded-full border border-transparent bg-gray-200 px-4 py-3 text-sm font-medium text-red-500 hover:bg-gray-300 focus:bg-gray-300  focus:outline-none disabled:pointer-events-none disabled:opacity-50"
+                    disabled={logoutAction.isRunning}
+                  >
+                    Log out
+                  </button>
+                </div>
+              </div>
+            </Modal>
           </div>
         </div>
       </div>

@@ -83,12 +83,12 @@ export default component$(() => {
       }}
     >
       <img
-          class="fixed h-screen w-screen object-cover"
-          src={backgroundpage}
-          alt=""
-          width={0}
-          height={0}
-        />
+        class="fixed h-screen w-screen object-cover"
+        src={backgroundpage}
+        alt=""
+        width={0}
+        height={0}
+      />
       <div class="relative flex flex-col justify-center">
         <div class="container mx-auto my-8 px-8">
           <div class="flex flex-col mb-4">
