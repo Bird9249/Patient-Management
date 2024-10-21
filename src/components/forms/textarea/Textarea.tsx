@@ -8,10 +8,10 @@ type TextareaProps = {
   value: string | undefined;
   error?: string;
   required?: boolean;
-  ref: QRL<(element: HTMLTextAreaElement) => void>;
+  ref?: QRL<(element: HTMLTextAreaElement) => void>;
   onInput$: (event: Event, element: HTMLTextAreaElement) => void;
-  onChange$: (event: Event, element: HTMLTextAreaElement) => void;
-  onBlur$: (event: Event, element: HTMLTextAreaElement) => void;
+  onChange$?: (event: Event, element: HTMLTextAreaElement) => void;
+  onBlur$?: (event: Event, element: HTMLTextAreaElement) => void;
   size?: "small" | "default" | "large";
   status?: "error" | "success";
   icon?: JSX.Element;
@@ -93,7 +93,7 @@ export const Textarea = component$(
             rows={3}
             {...props}
             id={name}
-            class={`block w-full rounded-lg ${icon ? "pl-12" : "pl-4"} ${inputClasses} ${borderColor}`}
+            class={`block w-full resize-none rounded-lg ${icon ? "pl-12" : "pl-4"} ${inputClasses} ${borderColor}`}
             placeholder={placeholder}
             aria-invalid={!!error}
             aria-errormessage={error ? `${name}-error` : undefined}

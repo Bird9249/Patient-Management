@@ -8,7 +8,7 @@ import {
   useSignal,
   useVisibleTask$,
 } from "@builder.io/qwik";
-import { Button } from "../router-head/button/Button";
+import { Button } from "../button/Button";
 import "./modal.css";
 
 export const Modal = component$<{
@@ -60,8 +60,8 @@ export const Modal = component$<{
               aria-labelledby="modal"
             >
               {header ? (
-                <div class="flex items-center justify-between border-b px-4 py-3">
-                  <h3 id="hs-basic-modal-label" class="font-bold text-gray-800">
+                <div class="mx-4 mt-4 flex items-center justify-between px-4 pt-3">
+                  <h3 id="hs-basic-modal-label" class="text-2xl text-gray-800">
                     {header.title}
                   </h3>
                   <button
@@ -93,7 +93,7 @@ export const Modal = component$<{
               ) : (
                 <></>
               )}
-              <div class="overflow-y-auto p-4">
+              <div class="overflow-y-auto px-4 pb-4">
                 <Slot />
               </div>
               {footer ? (

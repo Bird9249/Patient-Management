@@ -3,7 +3,6 @@ import { component$, type QRL } from "@builder.io/qwik";
 type CheckboxProps = {
   ref: QRL<(element: HTMLInputElement) => void>;
   name: string;
-  value?: string;
   checked?: boolean;
   onInput$: (event: Event, element: HTMLInputElement) => void;
   onChange$: (event: Event, element: HTMLInputElement) => void;
@@ -26,7 +25,7 @@ export const Checkbox = component$(
           aria-invalid={!!error}
           aria-errormessage={`${name}-error`}
         />
-        <label for={name} class="ms-3 text-sm text-gray-500">
+        <label for={name} class="ms-3 text-sm text-black">
           {label} {required && <span>*</span>}
         </label>
         {error && (
