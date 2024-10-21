@@ -96,7 +96,7 @@ export default component$(() => {
               {/* back to home button */}
               <div>
                 <Link
-                  class="inline-flex cursor-pointer items-center gap-x-1 text-xl text-gray-800 hover:text-primary-600 hover:underline focus:text-primary-600 focus:outline-none "
+                  class="inline-flex cursor-pointer items-center gap-x-1 text-xl text-gray-800 hover:text-primary-600 focus:text-primary-600 focus:outline-none "
                   href={`/page_home_user/${params.accountId}/`}
                 >
                   <svg
@@ -115,7 +115,7 @@ export default component$(() => {
                     <path d="M16 12H8" />
                     <path d="m12 8-4 4 4 4" />
                   </svg>
-                  Back to home
+                  Back
                 </Link>
               </div>
               {/* text and created time */}
@@ -126,9 +126,9 @@ export default component$(() => {
             </div>
 
             {/* detail table */}
-            <div class="flex flex-auto flex-row justify-center gap-8 rounded bg-cyan-100 p-5 font-semibold">
+            <div class="flex flex-auto flex-row justify-center gap-8 rounded-lg bg-cyan-100 p-5 font-semibold">
               {/* left */}
-              <div class="w-full space-y-3 rounded bg-white p-2 ">
+              <div class="w-full space-y-3 rounded-lg bg-white p-2 ">
                 {/* doctor */}
                 <div class="flex items-center gap-2">
                   <div>Doctor: </div>
@@ -179,7 +179,7 @@ export default component$(() => {
               </div>
 
               {/* right */}
-              <div class="flex w-full flex-col space-y-3 rounded bg-white p-2">
+              <div class="flex w-full flex-col space-y-3 rounded-lg bg-white p-2">
                 {/* status */}
                 <div class="flex justify-end ">
                   {loader.value.data?.status === "cancelled" ? (
@@ -256,7 +256,7 @@ export default component$(() => {
                   </span>
                   <div class="">
                     <textarea
-                      class="h-48 w-full cursor-default resize-none rounded-lg border-gray-500 px-4 py-3"
+                      class="h-40 w-full cursor-default resize-none rounded-lg border-gray-500 px-4 py-3"
                       readOnly
                       placeholder="please wait for confirmation"
                       value={loader.value.data?.reasonOfAdmin || ""}
