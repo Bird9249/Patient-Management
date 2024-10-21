@@ -220,7 +220,7 @@ export default component$(() => {
             </Link>
               <button
                 type="button"
-                class="pl-2 text-primary-600 underline decoration-primary-600 underline-offset-8 hover:opacity-80 focus:opacity-80 focus:outline-none "
+                class="pl-2  text-primary-600 underline decoration-primary-600 underline-offset-8 hover:opacity-80 focus:opacity-80 focus:outline-none "
                 onClick$={() => {
                   isStaffLogin.value = true;
                 }}

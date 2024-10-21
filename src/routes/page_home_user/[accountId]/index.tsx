@@ -303,7 +303,7 @@ export default component$(() => {
                   }}
                   class="inline-flex h-11 w-28 items-center justify-center gap-x-2 rounded-full border border-transparent bg-red-500 px-4 py-3 text-sm font-medium text-white hover:bg-red-600 focus:bg-red-600 focus:outline-none disabled:pointer-events-none disabled:opacity-50"
                 >
-                  Cancel
+                  Cancel for back to page/home/admin' builder
                 </button>
                 <button
                   type="button"
@@ -313,12 +313,13 @@ export default component$(() => {
 
                     if (res.value.success) {
                       await nav("/log_in/");
+                      
                     }
                   }}
                   class="inline-flex h-11 w-28 items-center justify-center gap-x-2 rounded-full border border-transparent bg-gray-300 px-4 py-3 text-sm font-medium text-red-500 hover:bg-gray-400 focus:bg-gray-400  focus:outline-none disabled:pointer-events-none disabled:opacity-50"
                   disabled={logoutAction.isRunning}
                 >
-                  Log out
+                  Log out if i justify how you get that 
                 </button>
               </div>
             </div>
