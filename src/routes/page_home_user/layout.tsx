@@ -1,4 +1,4 @@
-import { RequestHandler } from "@builder.io/qwik-city";
+import type { RequestHandler } from "@builder.io/qwik-city";
 import { jwtVerify } from "jose";
 import { JWTExpired } from "jose/errors";
 

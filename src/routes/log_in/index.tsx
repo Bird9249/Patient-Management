@@ -7,8 +7,6 @@ import { SignJWT } from "jose";
 import { Button } from "~/components/button/Button";
 import { TextInput } from "~/components/forms/text-input/TextInput";
 import { PinVerification } from "~/components/modal/pin-verification/pin-verification";
-import logo_img from "../../../public/logo project.png";
-import background_img from "../../../public/picture prompt.png";
 import { checkAccount } from "./Action/action";
 import type { ILoginSchema } from "./schemas/login.schema";
 import { LoginSchema } from "./schemas/login.schema";
@@ -150,98 +148,104 @@ export default component$(() => {
     <Form>
       {/* main div */}
       <div class="flex h-screen items-center justify-center overflow-hidden">
-      <div class=" grid w-full grid-cols-2">
-        <div class="container px-28 my-8 ">
-         {/* form */}
-          <div class="grid-span-1 w-full ">
-            {/* logo */}
-            <div class="flex flex-col">
-              <img src={logo_img} alt="logo_icon" width={84} height={54} />
-              <h1 class="ml-1 text-sm font-semibold">SnatBas Clinic</h1>
-            </div>
 
-            {/* text */}
-            <div class="mt-6 py-5 px-10">
-              <div>
-                <p class="text-2xl ">Welcome back, ...</p>
-                <p class="text-base text-gray-500">We can provide advice.</p>
+        <div class=" grid w-full grid-cols-2">
+          <div class="container px-28 py-14 ">
+            {/* form */}
+            <div class="grid-span-1 w-full ">
+              {/* logo */}
+              <div class="flex flex-col">
+                <img
+                  src={"/logo_project.png"}
+                  alt="logo_icon"
+                  width={84}
+                  height={54}
+                />
+                <h1 class="ml-1 text-sm font-semibold">SnatBas Clinic</h1>
               </div>
-              <br />
 
-            {/* input number */}
-            <div class="space-y-8">
-              <Field name="phone">
-                {(field, props) => (
-                  <TextInput
-                    {...props}
-                    value={field.value}
-                    error={field.error}
-                    label="Your phone number"
-                    placeholder="xx xxx xxx"
-                    type="tel"
-                    required
-                  />
-                )}
-              </Field>
 
-              {/* password */}
-              <Field name="password">
-                {(field, props) => (
-                  <TextInput
-                    {...props}
-                    value={field.value}
-                    error={field.error}
-                    label="Enter your password"
-                    placeholder="Enter your password"
-                    type="password"
-                    required
-                  />
-                )}
-              </Field>
+              {/* text */}
+              <div class="mt-6 px-10 py-5">
+                <div>
+                  <p class="text-2xl ">Welcome back, ...</p>
+                  <p class="text-base text-gray-500">We can provide advice.</p>
+                </div>
+                <br />
 
-              <Button
-                block
-                variant="solid"
-                type="submit"
-                isLoading={form.submitting}
-              >
-                Log in
-              </Button>
+                {/* input number */}
+                <div class="space-y-8">
+                  <Field name="phone">
+                    {(field, props) => (
+                      <TextInput
+                        {...props}
+                        value={field.value}
+                        error={field.error}
+                        label="Your phone number"
+                        placeholder="xx xxx xxx"
+                        type="tel"
+                        required
+                      />
+                    )}
+                  </Field>
+
+                  {/* password */}
+                  <Field name="password">
+                    {(field, props) => (
+                      <TextInput
+                        {...props}
+                        value={field.value}
+                        error={field.error}
+                        label="Enter your password"
+                        placeholder="Enter your password"
+                        type="password"
+                        required
+                      />
+                    )}
+                  </Field>
+
+                  <Button
+                    block
+                    variant="solid"
+                    type="submit"
+                    isLoading={form.submitting}
+                  >
+                    Log in
+                  </Button>
+                </div>
+              </div>
+
+              {/* link page */}
+              <div class="mt-40 flex justify-center  ">
+                <Link
+                  href="/sign-up/"
+                  class="border-ga-200 border-r pr-2 text-primary-600 underline decoration-primary-600 underline-offset-8 hover:opacity-80 focus:opacity-80 focus:outline-none"
+                >
+                  Sign up
+                </Link>
+                <button
+                  type="button"
+                  class="pl-2 text-primary-600 underline decoration-primary-600 underline-offset-8 hover:opacity-80 focus:opacity-80 focus:outline-none "
+                  onClick$={() => {
+                    isStaffLogin.value = true;
+                  }}
+                >
+                  Staff
+                </button>
+              </div>
             </div>
           </div>
 
-          {/* link page */}
-          <div class="mt-40 flex justify-center  ">
-            <Link
-              href="/sign-up/"
-              class="border-ga-200 border-r pr-2 text-primary-600 underline decoration-primary-600 underline-offset-8 hover:opacity-80 focus:opacity-80 focus:outline-none"
-            >
-              Sign up
-            </Link>
-              <button
-                type="button"
-                class="pl-2 text-primary-600 underline decoration-primary-600 underline-offset-8 hover:opacity-80 focus:opacity-80 focus:outline-none "
-                onClick$={() => {
-                  isStaffLogin.value = true;
-                }}
-              >
-              Staff
-              </button>
-            </div>
-          </div>
-        </div>
-
-              {/* image */}
-              <div class="flex-1 ">
-              <img
-              src={background_img}
+          {/* image */}
+          <div class="flex-1 ">
+            <img
+              src={"/picture_prompt.png"}
               alt="background"
               width={1000}
               height={100}
               class="h-screen w-full object-cover"
-              />
-            </div>
-          
+            />
+          </div>
         </div>
       </div>
       <PinVerification isOpen={isStaffLogin} />
