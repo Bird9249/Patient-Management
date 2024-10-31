@@ -1,11 +1,11 @@
 import { $, component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
 import type { RequestHandler } from "@builder.io/qwik-city";
 import {
+  Link,
   routeAction$,
   routeLoader$,
   useLocation,
   useNavigate,
-  Link,
 } from "@builder.io/qwik-city";
 import {
   LuChevronRight,
