@@ -92,6 +92,7 @@ export default component$(() => {
       <div class="flex h-screen items-center justify-center overflow-hidden">
         <div class=" grid w-full grid-cols-2">
           {/* left section: sign in page */}
+
           <div class="container px-28 py-14 ">
             <div class="grid-span-1 w-full ">
               {/* logo tag */}
@@ -99,6 +100,7 @@ export default component$(() => {
                 <img width={84} height={54} src={"/logo_project.png"} alt="" />
                 <span class="ml-1 text-sm font-semibold">SnatBas Clinic</span>
               </div>
+
 
               {/* sign in section */}
               <div class="mt-6 px-10 py-5">
