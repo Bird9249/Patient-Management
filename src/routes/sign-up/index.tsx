@@ -8,8 +8,6 @@ import { addAccount } from "./action/actions";
 import checkNumber from "./action/check-number";
 import type { IAccountSchema } from "./schema/account";
 import { AccountSchema } from "./schema/account";
-import logo_image from "/logo project.png";
-import signup_image from "/sign_up_page.jpg";
 
 //formAction
 export const useRegisterAction = formAction$<
@@ -98,14 +96,14 @@ export default component$(() => {
             <div class="grid-span-1 w-full ">
               {/* logo tag */}
               <div class="flex flex-col">
-                <img width={84} height={54} src={logo_image} alt="" />
+                <img width={84} height={54} src={"/logo_project.png"} alt="" />
                 <span class="ml-1 text-sm font-semibold">SnatBas Clinic</span>
               </div>
 
               {/* sign in section */}
               <div class="mt-6 px-10 py-5">
-                <h1 class="text-2xl">Hi there...</h1>
-                <p class="mb-6 text-slate-500">Get started with appointment.</p>
+                <h1 class="text-2xl">Hi, It's first time...</h1>
+                <p class="mb-6 text-slate-500">Get Start Together</p>
 
                 <div class="space-y-6">
                   <Field name="name">
@@ -265,7 +263,7 @@ export default component$(() => {
             <img
               height={832}
               width={691}
-              src={signup_image}
+              src={"/sign_up_page.jpg"}
               alt=""
               class="h-screen w-full object-cover"
             />

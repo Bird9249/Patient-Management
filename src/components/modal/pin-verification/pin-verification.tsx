@@ -1,4 +1,5 @@
-import { component$, Signal, useSignal } from "@builder.io/qwik";
+import type { Signal } from "@builder.io/qwik";
+import { component$, useSignal } from "@builder.io/qwik";
 import { useNavigate } from "@builder.io/qwik-city";
 import { Button } from "~/components/button/Button";
 import { PinInput } from "~/components/forms/pin-input/PinInput";

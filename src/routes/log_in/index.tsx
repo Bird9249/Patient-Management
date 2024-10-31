@@ -7,8 +7,6 @@ import { SignJWT } from "jose";
 import { Button } from "~/components/button/Button";
 import { TextInput } from "~/components/forms/text-input/TextInput";
 import { PinVerification } from "~/components/modal/pin-verification/pin-verification";
-import logo_img from "../../../public/logo project.png";
-import background_img from "../../../public/picture prompt.png";
 import { checkAccount } from "./Action/action";
 import type { ILoginSchema } from "./schemas/login.schema";
 import { LoginSchema } from "./schemas/login.schema";
@@ -156,7 +154,12 @@ export default component$(() => {
             <div class="grid-span-1 w-full ">
               {/* logo */}
               <div class="flex flex-col">
-                <img src={logo_img} alt="logo_icon" width={84} height={54} />
+                <img
+                  src={"/logo_project.png"}
+                  alt="logo_icon"
+                  width={84}
+                  height={54}
+                />
                 <h1 class="ml-1 text-sm font-semibold">SnatBas Clinic</h1>
               </div>
 
@@ -234,7 +237,7 @@ export default component$(() => {
           {/* image */}
           <div class="flex-1 ">
             <img
-              src={background_img}
+              src={"/picture_prompt.png"}
               alt="background"
               width={1000}
               height={100}

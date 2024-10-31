@@ -13,11 +13,6 @@ import { Modal } from "~/components/modal/Modal";
 import { Table } from "~/components/table/Table";
 import { db } from "~/lib/db/db";
 import { appointment } from "~/lib/db/schema";
-import background_admin from "/Background_admin.png";
-import background_cancelled from "/background_cancelled.png";
-import background_pending from "/background_pending.png";
-import background_scheduled from "/background_scheduled.png";
-import image_logo from "/logo project.png";
 
 type AppointmentResponse = {
   status: "scheduled" | "pending" | "cancelled";
@@ -214,7 +209,7 @@ export default component$(() => {
       {/* big box */}
       <img
         class="fixed -z-10 h-screen w-screen object-cover"
-        src={background_admin}
+        src={"/Background_admin.png"}
         alt="bg-admin"
         width={0}
         height={0}
@@ -225,7 +220,7 @@ export default component$(() => {
           <nav class="flex w-full justify-between ">
             {/* logo and name */}
             <div class="flex flex-col">
-              <img width={84} height={54} src={image_logo} alt="" />
+              <img width={84} height={54} src={"/logo_project.png"} alt="" />
               <span class="ml-1 text-sm font-semibold">SnatBas Clinic</span>
             </div>
             {/* admin */}
@@ -291,7 +286,7 @@ export default component$(() => {
               <div class="relative h-40 flex-1 shrink-0 space-y-4 rounded-lg bg-white p-5 shadow">
                 <img
                   class="absolute inset-0 z-20 h-40 w-full object-cover"
-                  src={background_scheduled}
+                  src={"/background_scheduled.png"}
                   alt="background_scheduled"
                   width={0}
                   height={0}
@@ -329,7 +324,7 @@ export default component$(() => {
               <div class="relative h-40 flex-1 shrink-0 space-y-4 rounded-lg bg-white p-5 shadow">
                 <img
                   class="absolute inset-0 z-20 h-40 w-full object-cover"
-                  src={background_pending}
+                  src={"/background_pending.png"}
                   alt="bg_pending"
                   width={0}
                   height={0}
@@ -367,7 +362,7 @@ export default component$(() => {
               <div class="relative h-40 flex-1 shrink-0 space-y-4 rounded-lg bg-white p-5 shadow">
                 <img
                   class="absolute inset-0 z-20 h-40 w-full object-cover"
-                  src={background_cancelled}
+                  src={"/background_cancelled.png"}
                   alt="bg_cancelled"
                   width={0}
                   height={0}

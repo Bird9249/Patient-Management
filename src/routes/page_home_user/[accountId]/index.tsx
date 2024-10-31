@@ -19,8 +19,6 @@ import { Modal } from "~/components/modal/Modal";
 import { Table } from "~/components/table/Table";
 import { db } from "~/lib/db/db";
 import { appointment } from "~/lib/db/schema";
-import background_of_history from "/backgroud_of_history.png";
-import logo_image from "/logo project.png";
 
 type AppointmentResponse = {
   status: "scheduled" | "pending" | "cancelled";
@@ -193,6 +191,7 @@ export default component$(() => {
   ));
 
   //track
+  // eslint-disable-next-line qwik/no-use-visible-task
   useVisibleTask$(async () => {
     const offset = searchParams.get("offset");
     const limit = searchParams.get("limit");
@@ -207,7 +206,7 @@ export default component$(() => {
       {/* big box */}
       <img
         class="fixed -z-10 h-screen w-screen object-cover"
-        src={background_of_history}
+        src={"/backgroud_of_history.png"}
         alt="bg-history"
         width={0}
         height={0}
@@ -218,7 +217,7 @@ export default component$(() => {
           <nav class="flex w-full justify-between">
             {/* logo and name */}
             <div class="flex flex-col">
-              <img width={84} height={54} src={logo_image} alt="" />
+              <img width={84} height={54} src={"/logo_project.png"} alt="" />
               <span class="ml-1 text-sm font-semibold">SnatBas Clinic</span>
             </div>
             {/* link */}

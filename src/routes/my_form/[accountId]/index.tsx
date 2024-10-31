@@ -24,8 +24,6 @@ import type {
   IEditFromServerSchema,
 } from "../schema/myFormSchema";
 import { EditFormSchema, EditFormServerSchema } from "../schema/myFormSchema";
-import background from "/image.png";
-import image_logo from "/logo project.png";
 
 // server
 export const useUpdateUser = formAction$<
@@ -186,7 +184,7 @@ export default component$(() => {
     >
       <img
         class="fixed right-0 top-0 -z-10 h-screen w-[50vw] object-cover"
-        src={background}
+        src={"/image.png"}
         alt="background"
         width={0}
         height={0}
@@ -197,7 +195,12 @@ export default component$(() => {
           <nav class="mx-auto w-full sm:flex sm:items-center sm:justify-between">
             {/* logo */}
             <div class="flex flex-col">
-              <img src={image_logo} alt="logo" width={84} height={54} />
+              <img
+                src={"/logo_project.png"}
+                alt="logo"
+                width={84}
+                height={54}
+              />
               <p class="ml-1 text-sm font-semibold text-black">
                 SnatBas Clinic
               </p>

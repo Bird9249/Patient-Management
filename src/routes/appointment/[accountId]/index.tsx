@@ -16,8 +16,6 @@ import { db } from "~/lib/db/db";
 import appointment from "../action/appointment";
 import type { IAppointmentSchema } from "../schema/appointment";
 import { AppointmentSchema } from "../schema/appointment";
-import backgroundpage from "/public/background (1).jpg";
-import logo_page from "/public/logo project.png";
 
 export const useDoctorLoader = routeLoader$(async () => {
   return await db.query.doctor.findMany({
@@ -84,15 +82,15 @@ export default component$(() => {
     >
       <img
         class="fixed h-screen w-screen object-cover"
-        src={backgroundpage}
+        src={"/background_appointment.jpg"}
         alt=""
         width={0}
         height={0}
       />
       <div class="relative flex flex-col justify-center">
         <div class="container mx-auto my-8 px-8">
-          <div class="flex flex-col mb-4">
-            <img src={logo_page} width={84} height={54} />
+          <div class="mb-4 flex flex-col">
+            <img src={"/logo_project.png"} width={84} height={54} />
             <span class="ml-1 text-sm font-semibold">SnatBas Clinic</span>
           </div>
           <div>
