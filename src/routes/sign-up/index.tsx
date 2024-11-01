@@ -89,11 +89,11 @@ export default component$(() => {
   return (
     <Form>
       {/* whole sign in section*/}
-      <div class="flex h-screen items-center justify-center overflow-hidden">
+      <div class="flex max-h-screen items-center justify-center overflow-hidden">
         <div class=" grid w-full grid-cols-2">
           {/* left section: sign in page */}
 
-          <div class="container px-28 py-14 ">
+          <div class="container px-28 py-14">
             <div class="grid-span-1 w-full ">
               {/* logo tag */}
               <div class="flex flex-col">
@@ -101,9 +101,8 @@ export default component$(() => {
                 <span class="ml-1 text-sm font-semibold">SnatBas Clinic</span>
               </div>
 
-
               {/* sign in section */}
-              <div class="mt-6 px-10 py-5">
+              <div class="px-10 py-5">
                 <h1 class="text-2xl">Hi, It's first time...</h1>
                 <p class="mb-6 text-slate-500">Get Start Together</p>
 
@@ -244,7 +243,7 @@ export default component$(() => {
                 </div>
               </div>
               {/* bottom link */}
-              <div class="mt-7 flex justify-center gap-5">
+              <div class=" flex justify-center gap-5">
                 <Link
                   href="/log_in/"
                   class="border-ga-100 border-r pr-2 text-primary-600 underline decoration-primary-600 underline-offset-8 hover:opacity-80 focus:opacity-80 focus:outline-none"
@@ -252,7 +251,7 @@ export default component$(() => {
                   Log in
                 </Link>
                 <Link
-                  href="#"
+                  href="contact_us/"
                   class="border-ga-100 pr-2 text-primary-600 underline decoration-primary-600 underline-offset-8 hover:opacity-80 focus:opacity-80 focus:outline-none"
                 >
                   Contact us
@@ -263,8 +262,8 @@ export default component$(() => {
           {/* right section: image */}
           <div class="grid-span-1">
             <img
-              height={832}
-              width={691}
+              height={0}
+              width={0}
               src={"/sign_up_page.jpg"}
               alt=""
               class="h-screen w-full object-cover"
