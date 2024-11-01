@@ -23,7 +23,7 @@ export default component$(() => {
               <div>
                 <Link
                   class=" mt-5 inline-flex items-center gap-x-1 text-lg text-gray-800 hover:cursor-pointer hover:text-primary-600 focus:text-primary-600"
-                  href={`/page_home_user/${params.accountId}`}
+                  href={`/my_form/${params.accountId}`}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
