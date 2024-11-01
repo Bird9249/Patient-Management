@@ -202,11 +202,11 @@ export default component$(() => {
           {/* right section: image */}
           <div class="grid-span-1">
             <img
-              height={832}
-              width={691}
+              height={0}
+              width={0}
               src={"/sign_up_page.jpg"}
               alt=""
-              class="h-screen w-full object-cover"
+              class="h-full min-h-screen w-full object-cover"
             />
           </div>
         </div>
