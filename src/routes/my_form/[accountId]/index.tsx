@@ -7,7 +7,7 @@ import {
   useNavigate,
 } from "@builder.io/qwik-city";
 import { formAction$, setValue, useForm, valiForm$ } from "@modular-forms/qwik";
-import { LuChevronDown, LuLogOut, LuUser2 } from "@qwikest/icons/lucide";
+import { LuLogOut, LuUser2 } from "@qwikest/icons/lucide";
 import { eq } from "drizzle-orm";
 import { Button } from "~/components/button/Button";
 import PreviewImage from "~/components/forms/preview-image/PreviewImage";
@@ -218,10 +218,12 @@ export default component$(() => {
                   class="flex flex-row items-center gap-1 hover:text-primary-800 "
                   href="#"
                 >
-                  Profile
-                  <LuChevronDown class="size-4" />
+                  My form
                 </a>
-                <a class="hover:text-primary-800" href="#">
+                <a
+                  class="hover:text-primary-800"
+                  href={`contact_us_nav/${params.accountId}`}
+                >
                   Contact us
                 </a>
                 <button
