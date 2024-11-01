@@ -8,8 +8,6 @@ import { db } from "~/lib/db/db";
 import { appointment } from "~/lib/db/schema";
 import { convertToCustomFormat } from "~/utils/convertToCustomFormat";
 import { AdminCancelSchema, AdminSchema } from "../../schema/adminSchema";
-import background_admin from "/Background_admin.png";
-import logo_image from "/logo project.png";
 
 export const useAppointmentLoader = routeLoader$(async ({ params }) => {
   const res = await db.query.appointment.findFirst({
@@ -172,7 +170,7 @@ export default component$(() => {
       {/* big box */}
       <img
         class="fixed -z-10 h-screen w-screen object-cover"
-        src={background_admin}
+        src={"/Background_admin.png"}
         alt="bg-admin"
         width={0}
         height={0}
@@ -183,7 +181,7 @@ export default component$(() => {
           <nav class="flex w-full justify-between ">
             {/* logo and name */}
             <div class="flex flex-col">
-              <img width={84} height={54} src={logo_image} alt="" />
+              <img width={84} height={54} src={"/logo_project.png"} alt="" />
               <span class="ml-1 text-sm font-semibold">SnatBas Clinic</span>
             </div>
           </nav>

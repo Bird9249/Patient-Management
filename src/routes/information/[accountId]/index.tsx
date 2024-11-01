@@ -20,8 +20,6 @@ import type {
   IRegisterServerSchema,
 } from "../schema/register";
 import { RegisterSchema, RegisterServerSchema } from "../schema/register";
-import background from "/image.png";
-import image_logo from "/logo project.png";
 
 // server
 export const useAddUser = formAction$<
@@ -128,7 +126,7 @@ export default component$(() => {
     >
       <img
         class="fixed right-0 top-0 -z-10 h-screen w-[50vw] object-cover"
-        src={background}
+        src={"/image.png"}
         alt="background"
         width={0}
         height={0}
@@ -136,7 +134,7 @@ export default component$(() => {
       <div class="container mx-auto my-8 px-8">
         {/* logo */}
         <div class="mb-12">
-          <img src={image_logo} alt="logo" width={84} height={54} />
+          <img src={"/logo_project.png"} alt="logo" width={84} height={54} />
           <p class="ml-1 text-sm font-semibold text-black">SnatBas Clinic</p>
         </div>
         {/* Hi.. */}
