@@ -230,7 +230,7 @@ export default component$(() => {
                 <Link href={`/my_form/${params.accountId}/`}>My form</Link>
               </li>
               <li class="hover:text-primary-800">
-                <Link href="#">Contact us</Link>
+                <a href="/page_home_user/contact_us_nav/">Contact us</a>
               </li>
               <li class="flex items-center gap-1 hover:text-primary-800">
                 <LuUser2 />
