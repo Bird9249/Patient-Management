@@ -1,18 +1,18 @@
 /* eslint-disable qwik/no-use-visible-task */
 import { component$ } from "@builder.io/qwik";
-import { Form, Link, useLocation } from "@builder.io/qwik-city";
+import { Link, useLocation } from "@builder.io/qwik-city";
 
 export default component$(() => {
   const { params } = useLocation();
   return (
-    <Form>
+    <>
       {/* whole sign in section*/}
       <div class="flex h-screen items-center justify-center overflow-hidden">
         <div class=" grid w-full grid-cols-2">
           {/* left section: sign in page */}
 
-          <div class="container px-28 py-14 ">
-            <div class="grid-span-1 w-full ">
+          <div class="px-28 py-14 ">
+            <div class=" w-full ">
               {/* logo tag */}
               <div class="flex flex-col">
                 <img width={84} height={54} src={"/logo_project.png"} alt="" />
@@ -200,7 +200,7 @@ export default component$(() => {
             </div>
           </div>
           {/* right section: image */}
-          <div class="grid-span-1">
+          <div class="">
             <img
               height={0}
               width={0}
@@ -211,6 +211,6 @@ export default component$(() => {
           </div>
         </div>
       </div>
-    </Form>
+    </>
   );
 });

@@ -368,17 +368,6 @@ export default component$(() => {
                 </p>
               </div>
               <div class="flex flex-row gap-10">
-                <div class="flex items-center">
-                  <button
-                    class="h-10 w-28 rounded-full bg-emerald-400 px-3 py-1 text-base font-medium text-white hover:bg-teal-500 "
-                    onClick$={() => {
-                      isScheduleOpen.value = true;
-                    }}
-                  >
-                    Confirm
-                  </button>
-                </div>
-                <Schedule_Modal isOpen={isScheduleOpen} />
                 <div class="flex-none items-center">
                   <button
                     class="h-10 w-28 rounded-full bg-red-500 px-3 py-1 text-base font-medium text-white hover:bg-red-600"
@@ -390,6 +379,17 @@ export default component$(() => {
                   </button>
                 </div>
                 <Cancel_Modal isOpen={isCancelOpen} />
+                <div class="flex items-center">
+                  <button
+                    class="h-10 w-28 rounded-full bg-emerald-400 px-3 py-1 text-base font-medium text-white hover:bg-teal-500 "
+                    onClick$={() => {
+                      isScheduleOpen.value = true;
+                    }}
+                  >
+                    Yes
+                  </button>
+                </div>
+                <Schedule_Modal isOpen={isScheduleOpen} />
               </div>
             </div>
           </div>
