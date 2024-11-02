@@ -61,7 +61,7 @@ export default component$(() => {
   const [form, { Field, Form }] = useForm<IAppointmentSchema>({
     loader: {
       value: {
-        reasonOfAppointment: "i'm sick",
+        reasonOfAppointment: "",
         dateTime: "",
         doctorId: 0,
         comment: "",

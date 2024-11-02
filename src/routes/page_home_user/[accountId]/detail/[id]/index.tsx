@@ -6,7 +6,7 @@ import {
   useLocation,
   useNavigate,
 } from "@builder.io/qwik-city";
-import { LuLogOut, LuUser2 } from "@qwikest/icons/lucide";
+import { LuLogOut } from "@qwikest/icons/lucide";
 import { eq } from "drizzle-orm";
 import { Modal } from "~/components/modal/Modal";
 import { db } from "~/lib/db/db";
@@ -76,30 +76,6 @@ export default component$(() => {
               <img width={84} height={54} src={"/logo_project.png"} alt="" />
               <span class="ml-1 text-sm font-semibold">SnatBas Clinic</span>
             </div>
-            {/* link */}
-
-            <ul class="flex items-center gap-14 text-lg text-black">
-              <li class="hover:text-primary-800">
-                <Link href={`/page_home_user/${params.accountId}/`}>Home</Link>
-              </li>
-              <li class="hover:text-primary-800">
-                <Link href="#">My form</Link>
-              </li>
-              <li class="hover:text-primary-800">
-                <Link href="#">Contact us</Link>
-              </li>
-              <li class="flex items-center gap-1 hover:text-primary-800">
-                <LuUser2 />
-                <Link
-                  href="#"
-                  onClick$={() => {
-                    isOpen.value = true;
-                  }}
-                >
-                  Log out
-                </Link>
-              </li>
-            </ul>
           </nav>
 
           {/* session*/}
