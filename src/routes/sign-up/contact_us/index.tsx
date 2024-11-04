@@ -1,9 +1,6 @@
 /* eslint-disable qwik/no-use-visible-task */
-import { component$, useVisibleTask$ } from "@builder.io/qwik";
-import { Link, useNavigate } from "@builder.io/qwik-city";
-import { formAction$, useForm, valiForm$ } from "@modular-forms/qwik";
-import { Button } from "~/components/button/Button";
-import { TextInput } from "~/components/forms/text-input/TextInput";
+import { component$ } from "@builder.io/qwik";
+import { Link } from "@builder.io/qwik-city";
 
 export default component$(() => {
   return (

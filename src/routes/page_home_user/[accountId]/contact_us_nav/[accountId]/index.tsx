@@ -11,8 +11,8 @@ export default component$(() => {
         <div class=" grid w-full grid-cols-2">
           {/* left section: sign in page */}
 
-          <div class="px-28 py-14 ">
-            <div class=" w-full ">
+          <div class="container px-28 py-14 ">
+            <div class="grid-span-1 w-full ">
               {/* logo tag */}
               <div class="flex flex-col">
                 <img width={84} height={54} src={"/logo_project.png"} alt="" />
@@ -200,13 +200,13 @@ export default component$(() => {
             </div>
           </div>
           {/* right section: image */}
-          <div class="">
+          <div class="grid-span-1">
             <img
               height={0}
               width={0}
               src={"/sign_up_page.jpg"}
               alt=""
-              class="h-full min-h-screen w-full object-cover"
+              class="h-screen w-full object-cover"
             />
           </div>
         </div>
