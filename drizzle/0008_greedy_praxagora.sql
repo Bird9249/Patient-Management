@@ -1,0 +1,11 @@
+ALTER TYPE "gender" ADD VALUE 'male';
+ALTER TYPE "gender" ADD VALUE 'female';
+ALTER TYPE "gender" ADD VALUE 'other';
+ALTER TYPE "type" ADD VALUE 'family_book';
+ALTER TYPE "type" ADD VALUE 'id_card';
+ALTER TYPE "type" ADD VALUE 'driver_license';
+ALTER TYPE "type" ADD VALUE 'passport';
+ALTER TYPE "status" ADD VALUE 'scheduled';
+ALTER TYPE "status" ADD VALUE 'pending';
+ALTER TYPE "status" ADD VALUE 'cancelled';
+ALTER TABLE "appointment" ALTER COLUMN "status" SET DEFAULT 'pending';
