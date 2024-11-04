@@ -148,7 +148,6 @@ export default component$(() => {
     <Form>
       {/* main div */}
       <div class="flex h-screen items-center justify-center overflow-hidden">
-
         <div class=" grid w-full grid-cols-2">
           <div class="container px-28 py-14 ">
             {/* form */}
@@ -163,7 +162,6 @@ export default component$(() => {
                 />
                 <h1 class="ml-1 text-sm font-semibold">SnatBas Clinic</h1>
               </div>
-
 
               {/* text */}
               <div class="mt-6 px-10 py-5">

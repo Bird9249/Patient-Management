@@ -314,7 +314,7 @@ export default component$(() => {
                       await nav("/log_in/");
                     }
                   }}
-                  class="inline-flex h-11 w-28 items-center justify-center gap-x-2 rounded-full border border-transparent bg-gray-300 px-4 py-3 text-sm font-medium text-red-500 hover:bg-gray-400 focus:bg-gray-400  focus:outline-none disabled:pointer-events-none disabled:opacity-50"
+                  class="inline-flex h-11 w-28 items-center justify-center gap-x-2 rounded-full border border-transparent bg-gray-200 px-4 py-3 text-sm font-medium text-red-500 hover:bg-gray-300 focus:bg-gray-300  focus:outline-none disabled:pointer-events-none disabled:opacity-50"
                   disabled={logoutAction.isRunning}
                 >
                   Log out
