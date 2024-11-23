@@ -2,6 +2,7 @@
 import { component$, useVisibleTask$ } from "@builder.io/qwik";
 import { Link, useNavigate } from "@builder.io/qwik-city";
 import { formAction$, useForm, valiForm$ } from "@modular-forms/qwik";
+import { SignJWT } from "jose";
 import { Button } from "~/components/button/Button";
 import { TextInput } from "~/components/forms/text-input/TextInput";
 import { addAccount } from "./action/actions";
@@ -13,7 +14,7 @@ import { AccountSchema } from "./schema/account";
 export const useRegisterAction = formAction$<
   IAccountSchema,
   { success: boolean; message: string; id?: number }
->(async (values) => {
+>(async (values, { cookie }) => {
   try {
     if (values.password !== values.confirmPassword)
       return {
@@ -32,11 +33,24 @@ export const useRegisterAction = formAction$<
       };
 
     const result = await addAccount(values);
+    const secret = new TextEncoder().encode(process.env.AUTH_SECRET);
+
+    const token = await new SignJWT({
+      sub: String(result),
+    })
+      .setProtectedHeader({
+        alg: "HS256",
+      })
+      .setIssuedAt()
+      .setExpirationTime("1y")
+      .sign(secret);
+
+    cookie.set("auth-token", token, { path: "/", httpOnly: true });
 
     return {
       data: {
         success: true,
-        message: "",
+        message: "sign up success",
         id: result,
       },
     };
